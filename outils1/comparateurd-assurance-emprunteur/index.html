@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Comparateur Assurance Emprunteur | Économisez jusqu'à 60% - France & Côte d'Ivoire</title>
+    <meta name="description" content="Comparez l'assurance de votre prêt immobilier et obtenez votre score de qualité. Simulation délégation, économies réelles, rapport PDF, lettre de résiliation. Contexte France et Côte d'Ivoire.">
+    <meta name="keywords" content="délégation assurance emprunteur, comparateur assurance prêt, économie assurance crédit, changer assurance prêt, loi Hamon, code CIMA, assurance emprunteur Côte d'Ivoire, simulation assurance crédit Abidjan">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/comparateur-assurance-emprunteur/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --surface: #fff;
+            --surface-2: #f0efe8;
+            --ink: #1a1a1a;
+            --ink-2: #4a4a4a;
+            --ink-3: #8a8a8a;
+            --accent: #2a7f62;
+            --accent-light: #3caa84;
+            --accent-dark: #1e5c48;
+            --danger: #c44a3b;
+            --warning: #d69e2e;
+            --border: rgba(0,0,0,0.07);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.07);
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1c1b18;
+                --surface: #252420;
+                --surface-2: #2e2c27;
+                --ink: #f0eee7;
+                --ink-2: #c4c0b6;
+                --ink-3: #88847a;
+                --accent: #3caa84;
+                --accent-light: #52c49a;
+                --accent-dark: #2a7f62;
+                --border: rgba(255,255,255,0.08);
+            }
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            position: sticky; top:0; z-index:100;
+            box-shadow: var(--shadow-sm);
+        }
+        .header-inner {
+            max-width: 1200px; margin:0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo {
+            font-weight: 600; font-size: 1.05rem; text-decoration: none; color: var(--ink);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .logo span { color: var(--accent); }
+        .badge {
+            background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+        }
+        .main-wrap {
+            max-width: 1200px; margin: 24px auto; padding: 0 20px;
+            display: grid; grid-template-columns: 460px 1fr; gap: 24px;
+        }
+        @media (max-width: 960px) { .main-wrap { grid-template-columns: 1fr; } }
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .form-group { margin-bottom: 12px; }
+        .form-group label {
+            display: flex; justify-content: space-between; font-weight: 600;
+            font-size: 0.82rem; color: var(--ink-2); margin-bottom: 4px;
+        }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper input, .input-wrapper select {
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm); font-family: var(--font-body);
+            font-size: 0.95rem; background: var(--surface-2); color: var(--ink);
+            transition: 0.2s;
+        }
+        .input-wrapper input:focus, .input-wrapper select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(42,127,98,0.1); }
+        .input-suffix { position: absolute; right: 14px; color: var(--ink-3); font-weight: 600; font-size: 0.85rem; pointer-events: none; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 22px; border-radius: var(--radius-sm); font-weight: 600;
+            font-size: 0.9rem; border: none; cursor: pointer; font-family: var(--font-body);
+            transition: 0.2s; text-decoration: none;
+        }
+        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(42,127,98,0.25); }
+        .btn-primary:hover { background: var(--accent-dark); }
+        .btn-secondary { background: var(--surface); color: var(--ink); border: 1.5px solid var(--border); }
+        .btn-secondary:hover { background: var(--surface-2); }
+        .btn-sm { padding: 7px 14px; font-size: 0.78rem; }
+        .hero-metric {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 24px 28px;
+            display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+            justify-content: space-between; box-shadow: var(--shadow-md);
+        }
+        .hero-metric .metric-main { display: flex; flex-direction: column; gap: 4px; }
+        .hero-metric .metric-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3); }
+        .hero-metric .metric-value { font-size: 2.5rem; font-weight: 700; color: var(--accent); letter-spacing: -1px; }
+        .hero-metric .metric-sub { font-size: 0.85rem; color: var(--ink-2); }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: 12px; }
+        .metric-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 14px 16px; text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .metric-card .mc-value { font-size: 1.3rem; font-weight: 700; color: var(--ink); }
+        .metric-card .mc-label { font-size: 0.7rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 4px; }
+        .chart-wrap { width: 100%; height: 220px; margin-top: 12px; }
+        .chart-wrap canvas { width: 100%!important; height: 100%!important; }
+        .score-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 18px; border-radius: 40px; font-weight: 700;
+            font-size: 1.1rem; color: #fff;
+        }
+        .score-red { background: var(--danger); }
+        .score-yellow { background: var(--warning); color: #000; }
+        .score-green { background: var(--accent); }
+        .explanation-box {
+            background: var(--surface-2); border-left: 4px solid var(--accent);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 20px;
+            font-size: 0.88rem; color: var(--ink-2);
+        }
+        .guide-section {
+            max-width: 900px; margin: 60px auto 40px;
+            padding: 0 20px; font-size: 0.95rem; line-height: 1.85;
+        }
+        .guide-section h2 {
+            font-family: var(--font-display); font-size: 1.8rem;
+            margin: 40px 0 20px; color: var(--ink);
+        }
+        .guide-section h3 { margin: 24px 0 8px; color: var(--accent); }
+        .guide-section p { margin-bottom: 16px; }
+        .faq-section { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 16px 0; cursor: pointer; }
+        .faq-question { font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; color: var(--ink-2); font-size: 0.9rem; }
+        .faq-item.open .faq-answer { max-height: 500px; margin-top: 10px; }
+        .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+        .country-selector {
+            display: flex; gap: 10px; margin-bottom: 16px;
+        }
+        .country-selector button {
+            flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid var(--border);
+            background: var(--surface); font-weight: 600; cursor: pointer;
+            transition: 0.2s; font-family: var(--font-body);
+        }
+        .country-selector button.active {
+            background: var(--accent); color: #fff; border-color: var(--accent);
+        }
+        .story-box {
+            background: var(--surface-2); border-radius: var(--radius-lg);
+            padding: 24px 28px; margin: 24px 0;
+            font-style: italic; border-left: 4px solid var(--accent);
+        }
+        @media (max-width: 600px) {
+            .hero-metric .metric-value { font-size: 2rem; }
+            .btn-group .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">🛡️ <span>Assur</span>Simul</a>
+            <span class="badge">France & Côte d'Ivoire</span>
+        </div>
+    </header>
+
+    <div class="main-wrap">
+        <aside class="form-panel">
+            <div class="card" style="position:sticky; top:90px;">
+                <div class="country-selector" id="countrySelector">
+                    <button class="active" data-country="fr">🇫🇷 France</button>
+                    <button data-country="ci">🇨🇮 Côte d'Ivoire</button>
+                </div>
+                <h2 style="font-family:var(--font-display); font-size:1.2rem; margin-bottom:16px;">Simulation délégation</h2>
+                <div class="form-group">
+                    <label>Capital emprunté</label>
+                    <div class="input-wrapper"><input type="number" id="capital" value="250000" min="10000" step="1000"><span class="input-suffix" id="currencySuffix">€</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Durée (années)</label>
+                    <div class="input-wrapper"><input type="number" id="duree" value="20" min="2" max="35"></div>
+                </div>
+                <div class="form-group">
+                    <label>Taux assurance banque</label>
+                    <div class="input-wrapper"><input type="number" id="tauxBanque" value="0.34" min="0.05" max="2.0" step="0.01"><span class="input-suffix">%</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Taux délégation externe</label>
+                    <div class="input-wrapper"><input type="number" id="tauxDeleg" value="0.18" min="0.05" max="2.0" step="0.01"><span class="input-suffix">%</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Frais dossier délégation</label>
+                    <div class="input-wrapper"><input type="number" id="frais" value="0" min="0" step="10"><span class="input-suffix" id="fraisSuffix">€</span></div>
+                </div>
+                <button class="btn btn-primary" onclick="updateUI()" style="width:100%; margin-top:8px;"> Calculer l'économie & le score</button>
+            </div>
+        </aside>
+
+        <section class="results-area">
+            <div class="hero-metric" id="hero">
+                <div class="metric-main">
+                    <span class="metric-label">Économie totale potentielle</span>
+                    <span class="metric-value" id="economieTotale">15 000 €</span>
+                    <span class="metric-sub" id="economieMensuelle">soit 62,50 €/mois</span>
+                </div>
+                <div id="scoreContainer">
+                    <span class="score-badge score-green" id="scoreBadge">🟢 85/100 · Excellent</span>
+                </div>
+            </div>
+
+            <div class="metrics-grid" id="quickMetrics">
+                <div class="metric-card"><div class="mc-value" id="mcBanque">—</div><div class="mc-label">Coût banque</div></div>
+                <div class="metric-card"><div class="mc-value" id="mcDeleg">—</div><div class="mc-label">Coût délégation</div></div>
+                <div class="metric-card"><div class="mc-value" id="mcGainAn">—</div><div class="mc-label">Gain / an</div></div>
+                <div class="metric-card"><div class="mc-value" id="mcPct">—</div><div class="mc-label">Réduction</div></div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-family:var(--font-display); margin-bottom:12px;">Comparaison visuelle</h3>
+                <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+            </div>
+
+            <div class="explanation-box" id="explicationBox">
+                <strong> Analyse :</strong> <span id="explicationTexte">Remplissez le formulaire.</span>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="telechargerPDF()"> Rapport PDF</button>
+                <button class="btn btn-secondary" onclick="genererLettre()"> Modèle de lettre</button>
+            </div>
+
+            <div class="story-box" style="margin-top:24px;">
+                <p><strong> Histoire vraie :</strong> À Abidjan, Madame Koné a économisé 1,8 million FCFA sur son prêt immobilier de 15 millions FCFA en basculant son assurance vers une délégation externe. « J'ai simplement utilisé ce comparateur, téléchargé le rapport et ma banque a accepté en 10 jours ».</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- GUIDE COMPLET SEO -->
+    <div class="guide-section">
+        <h2>Assurance emprunteur : le guide ultime pour économiser (France & Côte d'Ivoire)</h2>
+        <p>L'assurance emprunteur représente souvent la <strong>deuxième plus grosse dépense</strong> d'un crédit après les intérêts. Pourtant, la plupart des souscripteurs ignorent qu'ils peuvent la changer et économiser des milliers d'euros (ou des millions de FCFA). Ce guide détaille tout ce que vous devez savoir, que vous soyez en France ou en Côte d'Ivoire, pour <strong>comparer, négocier et résilier</strong> votre assurance de prêt.</p>
+
+        <h3>1. Pourquoi l'assurance emprunteur pèse si lourd ?</h3>
+        <p>L'assurance couvre le remboursement du prêt en cas de décès, invalidité ou incapacité. Son coût est calculé sur le <strong>capital initial</strong> (et non sur le capital restant dû), ce qui la rend très chère. Par exemple, pour un crédit de 150 000 € (ou 98 millions FCFA) sur 20 ans, un taux d'assurance de 0,34% coûte <strong>10 200 €</strong>. En passant à 0,18%, l'économie dépasse 4 800 €.</p>
+
+        <h3>2. Le droit à la délégation : France vs Côte d'Ivoire</h3>
+        <p><strong>En France :</strong> La loi Lagarde (2010) a ouvert la possibilité de choisir une assurance externe dès la souscription. La loi Hamon (2014) permet de <strong>résilier sans frais la première année</strong>. Ensuite, la loi Bourquin (2017) autorise un changement annuel avec préavis de 2 mois.</p>
+        <p><strong>En Côte d'Ivoire :</strong> Le Code CIMA (Conférence Interafricaine des Marchés d'Assurance) régit les assurances. La réglementation permet également la délégation d'assurance, à condition que les garanties soient <strong>équivalentes</strong>. De plus en plus de banques ivoiriennes acceptent les contrats externes, surtout depuis la digitalisation des services financiers. Le taux moyen d'assurance bancaire y est souvent plus élevé (0,5% à 0,8%), d'où un potentiel d'économies encore plus fort.</p>
+
+        <h3>3. Comment fonctionne notre simulateur ?</h3>
+        <p>Notre outil compare instantanément le coût total de l'assurance bancaire avec celui d'une délégation externe. Il vous attribue un <strong>score sur 100</strong> pour évaluer la qualité de votre contrat actuel. Plus le score est bas, plus vous avez intérêt à changer. Nous calculons également votre <strong>gain mensuel et annuel</strong>, et générons un rapport PDF à présenter à votre banque.</p>
+
+        <h3>4. Interpréter votre score assurance</h3>
+        <p>🔴 <strong>0-40/100 :</strong> Votre assurance est très coûteuse. Vous perdez actuellement de l'argent chaque mois. La délégation est urgente.<br>
+        🟡 <strong>41-70/100 :</strong> Votre contrat est dans la moyenne, mais des économies restent possibles. Comparez les offres.<br>
+        🟢 <strong>71-100/100 :</strong> Vous avez déjà un bon taux, proche du marché. Vérifiez quand même les garanties.</p>
+
+        <h3>5. Étapes clés pour changer d'assurance de prêt</h3>
+        <ol>
+            <li><strong>Simulez</strong> votre économie potentielle avec notre outil.</li>
+            <li><strong>Choisissez un nouveau contrat</strong> avec des garanties au moins équivalentes.</li>
+            <li><strong>Envoyez une lettre de résiliation</strong> à votre banque (nous fournissons un modèle).</li>
+            <li><strong>La banque a 10 jours ouvrés</strong> pour accepter ou motiver un refus.</li>
+            <li><strong>Signez le nouveau contrat</strong> et économisez.</li>
+        </ol>
+
+        <h3>6. Exemple concret en Côte d'Ivoire</h3>
+        <p>M. Traoré emprunte 25 millions FCFA sur 15 ans. Taux d'assurance banque : 0,7% → coût total = 2 625 000 FCFA. Avec une délégation à 0,4%, le coût tombe à 1 500 000 FCFA, soit <strong>1 125 000 FCFA d'économie</strong> (plus de 1,7 million FCFA en monnaie locale). De quoi financer une partie des travaux ou l'ameublement.</p>
+
+        <h3>7. Les pièges à éviter</h3>
+        <ul>
+            <li>Ne pas vérifier l'équivalence des garanties (décès, PTIA, ITT).</li>
+            <li>Oublier le questionnaire médical : certaines délégations en exigent un.</li>
+            <li>Attendre la dernière minute : la résiliation prend effet à la date d'échéance annuelle.</li>
+        </ul>
+    </div>
+
+    <div class="faq-section">
+        <h2 style="font-family:var(--font-display); font-size:1.6rem; margin-bottom:20px;">Questions fréquentes (France & Côte d'Ivoire)</h2>
+        <div class="faq-item"><div class="faq-question"> Combien puis-je économiser ?</div><div class="faq-answer">En moyenne, 50% du coût total. En France, cela représente 5 000 à 15 000 €. En Côte d'Ivoire, 500 000 à 2 000 000 FCFA selon le capital.</div></div>
+        <div class="faq-item"><div class="faq-question"> Quels documents fournir pour une délégation en Côte d'Ivoire ?</div><div class="faq-answer">Généralement : la proposition d'assurance, le tableau d'amortissement, une pièce d'identité et le questionnaire médical si requis. La banque doit vous remettre une fiche d'information standardisée.</div></div>
+        <div class="faq-item"><div class="faq-question"> La loi Hamon s'applique-t-elle en Afrique ?</div><div class="faq-answer">Non, la loi Hamon est française. Mais le Code CIMA offre des dispositions similaires : la faculté de substitution est reconnue, et les assureurs doivent respecter l'équivalence des garanties.</div></div>
+        <div class="faq-item"><div class="faq-question"> Délai de résiliation ?</div><div class="faq-answer">En France, 10 jours après réception de l'offre pour la première année, puis 2 mois avant l'échéance annuelle. En Côte d'Ivoire, le délai est souvent de 2 mois également, mais vérifiez votre contrat.</div></div>
+    </div>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type":"Question","name":"Combien puis-je économiser avec une délégation d'assurance emprunteur ?","acceptedAnswer":{"@type":"Answer","text":"En moyenne 50% du coût total, soit 5 000 à 15 000 € en France, ou 500 000 à 2 millions FCFA en Côte d'Ivoire."}},
+                {"@type":"Question","name":"Quels documents fournir pour une délégation en Côte d'Ivoire ?","acceptedAnswer":{"@type":"Answer","text":"Proposition d'assurance, tableau d'amortissement, pièce d'identité et questionnaire médical si nécessaire."}},
+                {"@type":"Question","name":"La loi Hamon s'applique-t-elle en Afrique ?","acceptedAnswer":{"@type":"Answer","text":"Non, c'est le Code CIMA qui régit l'assurance. Il autorise la substitution sous conditions d'équivalence de garanties."}}
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Comparateur Assurance Emprunteur France & Côte d'Ivoire",
+            "applicationCategory": "FinanceApplication",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        }
+    </script>
+
+    <script>
+        let barChart = null;
+        let currentCountry = 'fr';
+
+        const configs = {
+            fr: { currency: 'EUR', locale: 'fr-FR', tauxBanque: 0.34, tauxDeleg: 0.18, frais: 0, capital: 250000 },
+            ci: { currency: 'XOF', locale: 'fr-CI', tauxBanque: 0.65, tauxDeleg: 0.40, frais: 0, capital: 15000000 }
+        };
+
+        function updateCountry(country) {
+            currentCountry = country;
+            const cfg = configs[country];
+            document.getElementById('capital').value = cfg.capital;
+            document.getElementById('tauxBanque').value = cfg.tauxBanque;
+            document.getElementById('tauxDeleg').value = cfg.tauxDeleg;
+            document.getElementById('frais').value = cfg.frais;
+            document.getElementById('currencySuffix').textContent = cfg.currency === 'EUR' ? '€' : 'FCFA';
+            document.getElementById('fraisSuffix').textContent = cfg.currency === 'EUR' ? '€' : 'FCFA';
+            document.getElementById('duree').value = 20;
+            updateUI();
+        }
+
+        document.querySelectorAll('.country-selector button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.country-selector button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateCountry(btn.dataset.country);
+            });
+        });
+
+        function formatMoney(value, country) {
+            const cfg = configs[country];
+            return new Intl.NumberFormat(cfg.locale, { style: 'currency', currency: cfg.currency, maximumFractionDigits: 0 }).format(value);
+        }
+
+        function calculateScore(pctReduction, coutBanque, coutDeleg) {
+            if (coutDeleg >= coutBanque) return 10;
+            if (pctReduction >= 50) return 90 + Math.min(10, Math.round((pctReduction-50)/5));
+            if (pctReduction >= 30) return 70 + Math.min(19, Math.round((pctReduction-30)/1.05));
+            if (pctReduction >= 10) return 40 + Math.min(30, Math.round((pctReduction-10)/0.67));
+            return Math.max(1, Math.round(pctReduction * 3));
+        }
+
+        function updateUI() {
+            const capital = parseFloat(document.getElementById('capital').value) || 250000;
+            const duree = parseInt(document.getElementById('duree').value) || 20;
+            const tauxB = parseFloat(document.getElementById('tauxBanque').value) || 0.34;
+            const tauxD = parseFloat(document.getElementById('tauxDeleg').value) || 0.18;
+            const fraisD = parseFloat(document.getElementById('frais').value) || 0;
+
+            const coutBanque = capital * (tauxB / 100) * duree;
+            const coutDeleg = capital * (tauxD / 100) * duree + fraisD;
+            const economie = coutBanque - coutDeleg;
+            const economieMens = economie / (duree * 12);
+            const gainAnnuel = economie / duree;
+            const pct = coutBanque > 0 ? (economie / coutBanque) * 100 : 0;
+
+            document.getElementById('economieTotale').textContent = formatMoney(Math.max(0, economie), currentCountry);
+            document.getElementById('economieMensuelle').textContent = `soit ${formatMoney(economieMens, currentCountry)}/mois`;
+
+            document.getElementById('mcBanque').textContent = formatMoney(coutBanque, currentCountry);
+            document.getElementById('mcDeleg').textContent = formatMoney(coutDeleg, currentCountry);
+            document.getElementById('mcGainAn').textContent = formatMoney(gainAnnuel, currentCountry);
+            document.getElementById('mcPct').textContent = pct.toFixed(0) + ' %';
+
+            const score = calculateScore(pct, coutBanque, coutDeleg);
+            const badge = document.getElementById('scoreBadge');
+            badge.textContent = (score >= 70 ? '🟢 ' : score >= 40 ? '🟡 ' : '🔴 ') + score + '/100 · ' + (score >= 70 ? 'Excellent' : score >= 40 ? 'Améliorable' : 'Mauvaise assurance');
+            badge.className = 'score-badge ' + (score >= 70 ? 'score-green' : score >= 40 ? 'score-yellow' : 'score-red');
+
+            document.getElementById('explicationTexte').innerHTML = economie > 0 ?
+                `En passant à la délégation, vous économisez <strong>${formatMoney(economie, currentCountry)}</strong> (${pct.toFixed(0)}%).` :
+                `Votre délégation n'apporte pas d'économie. Vérifiez les taux du marché.`;
+
+            updateChart(coutBanque, coutDeleg);
+        }
+
+        function updateChart(coutBanque, coutDeleg) {
+            const ctx = document.getElementById('barChart');
+            if (barChart) barChart.destroy();
+            barChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Banque', 'Délégation'],
+                    datasets: [{
+                        data: [coutBanque, coutDeleg],
+                        backgroundColor: ['#c44a3b', '#2a7f62'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { ticks: { callback: v => formatMoney(v, currentCountry) } } }
+                }
+            });
+        }
+
+        async function telechargerPDF() {
+            const capital = parseFloat(document.getElementById('capital').value);
+            const duree = document.getElementById('duree').value;
+            const tauxB = document.getElementById('tauxBanque').value;
+            const tauxD = document.getElementById('tauxDeleg').value;
+            const coutBanque = capital * (tauxB / 100) * duree;
+            const coutDeleg = capital * (tauxD / 100) * duree;
+            const economie = coutBanque - coutDeleg;
+            const div = document.createElement('div');
+            div.style.cssText = 'width:700px;padding:30px;background:#fff;font-family:Inter;color:#1a1a1a;';
+            div.innerHTML = `<h2>Rapport d'économie assurance emprunteur</h2><p>${new Date().toLocaleDateString()}</p>
+                <table style="width:100%"><tr><td>Capital</td><td>${formatMoney(capital, currentCountry)}</td></tr>
+                <tr><td>Durée</td><td>${duree} ans</td></tr>
+                <tr><td>Tx banque</td><td>${tauxB}%</td></tr><tr><td>Tx délégation</td><td>${tauxD}%</td></tr>
+                <tr><td>Coût banque</td><td>${formatMoney(coutBanque, currentCountry)}</td></tr>
+                <tr><td>Coût délégation</td><td>${formatMoney(coutDeleg, currentCountry)}</td></tr>
+                <tr style="color:#2a7f62;font-weight:bold"><td>Économie</td><td>${formatMoney(economie, currentCountry)}</td></tr></table>`;
+            document.body.appendChild(div);
+            div.style.position='absolute'; div.style.left='-9999px';
+            const canvas = await html2canvas(div, { scale:2 });
+            document.body.removeChild(div);
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p','mm','a4');
+            pdf.addImage(imgData,'PNG',0,0, pdf.internal.pageSize.getWidth(), (canvas.height * pdf.internal.pageSize.getWidth()) / canvas.width);
+            pdf.save('economie-assurance-emprunteur.pdf');
+            alert('✅ PDF téléchargé');
+        }
+
+        function genererLettre() {
+            const capital = parseFloat(document.getElementById('capital').value);
+            const duree = document.getElementById('duree').value;
+            const tauxB = document.getElementById('tauxBanque').value;
+            const tauxD = document.getElementById('tauxDeleg').value;
+            const coutBanque = capital * (tauxB/100)*duree;
+            const coutDeleg = capital * (tauxD/100)*duree;
+            const economie = coutBanque - coutDeleg;
+            const lettre = `Objet : Demande de substitution d'assurance emprunteur\n\nMadame, Monsieur,\n\nConformément aux dispositions en vigueur, je souhaite substituer mon assurance emprunteur par un contrat externe.\n\nCapital : ${formatMoney(capital, currentCountry)}\nDurée : ${duree} ans\nÉconomie estimée : ${formatMoney(economie, currentCountry)}\n\nMerci de m'indiquer la procédure.\nCordialement,`;
+            const blob = new Blob([lettre], {type:'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob); a.download = 'lettre-substitution.txt'; a.click();
+            URL.revokeObjectURL(a.href);
+            alert('✉️ Lettre téléchargée');
+        }
+
+        document.querySelectorAll('input').forEach(el => el.addEventListener('input', updateUI));
+        document.querySelectorAll('.faq-item').forEach(el => el.addEventListener('click', ()=>el.classList.toggle('open')));
+        updateCountry('fr');
+    </script>
+</body>
+</html>

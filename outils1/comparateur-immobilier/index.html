@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Louer ou Acheter en France 2025 — Simulateur gratuit, sans inscription</title>
+<meta name="description" content="Simulateur gratuit louer ou acheter en France. Comparez le coût réel sur 10, 15 ou 20 ans selon votre ville, votre apport et les taux actuels. Résultat immédiat, aucune inscription.">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="louer ou acheter 2025, simulateur louer acheter, comparateur achat location immobilier, point mort immobilier, simulation crédit immobilier vs loyer, rentabilité achat immobilier France, mensualité vs loyer calcul, quand est-il rentable d'acheter sa résidence principale">
+<link rel="canonical" href="https://www.fintoolsbox.com/comparateur-immobilier">
+<meta property="og:title" content="Louer ou Acheter en France 2025 — Simulateur gratuit">
+<meta property="og:description" content="Comparez le coût réel de la location vs l'achat sur 10 à 25 ans. Taux du marché 2025 intégrés. Gratuit, sans inscription.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+html { scroll-behavior: smooth; font-size: 16px }
+:root {
+  --ink:    #18181B;
+  --paper:  #F9F8F5;
+  --blue:   #1B4FD8;
+  --blue-d: #1540B0;
+  --blue-l: #EEF2FE;
+  --red:    #DC2626;
+  --green:  #16A34A;
+  --slate:  #64748B;
+  --sand:   #F1EDE4;
+  --line:   rgba(24,24,27,.1);
+  --r:      14px;
+  --r-lg:   20px;
+  --f-h:    'Fraunces', Georgia, serif;
+  --f-b:    'DM Sans', system-ui, sans-serif;
+  --sh:     0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+}
+
+body { background: var(--paper); color: var(--ink); font-family: var(--f-b); line-height: 1.6; -webkit-font-smoothing: antialiased }
+
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--blue);
+  color: #fff;
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  padding: .5rem 1rem;
+}
+.topbar a { color: rgba(255,255,255,.85); text-decoration: underline }
+
+/* ─── HERO ─── */
+.hero {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  padding: 4rem 1.5rem 3.5rem;
+  text-align: center;
+}
+.hero-wrap { max-width: 780px; margin: 0 auto }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--blue-l); color: var(--blue);
+  border-radius: 99px; padding: .35rem .9rem;
+  font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-family: var(--f-h);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 600; line-height: 1.1; letter-spacing: -.02em;
+  margin-bottom: 1.1rem;
+}
+.hero h1 em { font-style: italic; color: var(--blue) }
+.hero-lead {
+  font-size: 1.05rem; color: var(--slate);
+  max-width: 600px; margin: 0 auto 1.8rem; line-height: 1.7;
+}
+.hero-pills { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; margin-bottom: 2rem }
+.pill {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 99px; padding: .38rem .9rem;
+  font-size: .78rem; font-weight: 500; color: var(--slate);
+}
+.hero-trust {
+  display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  font-size: .78rem; color: var(--slate);
+}
+.trust-item { display: flex; align-items: center; gap: .4rem }
+.trust-icon { font-size: .9rem }
+
+/* ─── INTRO SEO ─── */
+.intro-section {
+  max-width: 900px; margin: 0 auto;
+  padding: 3.5rem 1.5rem 0;
+}
+.intro-section h2 {
+  font-family: var(--f-h);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 600; letter-spacing: -.015em;
+  margin-bottom: 1rem; line-height: 1.25;
+}
+.intro-section h2 .sub { display: block; font-size: .55em; font-weight: 400; color: var(--slate); font-style: italic; margin-bottom: .3rem }
+.intro-section p { color: var(--slate); line-height: 1.8; margin-bottom: 1rem; font-size: .95rem }
+.intro-section p strong { color: var(--ink); font-weight: 600 }
+
+/* ─── CARDS PÉDAGOGIQUES ─── */
+.pedagogy {
+  max-width: 900px; margin: 2.5rem auto 0;
+  padding: 0 1.5rem;
+}
+.peda-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem; margin-top: 1.2rem;
+}
+.peda-card {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.4rem;
+  box-shadow: var(--sh);
+}
+.peda-icon { font-size: 1.5rem; margin-bottom: .6rem }
+.peda-title { font-size: .88rem; font-weight: 600; margin-bottom: .4rem }
+.peda-desc { font-size: .8rem; color: var(--slate); line-height: 1.65 }
+
+/* ─── STAT STRIP ─── */
+.stat-strip {
+  background: var(--blue); color: #fff;
+  margin: 2.5rem 0 0;
+  padding: 2rem 1.5rem;
+}
+.stat-inner { max-width: 900px; margin: 0 auto }
+.stat-label {
+  font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.6); margin-bottom: 1.2rem;
+}
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem }
+.stat { border-left: 2px solid rgba(255,255,255,.2); padding-left: 1rem }
+.stat-num { font-family: var(--f-h); font-size: 2rem; font-weight: 600; line-height: 1 }
+.stat-txt { font-size: .78rem; color: rgba(255,255,255,.7); margin-top: .25rem; line-height: 1.4 }
+
+/* ─── FACTEURS SECTION ─── */
+.facteurs {
+  max-width: 900px; margin: 0 auto;
+  padding: 3rem 1.5rem 0;
+}
+.section-h2 {
+  font-family: var(--f-h);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 600; letter-spacing: -.015em;
+  margin-bottom: .6rem;
+}
+.section-lead { font-size: .9rem; color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7 }
+
+.fact-list { display: flex; flex-direction: column; gap: .75rem }
+.fact-item {
+  display: flex; gap: 1rem;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.1rem 1.3rem;
+  align-items: flex-start;
+}
+.fact-num {
+  font-family: var(--f-h); font-size: 1.4rem; font-weight: 600;
+  color: var(--blue); flex-shrink: 0; line-height: 1; min-width: 2rem;
+}
+.fact-body h3 { font-size: .88rem; font-weight: 600; margin-bottom: .25rem }
+.fact-body p { font-size: .8rem; color: var(--slate); line-height: 1.6 }
+
+/* ─── ACCORDÉON QUESTIONS ─── */
+.questions {
+  max-width: 900px; margin: 0 auto;
+  padding: 3rem 1.5rem 0;
+}
+.q-item { border-bottom: 1px solid var(--line) }
+.q-btn {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 0; cursor: pointer;
+  background: none; border: none; text-align: left;
+  font-family: var(--f-b); font-size: .92rem; font-weight: 600; color: var(--ink);
+  gap: 1rem;
+}
+.q-chev {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border-radius: 99px; background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .25s, background .2s;
+}
+.q-chev svg { width: 10px; height: 10px; color: var(--slate) }
+.q-item.open .q-chev { transform: rotate(180deg); background: var(--blue-l) }
+.q-item.open .q-chev svg { color: var(--blue) }
+.q-ans {
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s cubic-bezier(.4,0,.2,1);
+  font-size: .87rem; color: var(--slate); line-height: 1.75;
+}
+.q-item.open .q-ans { max-height: 280px; padding-bottom: 1.1rem }
+.q-ans strong { color: var(--ink) }
+
+/* ─── DIVIDER ─── */
+.tool-anchor {
+  max-width: 900px; margin: 3rem auto 0; padding: 0 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.tool-anchor-line { flex: 1; height: 1px; background: var(--line) }
+.tool-anchor-label {
+  font-family: var(--f-h); font-size: 1.1rem; font-weight: 600;
+  white-space: nowrap; letter-spacing: -.01em;
+}
+.tool-anchor-label em { font-style: italic; color: var(--blue) }
+
+/* ─── TOOL HEADER ─── */
+.tool-header {
+  background: var(--ink); color: #fff;
+  padding: 2.2rem 1.5rem 2rem;
+  margin-top: 2rem;
+}
+.tool-header-inner { max-width: 1100px; margin: 0 auto; position: relative }
+.tool-header-inner::before {
+  content: '';
+  position: absolute; inset: -2rem -1.5rem;
+  background: repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(255,255,255,.02) 30px, rgba(255,255,255,.02) 31px);
+  pointer-events: none;
+}
+.tool-eyebrow {
+  font-size: .68rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin-bottom: .65rem;
+}
+.tool-header h2 {
+  font-family: var(--f-h);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600; line-height: 1.1;
+}
+.tool-header h2 em { font-style: italic; color: #93C5FD }
+.tool-header-sub { margin-top: .75rem; font-size: .88rem; color: rgba(255,255,255,.55); max-width: 500px; line-height: 1.6 }
+.badge-fr {
+  display: inline-flex; align-items: center; gap: .4rem;
+  margin-top: 1rem; background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 99px; padding: .3rem .85rem;
+  font-size: .72rem; font-weight: 500; color: rgba(255,255,255,.7);
+}
+
+/* ─── LAYOUT TOOL ─── */
+.layout {
+  max-width: 1100px; margin: 2rem auto 0;
+  padding: 0 1.25rem 4rem;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 1.5rem; align-items: start;
+}
+
+/* ─── PANEL ─── */
+.panel {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--sh);
+}
+.panel-head {
+  padding: 1rem 1.4rem; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: .6rem;
+  background: var(--paper);
+}
+.phead-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+  background: var(--blue-l);
+}
+.panel-head h3 {
+  font-family: var(--f-h); font-size: .95rem; font-weight: 600;
+}
+.panel-body { padding: 1.3rem 1.4rem }
+
+/* Ville picker */
+.ville-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: .45rem;
+  margin-bottom: 1.3rem;
+}
+.v-btn {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 9px; padding: .5rem .3rem;
+  cursor: pointer; text-align: center;
+  transition: all .17s; font-family: var(--f-b);
+}
+.v-btn:hover { border-color: var(--blue); background: var(--blue-l) }
+.v-btn.active { background: var(--blue); border-color: var(--blue); color: #fff }
+.v-name { font-size: .75rem; font-weight: 500; display: block }
+.v-price { font-size: .62rem; color: var(--slate); display: block; margin-top: 1px }
+.v-btn.active .v-price { color: rgba(255,255,255,.65) }
+
+/* Fields */
+.field-sep {
+  font-size: .68rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--slate); border-top: 1px solid var(--line);
+  padding-top: 1rem; margin: 1rem 0 .8rem;
+}
+.field { margin-bottom: 1.1rem }
+.field-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: .79rem; font-weight: 500; margin-bottom: .35rem; color: var(--ink);
+}
+.field-label .hint { font-size: .7rem; color: var(--slate); font-weight: 400 }
+.inp-wrap { position: relative }
+.inp-unit {
+  position: absolute; right: .85rem; top: 50%; transform: translateY(-50%);
+  font-size: .76rem; color: var(--slate); pointer-events: none;
+}
+input[type="number"] {
+  width: 100%; padding: .62rem .85rem; padding-right: 3.8rem;
+  border: 1.5px solid var(--line); border-radius: 9px;
+  font-family: var(--f-b); font-size: .9rem; color: var(--ink);
+  background: var(--paper); transition: border-color .15s, background .15s;
+  appearance: none;
+}
+input[type="number"]:focus { outline: none; border-color: var(--blue); background: #fff }
+
+.preset-row { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .45rem }
+.pre-btn {
+  font-size: .68rem; padding: .22rem .6rem; border-radius: 5px;
+  border: 1px solid var(--line); background: var(--paper);
+  cursor: pointer; font-family: var(--f-b); transition: all .15s;
+}
+.pre-btn:hover, .pre-btn.active { background: var(--blue); color: #fff; border-color: var(--blue) }
+
+.dur-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem }
+.dur-btn {
+  padding: .5rem; text-align: center;
+  border: 1.5px solid var(--line); border-radius: 8px;
+  font-size: .8rem; font-weight: 500; cursor: pointer;
+  background: var(--paper); font-family: var(--f-b); transition: all .15s;
+}
+.dur-btn.active { background: var(--blue); color: #fff; border-color: var(--blue) }
+
+.calc-btn {
+  width: 100%; padding: .9rem; margin-top: 1.3rem;
+  background: var(--blue); color: #fff;
+  border: none; border-radius: 11px;
+  font-family: var(--f-h); font-size: .98rem; font-weight: 600;
+  cursor: pointer; letter-spacing: .01em;
+  transition: background .18s, transform .1s;
+}
+.calc-btn:hover { background: var(--blue-d) }
+.calc-btn:active { transform: scale(.98) }
+
+/* ─── RESULTS ─── */
+.results-col { display: flex; flex-direction: column; gap: 1.1rem }
+
+.verdict { border-radius: var(--r-lg); padding: 1.5rem 1.8rem; position: relative; overflow: hidden }
+.verdict.buy  { background: #14532D; color: #fff }
+.verdict.rent { background: var(--ink); color: #fff }
+.verdict.draw { background: #1e3a8a; color: #fff }
+.verdict::after {
+  content: attr(data-icon); position: absolute;
+  right: 1.2rem; top: 50%; transform: translateY(-50%);
+  font-size: 5rem; opacity: .07; pointer-events: none;
+}
+.verdict-tag {
+  font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  opacity: .65; margin-bottom: .4rem;
+}
+.verdict h3 { font-family: var(--f-h); font-size: 1.45rem; font-weight: 600; line-height: 1.2; margin-bottom: .45rem }
+.verdict p { font-size: .84rem; opacity: .8; line-height: 1.55; max-width: 460px }
+.export-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: .8rem; padding: .5rem 1rem;
+  border: 1.5px solid rgba(255,255,255,.3); border-radius: 8px;
+  font-size: .78rem; font-weight: 500; color: rgba(255,255,255,.85);
+  background: transparent; cursor: pointer; font-family: var(--f-b);
+  transition: all .15s;
+}
+.export-btn:hover { border-color: #fff; color: #fff }
+
+.kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem }
+.kpi-card {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.1rem 1.3rem;
+  box-shadow: var(--sh);
+}
+.kpi-card.buy-c  { border-top: 3px solid #16A34A }
+.kpi-card.rent-c { border-top: 3px solid var(--blue) }
+.kpi-top { display: flex; align-items: center; gap: .45rem; margin-bottom: .7rem }
+.k-dot { width: 8px; height: 8px; border-radius: 50% }
+.k-green { background: #16A34A }
+.k-blue  { background: var(--blue) }
+.kpi-lbl { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--slate) }
+.kpi-amount { font-family: var(--f-h); font-size: 1.5rem; font-weight: 600; line-height: 1; margin-bottom: .25rem }
+.kpi-sub { font-size: .72rem; color: var(--slate) }
+.kpi-rows { margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line) }
+.kpi-row {
+  display: flex; justify-content: space-between;
+  font-size: .76rem; color: var(--slate); padding: .18rem 0;
+}
+.kpi-row strong { color: var(--ink); font-weight: 500 }
+
+.breakeven {
+  background: #EFF6FF; border-left: 3px solid var(--blue);
+  border-radius: 10px; padding: .85rem 1.1rem;
+  font-size: .82rem; color: var(--ink); line-height: 1.55;
+}
+
+.chart-panel {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.3rem 1.4rem;
+  box-shadow: var(--sh);
+}
+.chart-panel h4 { font-family: var(--f-h); font-size: .95rem; font-weight: 600; margin-bottom: .3rem }
+.chart-panel .c-sub { font-size: .75rem; color: var(--slate); margin-bottom: 1rem }
+.chart-container { position: relative; height: 210px }
+.leg { display: flex; gap: 1.2rem; margin-top: .8rem }
+.leg-i { display: flex; align-items: center; gap: .4rem; font-size: .73rem; color: var(--slate) }
+.leg-dot { width: 10px; height: 10px; border-radius: 50% }
+
+.tips-panel {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r); padding: 1.2rem 1.4rem;
+  box-shadow: var(--sh);
+}
+.tips-panel h4 { font-family: var(--f-h); font-size: .92rem; font-weight: 600; margin-bottom: .9rem }
+.tip { display: flex; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .8rem; color: var(--slate); line-height: 1.55 }
+.tip:last-child { border-bottom: none }
+.tip-ico { font-size: .88rem; flex-shrink: 0; margin-top: .05rem }
+
+.empty { text-align: center; padding: 3rem 1.5rem; color: var(--slate) }
+.empty-ico { font-size: 2.5rem; margin-bottom: .8rem; opacity: .35 }
+.empty h4 { font-family: var(--f-h); font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem }
+.empty p { font-size: .83rem; line-height: 1.6 }
+
+/* Animations */
+@keyframes up { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
+.an { animation: up .32s ease both }
+.d1 { animation-delay: .05s }
+.d2 { animation-delay: .11s }
+.d3 { animation-delay: .17s }
+
+/* ─── APRÈS OUTIL : CONTENT SEO ─── */
+.after-tool { max-width: 900px; margin: 0 auto; padding: 3.5rem 1.5rem 0 }
+.after-tool h2 { font-family: var(--f-h); font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 600; margin-bottom: .6rem; letter-spacing: -.015em }
+.after-tool p { font-size: .9rem; color: var(--slate); line-height: 1.8; margin-bottom: 1rem }
+.after-tool p strong { color: var(--ink) }
+
+.comparison-table {
+  width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+  font-size: .84rem;
+}
+.comparison-table th {
+  text-align: left; padding: .7rem 1rem;
+  background: var(--paper); font-weight: 600;
+  border-bottom: 2px solid var(--line);
+}
+.comparison-table td {
+  padding: .7rem 1rem; border-bottom: 1px solid var(--line); color: var(--slate);
+}
+.comparison-table tr:hover td { background: var(--paper) }
+.comparison-table .check { color: var(--green) }
+.comparison-table .cross  { color: var(--red) }
+
+.callout {
+  background: var(--blue-l); border-left: 3px solid var(--blue);
+  border-radius: 10px; padding: 1.1rem 1.3rem;
+  font-size: .85rem; color: var(--ink); line-height: 1.7;
+  margin: 1.5rem 0;
+}
+.callout strong { font-weight: 600 }
+
+/* ─── FOOTER ─── */
+footer {
+  text-align: center; padding: 2rem 1rem;
+  font-size: .75rem; color: var(--slate);
+  border-top: 1px solid var(--line);
+  margin-top: 4rem;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr }
+  .kpi-grid { grid-template-columns: 1fr 1fr }
+}
+@media (max-width: 540px) {
+  .kpi-grid { grid-template-columns: 1fr }
+  .ville-grid { grid-template-columns: repeat(2, 1fr) }
+  .stats-row { grid-template-columns: 1fr 1fr }
+}
+</style>
+</head>
+<body>
+
+<!-- Barre d'annonce -->
+<div class="topbar">
+  Outil gratuit, 100% client-side — vos données ne quittent jamais votre navigateur
+</div>
+
+<!-- ════════════════════════════
+  HERO
+════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-wrap">
+    <span class="hero-tag"> Simulation immobilière 2026</span>
+    <h1>Louer ou <em>acheter</em> ?<br>La vraie réponse pour votre situation</h1>
+    <p class="hero-lead">
+      Ce simulateur compare le coût total de la location et de l'achat sur 10 à 25 ans, en tenant compte des taux actuels du crédit, de la valorisation de l'immobilier et du rendement de votre apport placé.
+    </p>
+    <div class="hero-pills">
+      <span class="pill"> Coût net réel</span>
+      <span class="pill"> Point de bascule</span>
+      <span class="pill"> Taux 2026 intégrés</span>
+      <span class="pill"> Export PDF</span>
+    </div>
+    <div class="hero-trust">
+      <span class="trust-item"><span class="trust-icon">🔒</span> Sans inscription</span>
+      <span class="trust-item"><span class="trust-icon">⚡</span> Résultat immédiat</span>
+      <span class="trust-item"><span class="trust-icon">🇫🇷</span> Marché français</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════
+  INTRO SEO — CONTENU PÉDAGOGIQUE
+════════════════════════════ -->
+<div class="intro-section">
+  <h2>
+    <span class="sub">Contexte 2025</span>
+    Louer ou acheter en France : pourquoi la question n'a jamais été aussi complexe
+  </h2>
+  <p>
+    Après des années de taux historiquement bas, les conditions de crédit immobilier en France ont radicalement changé. En 2025, les taux moyens sur 20 ans oscillent entre <strong>3,5 % et 4,2 %</strong> selon les profils et les établissements — loin des 1 % de 2021. Cette évolution redistribue les cartes : <strong>l'achat, autrefois quasi-automatiquement rentable à moyen terme, mérite maintenant une analyse sérieuse avant de s'engager</strong>.
+  </p>
+  <p>
+    En parallèle, les prix de l'immobilier ont connu une légère correction dans certaines villes (<strong>–5 à –8 % à Paris et Lyon entre 2022 et 2024</strong>), tandis que d'autres marchés restent tendus. Les loyers, eux, continuent de progresser sous l'effet de la pression locative dans les grandes agglomérations. Cette combinaison crée des situations très différentes selon la ville, le type de bien et la durée d'occupation envisagée.
+  </p>
+  <p>
+    C'est précisément pour répondre à ce besoin de clarté que nous avons construit ce simulateur : <strong>comparer les deux options sur leur coût réel total</strong>, intégrant remboursement du crédit, charges de propriété, valorisation du bien, mais aussi le rendement alternatif que vous pourriez obtenir en plaçant votre apport si vous restiez locataire.
+  </p>
+</div>
+
+<!-- Cartes pédagogiques -->
+<div class="pedagogy">
+  <h2 class="section-h2">Ce que beaucoup de gens ignorent dans ce calcul</h2>
+  <p class="section-lead">La plupart des comparaisons louer/acheter oublient des éléments essentiels qui changent radicalement la conclusion.</p>
+  <div class="peda-grid">
+    <div class="peda-card">
+      <div class="peda-icon">💸</div>
+      <div class="peda-title">Le coût des intérêts est massif</div>
+      <div class="peda-desc">Sur un prêt à 3,8 % sur 20 ans, vous remboursez en moyenne <strong>43 % du capital emprunté en intérêts seuls</strong>. Sur 250 000 €, cela représente ~108 000 € qui ne vont pas vers votre patrimoine.</div>
+    </div>
+    <div class="peda-card">
+      <div class="peda-icon">🏗️</div>
+      <div class="peda-title">Les frais d'acquisition existent</div>
+      <div class="peda-desc">Les frais de notaire (7–8 % dans l'ancien, 2–3 % dans le neuf), les frais de garantie, et éventuellement les frais d'agence <strong>représentent souvent 10 à 15 % du prix du bien</strong>, à intégrer dès le premier jour.</div>
+    </div>
+    <div class="peda-card">
+      <div class="peda-icon">📦</div>
+      <div class="peda-title">Les charges de propriété s'accumulent</div>
+      <div class="peda-desc">Taxe foncière, charges de copropriété, entretien, assurance habitation propriétaire… <strong>on estime ces charges entre 1 et 2 % du prix du bien par an</strong>, soit 2 000 à 4 000 € / an pour un bien à 200 000 €.</div>
+    </div>
+    <div class="peda-card">
+      <div class="peda-icon">📈</div>
+      <div class="peda-title">L'apport placé rapporte aussi</div>
+      <div class="peda-desc">Si vous restez locataire, votre apport peut être investi (SCPI, ETF, assurance-vie…). Un apport de 40 000 € placé à 5 % pendant 20 ans devient <strong>~106 000 €</strong>. C'est un manque à gagner si vous achetez.</div>
+    </div>
+    <div class="peda-card">
+      <div class="peda-icon">🔑</div>
+      <div class="peda-title">La durée de détention est clé</div>
+      <div class="peda-desc">Les frais d'acquisition étant fixes, <strong>plus vous restez longtemps, plus ils sont amortis</strong>. En général, il faut rester au moins 5 à 7 ans pour que l'achat devienne rentable par rapport à la location.</div>
+    </div>
+    <div class="peda-card">
+      <div class="peda-icon">🌍</div>
+      <div class="peda-title">Chaque ville est un cas différent</div>
+      <div class="peda-desc">À Paris, les prix d'achat sont si élevés que le loyer est souvent bien inférieur à la mensualité. Dans des villes comme Clermont-Ferrand ou Reims, l'inverse est vrai : <strong>acheter peut coûter moins cher que louer dès la 3e ou 4e année</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Stat Strip -->
+<div class="stat-strip">
+  <div class="stat-inner">
+    <p class="stat-label">Chiffres clés — marché immobilier français 2025</p>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">3,8 %</div>
+        <div class="stat-txt">Taux moyen crédit immobilier 20 ans (avril 2025)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">6–7 ans</div>
+        <div class="stat-txt">Durée minimale de détention pour rentabiliser l'achat en moyenne nationale</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">+1,8 %</div>
+        <div class="stat-txt">Hausse moyenne des loyers en France en 2024 (IRL)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8–9 %</div>
+        <div class="stat-txt">Frais de notaire dans l'ancien (droits de mutation + émoluments)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Facteurs de décision -->
+<div class="facteurs">
+  <h2 class="section-h2">Les 5 facteurs qui font vraiment la différence</h2>
+  <p class="section-lead">Avant de calculer, voici les éléments qui pèsent le plus lourd dans l'équation louer vs acheter en France.</p>
+  <div class="fact-list">
+    <div class="fact-item">
+      <div class="fact-num">1</div>
+      <div class="fact-body">
+        <h3>La durée d'occupation prévue</h3>
+        <p>C'est souvent <em>le</em> facteur numéro un. En dessous de 5 ans, les frais d'acquisition et les intérêts des premières années font pencher la balance vers la location dans la grande majorité des cas. Au-delà de 10 ans, l'achat devient presque toujours avantageux — sauf dans les marchés extrêmement tendus comme Paris intramuros.</p>
+      </div>
+    </div>
+    <div class="fact-item">
+      <div class="fact-num">2</div>
+      <div class="fact-body">
+        <h3>Le rapport prix d'achat / loyer dans votre ville</h3>
+        <p>On mesure cela avec le "PER" (Price-to-Earnings Ratio locatif) : le prix du bien divisé par le loyer annuel. En dessous de 15, l'achat est généralement rentable rapidement. Entre 20 et 25 (Paris, Lyon, Bordeaux), il faut beaucoup plus de temps. Ce ratio varie entre 10 (Limoges, Mulhouse) et 35 (Paris 75).</p>
+      </div>
+    </div>
+    <div class="fact-item">
+      <div class="fact-num">3</div>
+      <div class="fact-body">
+        <h3>Le niveau du taux d'intérêt</h3>
+        <p>La hausse des taux depuis 2022 a allongé la durée nécessaire pour que l'achat soit rentable. À 1 %, la mensualité sur 20 ans pour 200 000 € est de 920 €. À 3,8 %, elle monte à 1 190 €. Cette différence de 270 €/mois s'accumule sur 20 ans pour représenter 64 800 € supplémentaires en intérêts.</p>
+      </div>
+    </div>
+    <div class="fact-item">
+      <div class="fact-num">4</div>
+      <div class="fact-body">
+        <h3>L'évolution future des prix et des loyers</h3>
+        <p>Personne ne peut prédire l'avenir, mais les hypothèses comptent. Une valorisation annuelle du bien de +3 % accélère fortement le retour sur investissement. De même, une hausse des loyers de 4 % par an dégrade progressivement la position du locataire. Notre simulateur vous permet de tester plusieurs scénarios.</p>
+      </div>
+    </div>
+    <div class="fact-item">
+      <div class="fact-num">5</div>
+      <div class="fact-body">
+        <h3>Votre capacité d'épargne et votre apport</h3>
+        <p>Un apport conséquent (20–30 %) réduit le capital emprunté, donc les intérêts totaux, et améliore souvent votre taux de crédit. Mais cet apport placé aurait pu fructifier. Le simulateur intègre ce coût d'opportunité dans le calcul du scénario "location".</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ / Questions fréquentes -->
+<div class="questions">
+  <h2 class="section-h2">Questions fréquentes — louer ou acheter en 2025</h2>
+  <p class="section-lead">Les questions que se posent les Français avant de prendre une décision immobilière.</p>
+
+  <div class="q-item">
+    <button class="q-btn" type="button" aria-expanded="false">
+      <span>Est-il encore rentable d'acheter en 2025 avec des taux à 3,5–4 % ?</span>
+      <span class="q-chev"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></span>
+    </button>
+    <div class="q-ans">
+      Oui, dans la grande majorité des villes françaises, l'achat reste rentable à moyen terme — à condition de <strong>rester au moins 6 à 8 ans</strong> dans le bien. La hausse des taux a allongé ce délai de rentabilité de 2 à 3 ans par rapport à 2021, mais dans des villes à ratio prix/loyer raisonnable (Toulouse, Nantes, Lille, Strasbourg), l'achat reste une bonne décision dès 5 ans de détention.
+    </div>
+  </div>
+
+  <div class="q-item">
+    <button class="q-btn" type="button" aria-expanded="false">
+      <span>Comment calculer si louer ou acheter est plus rentable dans ma ville ?</span>
+      <span class="q-chev"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></span>
+    </button>
+    <div class="q-ans">
+      Utilisez le simulateur ci-dessous en renseignant le prix du bien que vous ciblez, votre apport, le loyer équivalent dans votre quartier et la durée envisagée. Le simulateur calcule le <strong>coût net total des deux scénarios</strong> en intégrant la valorisation du bien, les charges, et le rendement alternatif de votre apport. Le "point de bascule" vous indique à partir de quelle année l'achat devient plus rentable.
+    </div>
+  </div>
+
+  <div class="q-item">
+    <button class="q-btn" type="button" aria-expanded="false">
+      <span>Faut-il inclure les frais de notaire dans la simulation ?</span>
+      <span class="q-chev"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></span>
+    </button>
+    <div class="q-ans">
+      Absolument. Les frais de notaire représentent <strong>7 à 8 % du prix dans l'ancien et 2 à 3 % dans le neuf</strong>. Sur un bien à 250 000 €, cela signifie entre 17 500 € et 20 000 € de frais supplémentaires que vous devez intégrer dans votre apport ou financer. Notre simulateur vous rappelle de les prendre en compte dans la section "conseils". Pour être précis, ajoutez-les à votre calcul d'apport réel.
+    </div>
+  </div>
+
+  <div class="q-item">
+    <button class="q-btn" type="button" aria-expanded="false">
+      <span>Que se passe-t-il si les prix de l'immobilier baissent après l'achat ?</span>
+      <span class="q-chev"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></span>
+    </button>
+    <div class="q-ans">
+      C'est le risque majeur de l'achat. Si les prix baissent de 10 % après votre achat, vous portez cette perte sur votre patrimoine. Dans le simulateur, vous pouvez tester une <strong>valorisation annuelle nulle voire négative (–1 à –2 %)</strong> pour simuler un scénario pessimiste. Dans ce cas, la location peut rester avantageuse bien au-delà de 10 ans. C'est l'une des raisons pour lesquelles l'achat n'est jamais garanti comme "meilleur" dans l'absolu.
+    </div>
+  </div>
+
+  <div class="q-item">
+    <button class="q-btn" type="button" aria-expanded="false">
+      <span>Le PTZ (Prêt à Taux Zéro) change-t-il la donne ?</span>
+      <span class="q-chev"><svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg></span>
+    </button>
+    <div class="q-ans">
+      Oui, significativement. Le PTZ permet de financer jusqu'à 40 % du prix d'un logement neuf (ou ancien avec travaux en zone B2/C) <strong>sans intérêt</strong>. Cela réduit le taux moyen réel de votre emprunt global et raccourcit le point de bascule de plusieurs années. Si vous y êtes éligible (primo-accédant, plafonds de revenus selon zone), intégrez la part PTZ dans votre apport fictif pour approximer l'avantage dans notre simulateur.
+    </div>
+  </div>
+</div>
+
+<!-- Tableau comparatif -->
+<div class="after-tool" style="padding-top:3rem">
+  <h2>Acheter vs louer : le comparatif avantages / inconvénients</h2>
+  <p>Au-delà du calcul financier pur, voici les critères qualitatifs qui influencent souvent la décision finale — et que le simulateur ne peut pas chiffrer.</p>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Critère</th>
+        <th>Achat</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Constitution d'un patrimoine</td>
+        <td><span class="check">✔</span> Oui — chaque mensualité rembourse du capital</td>
+        <td><span class="cross">✘</span> Non — le loyer ne crée pas de patrimoine direct</td>
+      </tr>
+      <tr>
+        <td>Mobilité / flexibilité</td>
+        <td><span class="cross">✘</span> Limitée — revendre coûte cher et prend du temps</td>
+        <td><span class="check">✔</span> Excellente — préavis de 1 mois (meublé) à 3 mois</td>
+      </tr>
+      <tr>
+        <td>Risque financier</td>
+        <td><span class="cross">✘</span> Élevé — exposition à la baisse des prix</td>
+        <td><span class="check">✔</span> Limité — vous ne perdez pas de capital si les prix baissent</td>
+      </tr>
+      <tr>
+        <td>Liberté de personnalisation</td>
+        <td><span class="check">✔</span> Totale — vous pouvez tout aménager</td>
+        <td><span class="cross">✘</span> Limitée — accord du propriétaire requis</td>
+      </tr>
+      <tr>
+        <td>Protection contre la hausse des loyers</td>
+        <td><span class="check">✔</span> Totale — mensualité fixe (taux fixe)</td>
+        <td><span class="cross">✘</span> Exposition aux révisions annuelles (IRL)</td>
+      </tr>
+      <tr>
+        <td>Charges et entretien</td>
+        <td><span class="cross">✘</span> À votre charge — taxe foncière, copro, travaux</td>
+        <td><span class="check">✔</span> Limité aux charges locatives</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>Notre recommandation :</strong> utilisez le simulateur ci-dessus pour le calcul financier, puis pondérez les critères qualitatifs selon votre situation de vie. Pour une mutation professionnelle dans 3 ans, la location s'impose souvent. Pour une installation durable dans une ville à prix accessibles, l'achat reste une excellente décision à long terme.
+  </div>
+</div>
+
+<!-- Ancre vers l'outil -->
+<div class="tool-anchor" id="simulateur">
+  <div class="tool-anchor-line"></div>
+  <div class="tool-anchor-label">L'<em>outil de simulation</em> — entrez vos paramètres</div>
+  <div class="tool-anchor-line"></div>
+</div>
+
+<!-- ════════════════════════════
+  TOOL HEADER
+════════════════════════════ -->
+<div class="tool-header">
+  <div class="tool-header-inner">
+    <p class="tool-eyebrow">Simulateur interactif — France 2025</p>
+    <h2>Louer ou <em>acheter</em> ?<br>Calculez pour votre ville</h2>
+    <p class="tool-header-sub">Comparez le coût réel sur 10 à 25 ans avec les taux bancaires français actuels. Résultat immédiat, sans inscription.</p>
+    <span class="badge-fr">🇫🇷 Données marché France — Euro (€)</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+  LAYOUT OUTIL
+════════════════════════════ -->
+<div class="layout">
+
+  <!-- ══ INPUTS ══ -->
+  <div>
+    <div class="panel">
+      <div class="panel-head">
+        <div class="phead-icon">🏠</div>
+        <h3>Paramètres de votre projet</h3>
+      </div>
+      <div class="panel-body">
+
+        <!-- Ville -->
+        <div class="field">
+          <div class="field-label">Choisissez votre ville <span class="hint">prix moyens au m²</span></div>
+          <div class="ville-grid" id="villeGrid"></div>
+        </div>
+
+        <!-- Achat -->
+        <div class="field-sep">Scénario Achat</div>
+
+        <div class="field">
+          <div class="field-label">Prix du bien <span class="hint">€</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="prixBien" value="280000" step="5000">
+            <span class="inp-unit">€</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Apport personnel <span class="hint">min. 10 % recommandé</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="apport" value="56000" step="1000">
+            <span class="inp-unit">€</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Taux d'intérêt annuel <span class="hint">marché 2025</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="taux" value="3.8" step="0.05" min="0.5" max="15">
+            <span class="inp-unit">%</span>
+          </div>
+          <div class="preset-row">
+            <span style="font-size:.68rem;color:var(--slate);align-self:center">Présets :</span>
+            <button class="pre-btn" onclick="setTaux(3.5,this)">3,5 %</button>
+            <button class="pre-btn active" onclick="setTaux(3.8,this)">3,8 %</button>
+            <button class="pre-btn" onclick="setTaux(4.1,this)">4,1 %</button>
+            <button class="pre-btn" onclick="setTaux(4.5,this)">4,5 %</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Durée du prêt</div>
+          <div class="dur-row" id="durRow">
+            <button class="dur-btn" onclick="setDur(10,this)">10 ans</button>
+            <button class="dur-btn" onclick="setDur(15,this)">15 ans</button>
+            <button class="dur-btn active" onclick="setDur(20,this)">20 ans</button>
+            <button class="dur-btn" onclick="setDur(25,this)">25 ans</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Charges annuelles <span class="hint">taxe foncière + copro + entretien</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="charges" value="1.5" step="0.1" min="0" max="5">
+            <span class="inp-unit">% du bien</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Valorisation annuelle du bien <span class="hint">France ~2–4 %/an historique</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="valorisation" value="2.5" step="0.5" min="-5" max="10">
+            <span class="inp-unit">%/an</span>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="field-sep">Scénario Location</div>
+
+        <div class="field">
+          <div class="field-label">Loyer mensuel <span class="hint">charges comprises</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="loyer" value="950" step="50">
+            <span class="inp-unit">€</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Hausse annuelle du loyer <span class="hint">IRL France ~1,5–3 %</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="hausseLoyer" value="2.5" step="0.5" min="0" max="10">
+            <span class="inp-unit">%/an</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-label">Rendement si apport placé <span class="hint">ETF, SCPI, assurance-vie…</span></div>
+          <div class="inp-wrap">
+            <input type="number" id="rendPlacement" value="5" step="0.5" min="0" max="15">
+            <span class="inp-unit">%/an</span>
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculer()">Lancer la simulation →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div class="results-col" id="resultsCol">
+    <div class="panel">
+      <div class="empty">
+        <div class="empty-ico">📊</div>
+        <h4>Votre analyse apparaîtra ici</h4>
+        <p>Renseignez vos paramètres à gauche et cliquez sur <strong>Lancer la simulation</strong> pour obtenir une comparaison complète.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════
+  CONTENT APRÈS OUTIL
+════════════════════════════ -->
+<div class="after-tool">
+  <h2>Comment interpréter les résultats de votre simulation louer / acheter ?</h2>
+  <p>
+    Le simulateur affiche le <strong>coût net cumulé</strong> de chaque scénario sur la durée choisie. Ce chiffre intègre tout ce qui sort de votre poche (mensualités, loyers, charges) en soustrayant ce que vous récupérez : la valeur du bien pour l'acheteur, ou les intérêts du placement pour le locataire.
+  </p>
+  <p>
+    Le <strong>point de bascule</strong> est l'année à partir de laquelle l'achat devient moins coûteux que la location sur la période totale. C'est l'information la plus précieuse si vous hésitez sur la durée d'occupation.
+  </p>
+  <p>
+    <strong>Attention aux hypothèses :</strong> ce calcul est aussi bon que vos hypothèses. Une valorisation de +2 % contre +4 % peut déplacer le point de bascule de 3 à 4 ans. Nous vous recommandons de tester trois scénarios : pessimiste (valorisation 0 %, loyer +1 %/an), neutre, et optimiste (valorisation +4 %, loyer +3 %/an).
+  </p>
+
+  <h2 style="margin-top: 2.5rem">Quelles villes françaises sont les plus avantageuses à l'achat en 2025 ?</h2>
+  <p>
+    La rentabilité de l'achat dépend étroitement du rapport entre le prix au m² et le loyer moyen. Voici un aperçu des grandes villes françaises classées par rapport prix/loyer annuel (PER) :
+  </p>
+  <p>
+    <strong>PER inférieur à 15 (achat très rentable rapidement) :</strong> Saint-Étienne (~10), Mulhouse (~11), Perpignan (~12), Reims (~13). Dans ces villes, l'achat devient rentable en 3 à 5 ans seulement.
+  </p>
+  <p>
+    <strong>PER entre 15 et 22 (achat rentable à moyen terme) :</strong> Toulouse (~17), Nantes (~18), Strasbourg (~19), Lyon hors hypercentre (~20), Marseille (~18). Le point de bascule se situe généralement entre 5 et 9 ans.
+  </p>
+  <p>
+    <strong>PER supérieur à 25 (achat nécessite une très longue détention) :</strong> Paris (~30–35 selon l'arrondissement), Nice (~26), Bordeaux (~24). Dans ces marchés, la location peut être financièrement équivalente ou supérieure à l'achat sur des horizons inférieurs à 15 ans — surtout avec des taux à 3,8 %.
+  </p>
+
+  <div class="callout">
+    <strong>Bon à savoir :</strong> ces ratios évoluent avec le marché. La légère correction des prix observée à Paris et Lyon depuis 2022 a amélioré la rentabilité de l'achat dans ces villes. Utilisez le simulateur avec les prix actuels de votre quartier pour un résultat précis.
+  </div>
+
+  <h2 style="margin-top: 2.5rem">Louer en attendant la baisse des taux : bonne stratégie ou mythe ?</h2>
+  <p>
+    C'est une question que beaucoup de primo-accédants se posent en 2025. La logique est séduisante : attendre que les taux redescendent à 2 % pour acheter moins cher. Mais cette stratégie comporte plusieurs pièges.
+  </p>
+  <p>
+    D'abord, <strong>personne ne sait quand ni jusqu'où les taux baisseront</strong>. Les anticipations des marchés ont été régulièrement démenties ces dernières années. Attendre 2 ou 3 ans de plus peut signifier 24 à 36 mois de loyers supplémentaires sans constituer de patrimoine.
+  </p>
+  <p>
+    Ensuite, <strong>quand les taux baissent, les prix remontent souvent</strong>. Ce phénomène s'est vérifié en 2015–2021 : des taux très bas ont alimenté une hausse des prix qui a annulé, voire dépassé, le bénéfice de coûts d'emprunt réduits.
+  </p>
+  <p>
+    La meilleure approche reste de <strong>simuler votre situation actuelle et de décider selon votre horizon d'occupation</strong>, pas selon des anticipations de marché que vous ne maîtrisez pas.
+  </p>
+</div>
+
+<!-- ════════════════════════════
+  FOOTER
+════════════════════════════ -->
+<footer>
+  Simulation indicative — marché immobilier français — Les résultats sont basés sur vos hypothèses et ne constituent pas un conseil financier. Consultez un conseiller pour votre projet.
+</footer>
+
+<!-- ════════════════════════════
+  JAVASCRIPT
+════════════════════════════ -->
+<script>
+(function () {
+
+  // ─── DONNÉES VILLES ───
+  const VILLES = [
+    { nom: 'Paris',      prixMoy: 420000, loyerMoy: 1400 },
+    { nom: 'Lyon',       prixMoy: 290000, loyerMoy: 1050 },
+    { nom: 'Marseille',  prixMoy: 210000, loyerMoy: 850  },
+    { nom: 'Toulouse',   prixMoy: 250000, loyerMoy: 900  },
+    { nom: 'Nantes',     prixMoy: 270000, loyerMoy: 950  },
+    { nom: 'Bordeaux',   prixMoy: 300000, loyerMoy: 1000 },
+  ];
+
+  let selectedDur = 20;
+  let chart = null;
+
+  // Build ville grid
+  const vGrid = document.getElementById('villeGrid');
+  VILLES.forEach(function (v, i) {
+    var btn = document.createElement('button');
+    btn.className = 'v-btn' + (i === 0 ? ' active' : '');
+    btn.innerHTML =
+      '<span class="v-name">' + v.nom + '</span>' +
+      '<span class="v-price">' + fmt(v.prixMoy) + ' €</span>';
+    btn.onclick = function () {
+      document.querySelectorAll('.v-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('prixBien').value = v.prixMoy;
+      document.getElementById('apport').value   = Math.round(v.prixMoy * 0.2);
+      document.getElementById('loyer').value    = v.loyerMoy;
+    };
+    vGrid.appendChild(btn);
+  });
+
+  // Init Paris
+  document.getElementById('prixBien').value = 420000;
+  document.getElementById('apport').value   = 84000;
+  document.getElementById('loyer').value    = 1400;
+
+  // Taux presets
+  window.setTaux = function (v, el) {
+    document.getElementById('taux').value = v;
+    document.querySelectorAll('.pre-btn').forEach(function (b) { b.classList.remove('active'); });
+    if (el) el.classList.add('active');
+  };
+
+  // Durée
+  window.setDur = function (v, el) {
+    selectedDur = v;
+    document.querySelectorAll('.dur-btn').forEach(function (b) { b.classList.remove('active'); });
+    if (el) el.classList.add('active');
+  };
+
+  // ─── FORMAT ───
+  function fmt(n) {
+    return Math.round(n).toLocaleString('fr-FR');
+  }
+  function fmtK(n) {
+    var abs = Math.abs(n);
+    if (abs >= 1e6) return (n / 1e6).toFixed(2) + ' M€';
+    if (abs >= 1e3) return (n / 1e3).toFixed(0) + ' k€';
+    return fmt(n) + ' €';
+  }
+
+  // ─── CALCUL ───
+  window.calculer = function () {
+    var prix       = +document.getElementById('prixBien').value;
+    var apport     = +document.getElementById('apport').value;
+    var tauxAn     = +document.getElementById('taux').value / 100;
+    var duree      = selectedDur;
+    var chargesPct = +document.getElementById('charges').value / 100;
+    var valoPct    = +document.getElementById('valorisation').value / 100;
+    var loyerM     = +document.getElementById('loyer').value;
+    var haussePct  = +document.getElementById('hausseLoyer').value / 100;
+    var rendPct    = +document.getElementById('rendPlacement').value / 100;
+
+    var capital = prix - apport;
+    var tauxM   = tauxAn / 12;
+    var n       = duree * 12;
+
+    // Mensualité
+    var mensualite = tauxM > 0
+      ? capital * tauxM * Math.pow(1 + tauxM, n) / (Math.pow(1 + tauxM, n) - 1)
+      : capital / n;
+
+    var coutAchat = apport;
+    var coutLoyer = 0;
+    var valeurBien = prix;
+    var loyerCourant = loyerM;
+    var placementApport = apport;
+
+    var yearsData = [];
+    var breakeven = null;
+
+    for (var y = 1; y <= duree; y++) {
+      coutAchat  += mensualite * 12 + prix * chargesPct;
+      valeurBien *= (1 + valoPct);
+      var coutNetAchat = coutAchat - valeurBien;
+
+      coutLoyer     += loyerCourant * 12;
+      loyerCourant  *= (1 + haussePct);
+      placementApport *= (1 + rendPct);
+      var coutNetLoyer = coutLoyer - (placementApport - apport);
+
+      yearsData.push({
+        year:  y,
+        achat: Math.round(coutNetAchat),
+        louer: Math.round(coutNetLoyer),
+      });
+
+      if (!breakeven && coutNetAchat < coutNetLoyer) breakeven = y;
+    }
+
+    var final = yearsData[yearsData.length - 1];
+    var diff  = final.louer - final.achat;
+    var sens  = diff > 0 ? 'buy' : diff < -2000 ? 'rent' : 'draw';
+
+    renderResults({
+      yearsData, final, diff, sens, breakeven,
+      mensualite, loyerM, duree, prix, apport, tauxAn,
+      valoPct, chargesPct, haussePct, rendPct,
+      totalMensualites: mensualite * 12 * duree,
+      totalCharges:     prix * chargesPct * duree,
+      valeurFinaleBien: prix * Math.pow(1 + valoPct, duree),
+      totalLoyers:      yearsData.reduce(function (s, y) { return s + y.louer; }, 0),
+      placementFinal:   apport * Math.pow(1 + rendPct, duree),
+    });
+  };
+
+  function renderResults(d) {
+    var col = document.getElementById('resultsCol');
+    var verdictTxt, verdictSub, verdictIcon;
+
+    if (d.sens === 'buy') {
+      verdictTxt  = "Acheter est plus avantageux sur " + d.duree + " ans";
+      verdictSub  = "En devenant propriétaire, vous gagnez <strong>" + fmtK(Math.abs(d.diff)) + "</strong> par rapport à la location sur la même période, après valorisation du bien.";
+      verdictIcon = "🏠";
+    } else if (d.sens === 'rent') {
+      verdictTxt  = "Louer est plus avantageux sur " + d.duree + " ans";
+      verdictSub  = "En louant et plaçant votre apport, vous optimisez de <strong>" + fmtK(Math.abs(d.diff)) + "</strong> par rapport à l'achat sur la période analysée.";
+      verdictIcon = "🔑";
+    } else {
+      verdictTxt  = "Les deux options sont quasi-équivalentes";
+      verdictSub  = "L'écart est inférieur à 2 000 € sur " + d.duree + " ans. La décision dépend avant tout de vos projets de vie et de votre stabilité professionnelle.";
+      verdictIcon = "⚖";
+    }
+
+    var beHtml = d.breakeven
+      ? '<div class="breakeven an d2"> <strong>Point de bascule :</strong> l\'achat devient plus rentable que la location à partir de <strong>l\'année ' + d.breakeven + '</strong>. Si vous comptez rester moins longtemps, la location est préférable.</div>'
+      : '<div class="breakeven an d2"> Sur la période analysée, l\'achat ne rattrape pas la location. Essayez une durée plus longue ou testez un taux plus bas.</div>';
+
+    col.innerHTML =
+      '<div class="verdict ' + d.sens + ' an" data-icon="' + verdictIcon + '">' +
+        '<div class="verdict-tag">Résultat de votre simulation</div>' +
+        '<h3>' + verdictTxt + '</h3>' +
+        '<p>' + verdictSub + '</p>' +
+        '<button class="export-btn" onclick="window.print()">↓ Imprimer / Exporter</button>' +
+      '</div>' +
+
+      '<div class="kpi-grid an d1">' +
+        '<div class="kpi-card buy-c">' +
+          '<div class="kpi-top"><div class="k-dot k-green"></div><div class="kpi-lbl">Achat</div></div>' +
+          '<div class="kpi-amount">' + fmtK(d.final.achat) + '</div>' +
+          '<div class="kpi-sub">coût net sur ' + d.duree + ' ans (après valorisation)</div>' +
+          '<div class="kpi-rows">' +
+            '<div class="kpi-row"><span>Mensualité</span><strong>' + fmt(Math.round(d.mensualite)) + ' €/mois</strong></div>' +
+            '<div class="kpi-row"><span>Total remboursé</span><strong>' + fmtK(d.totalMensualites) + '</strong></div>' +
+            '<div class="kpi-row"><span>Charges cumulées</span><strong>' + fmtK(d.totalCharges) + '</strong></div>' +
+            '<div class="kpi-row"><span>Valeur estimée ' + (new Date().getFullYear() + d.duree) + '</span><strong>' + fmtK(d.valeurFinaleBien) + '</strong></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="kpi-card rent-c">' +
+          '<div class="kpi-top"><div class="k-dot k-blue"></div><div class="kpi-lbl">Location</div></div>' +
+          '<div class="kpi-amount">' + fmtK(d.final.louer) + '</div>' +
+          '<div class="kpi-sub">coût net sur ' + d.duree + ' ans (après placement apport)</div>' +
+          '<div class="kpi-rows">' +
+            '<div class="kpi-row"><span>Loyer actuel</span><strong>' + fmt(d.loyerM) + ' €/mois</strong></div>' +
+            '<div class="kpi-row"><span>Hausse loyer/an</span><strong>' + (d.haussePct * 100).toFixed(1) + ' %</strong></div>' +
+            '<div class="kpi-row"><span>Apport placé → valeur</span><strong>' + fmtK(d.placementFinal) + '</strong></div>' +
+            '<div class="kpi-row"><span>Rendement placement</span><strong>' + (d.rendPct * 100).toFixed(1) + ' %/an</strong></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      beHtml +
+
+      '<div class="chart-panel an d3">' +
+        '<h4>Évolution du coût net cumulé</h4>' +
+        '<p class="c-sub">en milliers d\'euros — sur ' + d.duree + ' ans</p>' +
+        '<div class="chart-container"><canvas id="myChart"></canvas></div>' +
+        '<div class="leg">' +
+          '<div class="leg-i"><div class="leg-dot" style="background:#16A34A"></div>Achat</div>' +
+          '<div class="leg-i"><div class="leg-dot" style="background:var(--blue)"></div>Location</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="tips-panel an d3">' +
+        '<h4>Points à retenir pour votre décision</h4>' +
+        '<div class="tip"><div class="tip-ico">🏦</div><div>Les frais de notaire dans l\'ancien (7–8 %) <strong>ne sont pas inclus dans cette simulation</strong>. Ajoutez-les à votre calcul d\'apport réel pour un résultat exact.</div></div>' +
+        '<div class="tip"><div class="tip-ico">📋</div><div>La taxe foncière varie fortement selon la commune. Renseignez-vous avant l\'achat : elle peut représenter <strong>1 à 2 mois de loyer par an</strong>.</div></div>' +
+        '<div class="tip"><div class="tip-ico">📈</div><div>L\'immobilier français a progressé en moyenne de <strong>+2,5 % par an</strong> sur les 20 dernières années, hors crises ponctuelles. Paris a dépassé +5 % sur cette période.</div></div>' +
+        '<div class="tip"><div class="tip-ico">💡</div><div>Si vous prévoyez de rester <strong>moins de 5–6 ans</strong>, la location est presque toujours préférable dans les grandes villes françaises, quel que soit le taux.</div></div>' +
+      '</div>';
+
+    // Chart
+    if (chart) chart.destroy();
+    var ctx = document.getElementById('myChart').getContext('2d');
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: d.yearsData.map(function (y) { return 'An ' + y.year; }),
+        datasets: [
+          {
+            label: 'Achat',
+            data:  d.yearsData.map(function (y) { return +(y.achat / 1000).toFixed(1); }),
+            borderColor: '#16A34A',
+            backgroundColor: 'rgba(22,163,74,.07)',
+            borderWidth: 2.5, tension: .4, fill: true,
+            pointRadius: 0, pointHoverRadius: 5,
+          },
+          {
+            label: 'Location',
+            data:  d.yearsData.map(function (y) { return +(y.louer / 1000).toFixed(1); }),
+            borderColor: '#1B4FD8',
+            backgroundColor: 'rgba(27,79,216,.07)',
+            borderWidth: 2.5, tension: .4, fill: true,
+            pointRadius: 0, pointHoverRadius: 5,
+          }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function (c) { return c.dataset.label + ' : ' + c.parsed.y.toFixed(0) + ' k€'; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { font: { family: 'DM Sans', size: 11 }, color: '#64748B', maxTicksLimit: 8 }
+          },
+          y: {
+            grid: { color: 'rgba(0,0,0,.04)' },
+            ticks: {
+              font: { family: 'DM Sans', size: 11 }, color: '#64748B',
+              callback: function (v) { return v + ' k'; }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.q-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item   = btn.closest('.q-item');
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.q-item.open').forEach(function (o) {
+        o.classList.remove('open');
+        o.querySelector('.q-btn').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // Scroll reveal
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.peda-card, .fact-item, .stat, .after-tool p, .comparison-table').forEach(function (el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(12px)';
+      el.style.transition = 'opacity .4s ease, transform .4s ease';
+      io.observe(el);
+    });
+  }
+
+  // Lancer la simulation au load
+  window.addEventListener('load', function () {
+    setTimeout(calculer, 300);
+  });
+
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Est-il encore rentable d'acheter en 2025 avec des taux à 3,5–4 % ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Oui, dans la grande majorité des villes françaises, l'achat reste rentable à moyen terme à condition de rester au moins 6 à 8 ans dans le bien. Dans des villes comme Toulouse, Nantes ou Lille, l'achat est rentable dès 5 ans de détention." }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment calculer si louer ou acheter est plus rentable dans ma ville ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Utilisez un simulateur louer ou acheter en renseignant le prix du bien, votre apport, le loyer équivalent et la durée envisagée. Le calcul intègre le coût net total des deux scénarios incluant valorisation, charges et rendement alternatif de l'apport." }
+    },
+    {
+      "@type": "Question",
+      "name": "Faut-il inclure les frais de notaire dans la simulation ?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Oui. Les frais de notaire représentent 7 à 8 % du prix dans l'ancien et 2 à 3 % dans le neuf. Sur un bien à 250 000 €, cela signifie entre 17 500 € et 20 000 € supplémentaires." }
+    }
+  ]
+}
+</script>
+
+</body>
+</html>

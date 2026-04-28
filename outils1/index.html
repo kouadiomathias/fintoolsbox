@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- ══ SEO primaire ══ -->
+  <title>SimulBox — Simulateurs financiers gratuits : Crédit, Énergie, Budget</title>
+  <meta name="description" content="Comparateur de crédit, simulateur de facture d'énergie et analyseur de budget mensuel. 100% gratuit, sans inscription, résultats instantanés. Vos données restent sur votre appareil.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="keywords" content="simulateur crédit gratuit, comparateur prêt immobilier, simulateur facture énergie, analyseur budget mensuel, simulation prêt sans inscription, outils financiers gratuits">
+  <link rel="canonical" href="https://www.fintoolsbox.com/">
+
+  <!-- ══ Open Graph ══ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.fintoolsbox.com/">
+  <meta property="og:title" content="SimulBox — Simulateurs financiers gratuits">
+  <meta property="og:description" content="Trois outils gratuits et instantanés : crédit, énergie, budget. Aucune inscription, 100% confidentiel.">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="SimulBox">
+
+  <!-- ══ Twitter Card ══ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SimulBox — Simulateurs financiers gratuits">
+  <meta name="twitter:description" content="Comparateur de crédit, simulateur d'énergie et analyseur de budget. Gratuit, sans inscription.">
+
+  <!-- ══ Fonts : preconnect + preload ══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- display=swap évite le FOIT et améliore le LCP -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- ══ Structured Data ══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SimulBox",
+    "url": "https://www.fintoolsbox.com/",
+    "description": "Simulateurs financiers gratuits : crédit, énergie, budget. Sans inscription.",
+    "inLanguage": "fr",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.simulbox.fr/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Outils financiers SimulBox",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "item": { "@type": "WebApplication", "name": "Comparateur de crédit", "url": "https://www.simulbox.fr/comparateur-credit", "applicationCategory": "FinanceApplication", "isAccessibleForFree": true } },
+      { "@type": "ListItem", "position": 2, "item": { "@type": "WebApplication", "name": "Simulateur de facture d'énergie", "url": "https://www.simulbox.fr/simulateur-energie", "applicationCategory": "FinanceApplication", "isAccessibleForFree": true } },
+      { "@type": "ListItem", "position": 3, "item": { "@type": "WebApplication", "name": "Analyseur de budget mensuel", "url": "https://www.simulbox.fr/analyseur-budget", "applicationCategory": "FinanceApplication", "isAccessibleForFree": true } }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Les simulateurs sont-ils vraiment gratuits ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui, absolument. Il n'y a aucune inscription, aucun email demandé, ni aucun paiement." } },
+      { "@type": "Question", "name": "Puis-je télécharger un rapport PDF ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui, chaque outil propose un bouton de téléchargement PDF avec vos données et résultats." } },
+      { "@type": "Question", "name": "Mes informations personnelles sont-elles protégées ?", "acceptedAnswer": { "@type": "Answer", "text": "Vos données restent dans votre navigateur. Aucun serveur ne reçoit vos chiffres." } }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ══ CUSTOM PROPERTIES ══ */
+    :root {
+      --bg:           #F6F4EF;
+      --surface:      #FFFFFF;
+      --surface-2:    #EDEAE1;
+      --ink:          #111111;
+      --ink-2:        #4A4845;
+      --ink-3:        #8C8984;
+      --accent:       #E8471F;
+      --accent-h:     #C73A18;
+      --blue:         #1A51C8;
+      --border:       rgba(17,17,17,.09);
+      --border-2:     rgba(17,17,17,.05);
+      --r-sm:  6px;
+      --r-md: 10px;
+      --r-lg: 16px;
+      --r-xl: 24px;
+      --sh-sm: 0 1px 3px rgba(0,0,0,.05);
+      --sh-md: 0 3px 10px rgba(0,0,0,.07);
+      --sh-lg: 0 10px 30px rgba(0,0,0,.09);
+      --sh-xl: 0 20px 60px rgba(0,0,0,.11);
+      --f-head: 'Fraunces', Georgia, serif;
+      --f-body: 'DM Sans', system-ui, sans-serif;
+      --cat-credit:     #1A51C8;
+      --cat-credit-bg:  #EBF1FD;
+      --cat-energy:     #C2400C;
+      --cat-energy-bg:  #FEF0E8;
+      --cat-budget:     #0D7C4B;
+      --cat-budget-bg:  #E6F5EE;
+      --transition: .2s cubic-bezier(.25,.46,.45,.94);
+    }
+
+    /* ══ DARK MODE ══ */
+    [data-theme="dark"] {
+      --bg:        #1B1A17;
+      --surface:   #242320;
+      --surface-2: #2D2B26;
+      --ink:       #F4F2EC;
+      --ink-2:     #C0BCB2;
+      --ink-3:     #807C74;
+      --accent:    #FF6040;
+      --accent-h:  #E8471F;
+      --blue:      #5B8AF4;
+      --border:    rgba(255,255,255,.09);
+      --border-2:  rgba(255,255,255,.04);
+      --sh-sm: 0 1px 3px rgba(0,0,0,.35);
+      --sh-md: 0 3px 10px rgba(0,0,0,.45);
+      --sh-lg: 0 10px 30px rgba(0,0,0,.55);
+      --sh-xl: 0 20px 60px rgba(0,0,0,.65);
+      --cat-credit-bg:  #1B2C4A;
+      --cat-energy-bg:  #3C1C0A;
+      --cat-budget-bg:  #122E20;
+    }
+
+    /* ══ RESET ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* Grain texture — performance-optimized SVG data URI */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 300px;
+    }
+
+    /* ══ FOCUS VISIBLE — accessibilité ══ */
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--r-sm);
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ══ HEADER ══ */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-2);
+      /* Évite le layout shift au chargement */
+      contain: layout style;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px; gap: 16px;
+    }
+
+    /* Logo */
+    .logo {
+      text-decoration: none; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: .9rem; letter-spacing: -.01em;
+      transition: color var(--transition);
+    }
+    .logo:hover { color: var(--accent); }
+    .logo-mark {
+      width: 28px; height: 28px; background: var(--ink);
+      border-radius: 7px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background var(--transition);
+    }
+    .logo:hover .logo-mark { background: var(--accent); }
+    .logo-mark svg { width: 14px; height: 14px; fill: var(--bg); }
+    .logo-accent { color: var(--accent); }
+
+    /* Nav links */
+    .nav-links {
+      display: flex; gap: 4px; list-style: none;
+    }
+    .nav-links a {
+      font-size: .82rem; font-weight: 500; color: var(--ink-2);
+      text-decoration: none; padding: 5px 10px; border-radius: var(--r-sm);
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav-links a:hover { background: var(--surface-2); color: var(--ink); }
+
+    /* Theme toggle */
+    .theme-btn {
+      width: 34px; height: 34px; border-radius: var(--r-sm);
+      border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--ink-2); transition: all var(--transition); flex-shrink: 0;
+    }
+    .theme-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .theme-btn svg { width: 15px; height: 15px; }
+
+    /* ══ HERO ══ */
+    .hero { padding: 56px 0 40px; text-align: center; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .7rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+    }
+    .hero-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    .hero h1 {
+      font-family: var(--f-head);
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 400; letter-spacing: -.02em; line-height: 1.1;
+      color: var(--ink); margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1rem; color: var(--ink-2); max-width: 500px;
+      margin: 0 auto 28px; line-height: 1.7;
+    }
+
+    .hero-pills {
+      display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    }
+    .hero-pill {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 99px; padding: 6px 14px; font-size: .78rem;
+      color: var(--ink-2); font-weight: 500;
+    }
+
+    /* ══ SEARCH ══ */
+    .search-section { padding: 8px 0 28px; }
+    .search-wrap { max-width: 480px; margin: 0 auto; position: relative; }
+
+    .search-icon {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%); color: var(--ink-3); pointer-events: none;
+    }
+    .search-clear {
+      position: absolute; right: 10px; top: 50%;
+      transform: translateY(-50%); display: none;
+      background: var(--surface-2); border: none; cursor: pointer;
+      color: var(--ink-3); border-radius: 99px; width: 22px; height: 22px;
+      font-size: 14px; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    .search-clear:hover { background: var(--border); color: var(--ink); }
+    .search-clear.visible { display: flex; }
+
+    .search-input {
+      width: 100%; padding: 12px 40px 12px 40px;
+      font-family: var(--f-body); font-size: .9rem;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      background: var(--surface); color: var(--ink);
+      box-shadow: var(--sh-sm);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--ink-2);
+      box-shadow: 0 0 0 3px rgba(17,17,17,.06);
+    }
+    [data-theme="dark"] .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(255,255,255,.07);
+    }
+    .search-results-count {
+      text-align: center; font-size: .75rem;
+      color: var(--ink-3); margin-top: 8px; min-height: 18px;
+    }
+
+    /* ══ TOOLS GRID ══ */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px; margin-bottom: 56px;
+    }
+
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 24px;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      box-shadow: var(--sh-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative; overflow: hidden;
+      /* FCP: éviter le layout shift */
+      contain: layout;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,.04));
+      pointer-events: none;
+    }
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sh-lg);
+      border-color: rgba(17,17,17,.18);
+    }
+    [data-theme="dark"] .tool-card:hover {
+      border-color: rgba(255,255,255,.18);
+    }
+    .tool-card.featured {
+      border-left: 3px solid var(--accent);
+    }
+
+    .card-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 14px;
+    }
+    .card-icon {
+      width: 42px; height: 42px; border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform var(--transition);
+    }
+    .tool-card:hover .card-icon { transform: scale(1.08); }
+    .card-icon svg { width: 22px; height: 22px; }
+
+    .card-arrow {
+      width: 28px; height: 28px; border-radius: 99px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink-3); transition: all var(--transition); flex-shrink: 0;
+    }
+    .tool-card:hover .card-arrow {
+      background: var(--ink); border-color: var(--ink); color: var(--surface);
+    }
+    [data-theme="dark"] .tool-card:hover .card-arrow {
+      background: var(--ink); color: var(--bg);
+    }
+
+    .card-name {
+      font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: 7px;
+    }
+    .card-desc {
+      font-size: .84rem; color: var(--ink-2); line-height: 1.65; flex: 1; margin-bottom: 16px;
+    }
+    .card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+    .card-tag {
+      font-size: .68rem; font-weight: 500; padding: 3px 9px;
+      border-radius: 99px; border: 1px solid var(--border);
+      color: var(--ink-3);
+    }
+
+    .featured-badge {
+      position: absolute; top: 14px; right: 14px;
+      font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      padding: 3px 8px; border-radius: 99px;
+    }
+
+    .no-results {
+      text-align: center; padding: 48px 20px; color: var(--ink-3);
+      display: none; grid-column: 1 / -1;
+    }
+    .no-results p { font-size: .9rem; margin-top: 6px; }
+
+    /* Skeleton loader (s'affiche avant le JS) */
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface) 50%, var(--surface-2) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: var(--r-sm);
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+
+    /* ══ ANIMATION D'ENTRÉE ══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      animation: fadeUp .5s ease forwards;
+    }
+    .reveal-d1 { animation-delay: .05s; }
+    .reveal-d2 { animation-delay: .12s; }
+    .reveal-d3 { animation-delay: .19s; }
+
+    /* ══ WHY SECTION ══ */
+    .why-section { padding: 48px 0; border-top: 1px solid var(--border); }
+
+    .section-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--ink-3); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+    .why-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 20px; box-shadow: var(--sh-sm);
+    }
+    .why-icon {
+      width: 34px; height: 34px; background: var(--surface-2);
+      border-radius: 9px; display: flex; align-items: center;
+      justify-content: center; margin-bottom: 12px;
+    }
+    .why-icon svg { width: 17px; height: 17px; color: var(--ink-2); }
+    .why-title { font-size: .88rem; font-weight: 600; margin-bottom: 4px; }
+    .why-desc { font-size: .79rem; color: var(--ink-2); line-height: 1.6; }
+
+    /* ══ SEO SECTION ══ */
+    .seo-section { padding: 48px 0; border-top: 1px solid var(--border); }
+    .seo-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+    }
+    .seo-block h2 {
+      font-family: var(--f-head); font-size: 1.5rem; font-weight: 400;
+      color: var(--ink); margin-bottom: 14px; line-height: 1.2;
+    }
+    .seo-block p {
+      font-size: .84rem; color: var(--ink-2); line-height: 1.8; margin-bottom: 10px;
+    }
+    .seo-block a {
+      color: var(--blue); text-decoration: none; font-weight: 500;
+    }
+    .seo-block a:hover { text-decoration: underline; }
+
+    /* ══ FAQ ══ */
+    .faq-section { padding: 0 0 64px; }
+    .faq-section h2 {
+      font-family: var(--f-head); font-size: 1.4rem; font-weight: 400;
+      margin-bottom: 18px; color: var(--ink);
+    }
+
+    /* CORRECTION UX : bouton natif pour l'accessibilité clavier */
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 17px 0; cursor: pointer;
+      background: transparent; border: none; text-align: left;
+      font-family: var(--f-body); font-size: .9rem; font-weight: 600;
+      color: var(--ink); gap: 12px;
+    }
+    .faq-chevron {
+      flex-shrink: 0; width: 20px; height: 20px;
+      border-radius: 99px; background: var(--surface-2);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform var(--transition), background var(--transition);
+    }
+    .faq-chevron svg { width: 10px; height: 10px; color: var(--ink-2); }
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+      background: var(--ink); color: var(--surface);
+    }
+    .faq-item.open .faq-chevron svg { color: var(--surface); }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .35s;
+      font-size: .86rem; color: var(--ink-2); line-height: 1.7;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 200px; padding-bottom: 17px;
+    }
+
+    /* ══ FOOTER ══ */
+    .site-footer {
+      margin-top: auto; border-top: 1px solid var(--border); padding: 22px 0;
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; font-size: .78rem; color: var(--ink-3);
+    }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { color: var(--ink-3); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { padding: 36px 0 24px; }
+      .seo-grid { grid-template-columns: 1fr; gap: 28px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.85rem; }
+    }
+
+    /* ══ PRINT ══ */
+    @media print {
+      .site-header, .search-section, .theme-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <header class="site-header" role="banner">
+    <div class="wrap header-inner">
+      <a href="/" class="logo" aria-label="SimulBox — Accueil">
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1.5"/><rect x="9" y="2" width="5" height="5" rx="1.5"/><rect x="2" y="9" width="5" height="5" rx="1.5"/><path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        </div>
+        Simul<span class="logo-accent">Box</span>
+      </a>
+
+      <nav aria-label="Navigation principale">
+        <ul class="nav-links">
+          <li><a href="/comparateur-credit/">Crédit</a></li>
+          <li><a href="/comparateur-immobilier/">Acheter ou louer ?</a></li>
+          <li><a href="/simulateur-energie/">Énergie</a></li>
+          <li><a href="/analyser-budget-mensuel/">Budget</a></li>
+          <li><a href="/comparateurd-assurance-emprunteur/">assurance emprunteur</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-btn" id="themeBtn" aria-label="Basculer le thème sombre/clair" type="button">
+        <!-- Icône soleil -->
+        <svg id="iconSun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+        </svg>
+        <!-- Icône lune (cachée au départ) -->
+        <svg id="iconMoon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="display:none">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ══ HERO ══ -->
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <p class="hero-eyebrow" aria-hidden="true">
+        <span class="hero-eyebrow-dot"></span>
+        100% gratuit · Sans inscription · Ultra-rapide
+      </p>
+      <h1 id="hero-title">Vos simulateurs <em>financiers</em><br>en un seul endroit</h1>
+      <p class="hero-sub">
+        Trois outils gratuits pour mieux comprendre vos finances : comparateur de crédit, estimation de facture d'énergie et analyseur de budget mensuel.
+      </p>
+      <div class="hero-pills" aria-label="Outils disponibles">
+        <span class="hero-pill"> Comparateur de crédit</span>
+        <span class="hero-pill"> Facture d'énergie</span>
+        <span class="hero-pill"> Analyseur de budget</span>
+      </div>
+    </section>
+
+    <!-- ══ SEARCH ══ -->
+    <div class="wrap search-section">
+      <div class="search-wrap" role="search">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+        </svg>
+        <label for="searchInput" class="sr-only">Rechercher un outil</label>
+        <input
+          type="search"
+          class="search-input"
+          id="searchInput"
+          placeholder="Rechercher — crédit, énergie, budget…"
+          autocomplete="off"
+          spellcheck="false"
+          aria-controls="toolsGrid"
+          aria-label="Rechercher parmi les outils"
+        >
+        <button class="search-clear" id="searchClear" aria-label="Effacer la recherche" type="button">×</button>
+      </div>
+      <p class="search-results-count" id="searchCount" role="status" aria-live="polite"></p>
+    </div>
+
+    <!-- ══ TOOLS GRID ══ -->
+    <div class="wrap">
+      <div class="tools-grid" id="toolsGrid" role="list" aria-label="Outils disponibles"></div>
+    </div>
+
+    <!-- ══ WHY SECTION ══ -->
+    <section class="why-section wrap" aria-labelledby="why-title">
+      <h2 class="section-label" id="why-title">Pourquoi utiliser ces simulateurs</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+          </div>
+          <h3 class="why-title">Résultats instantanés</h3>
+          <p class="why-desc">Pas de chargement, pas de page blanche. Tout se calcule en temps réel dans votre navigateur.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"/></svg>
+          </div>
+          <h3 class="why-title">Confidentialité totale</h3>
+          <p class="why-desc">Vos données financières ne quittent jamais votre ordinateur. Aucune collecte, aucun serveur.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm3 1h6v4H7V5zm8 8v2H5v-2h10zm-8-4h2v2H7V9zm4 0h2v2h-2V9z" clip-rule="evenodd"/></svg>
+          </div>
+          <h3 class="why-title">Rapports PDF</h3>
+          <p class="why-desc">Téléchargez un document clair avec vos résultats pour les partager ou les conserver.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+          </div>
+          <h3 class="why-title">Pédagogique</h3>
+          <p class="why-desc">Chaque outil explique vos résultats en langage simple, avec des comparaisons concrètes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SEO SECTION ══ -->
+    <section class="seo-section wrap" aria-label="En savoir plus">
+      <div class="seo-grid">
+        <div class="seo-block">
+          <h2>Des outils conçus pour les particuliers</h2>
+          <p>Que vous souhaitiez <strong>comparer un prêt immobilier</strong>, estimer votre <strong>facture d'électricité ou de gaz</strong>, ou analyser votre <strong>budget familial mensuel</strong>, SimulBox vous donne des réponses immédiates, sans jargon bancaire ni publicité intrusive.</p>
+          <p>Chaque simulateur intègre les taux de crédit moyens du marché, les tarifs réglementés de l'énergie, et les seuils budgétaires recommandés.</p>
+        </div>
+        <div class="seo-block">
+          <h2>Crédit, énergie, budget : tout est lié</h2>
+          <p>Un projet immobilier ? Utilisez le <a href="/comparateur-credit/">comparateur de crédit</a> pour estimer le coût total de votre emprunt.</p>
+          <p>Ensuite, anticipez votre future <a href="/simulateur-energie/">facture d'énergie</a> selon la surface et l'isolation du bien.</p>
+          <p>Enfin, vérifiez la solidité de votre <a href="/analyser-budget-mensuel/">budget mensuel</a> une fois le crédit intégré. Tous les outils sont gratuits et indépendants.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FAQ ══ -->
+    <section class="faq-section wrap" aria-labelledby="faq-title">
+      <h2 id="faq-title">Questions fréquentes</h2>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" type="button">
+          <span>🔍 Les simulateurs sont-ils vraiment gratuits ?</span>
+          <span class="faq-chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer" role="region">
+          Oui, absolument. Il n'y a aucune inscription, aucun email demandé, ni aucun paiement. Tout est financé par nos propres moyens, sans publicité intrusive.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" type="button">
+          <span> Puis-je télécharger un rapport PDF de chaque simulation ?</span>
+          <span class="faq-chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer" role="region">
+          Oui, chaque outil propose un bouton de téléchargement. Vous obtenez un document récapitulatif avec vos données et les résultats, parfait pour un rendez-vous bancaire ou un suivi personnel.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" type="button">
+          <span> Mes informations personnelles sont-elles protégées ?</span>
+          <span class="faq-chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer" role="region">
+          Vos données restent dans votre navigateur. Aucun cookie de tracking, aucun serveur ne reçoit vos chiffres. Vous pouvez même couper votre connexion internet après le chargement, tout continue de fonctionner.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" type="button">
+          <span>📱 Les outils fonctionnent-ils sur mobile ?</span>
+          <span class="faq-chevron" aria-hidden="true">
+            <svg viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l4 4 4-4"/></svg>
+          </span>
+        </button>
+        <div class="faq-answer" role="region">
+          Oui, tous les simulateurs sont conçus pour fonctionner parfaitement sur smartphone, tablette et ordinateur. Aucune application à installer.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="wrap footer-inner">
+      <span>© 2026 SimulBox — Outils financiers gratuits et confidentiels</span>
+      <nav class="footer-links" aria-label="Liens de pied de page">
+        <a href="/comparateur-credit/">Crédit</a>
+        <a href="/simulateur-energie/">Énergie</a>
+        <a href="/analyser-budget-mensuel/">Budget</a>
+        <a href="/comparateur-immobilier/">achrter ou louer ?</a>
+        <a href="/comparateurd-assurance-emprunteur/">assurance emprunteur</a>
+        <a href="/confidentialité/">Confidentialité</a>
+        <a href="/contact/">contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ══ SCRIPT PRINCIPAL ══ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── 1. DONNÉES OUTILS
+         CORRECTION BUG CRITIQUE : les chaînes contenant des apostrophes
+         utilisaient des guillemets simples → SyntaxError en JS.
+         Toutes les chaînes sont maintenant en guillemets doubles ou template literals.
+    ── */
+    const TOOLS = [
+      {
+        id:       'credit',
+        name:     "Comparateur de crédit",
+        desc:     "Simulez votre prêt immobilier ou personnel : entrez montant, durée et taux. Visualisez le coût total, le TAEG, et comparez plusieurs scénarios.",
+        tags:     ['Crédit', 'TAEG', 'Prêt immo', 'Simulation'],
+        icon:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="7" cy="15" r="1" fill="currentColor"/><line x1="11" y1="15" x2="17" y2="15" stroke-linecap="round"/></svg>`,
+        url:      'comparateur-credit/',
+        featured: true,
+        color:    'var(--cat-credit)',
+        bg:       'var(--cat-credit-bg)',
+      },
+      {
+        id:       'credit',
+        name:     "Comparateur immobilier",
+        desc:     " Outil de simulation immobilière: entrez montant, durée et taux. Visualisez le coût total, le TAEG, et comparez plusieurs scénarios.",
+        tags:     ['Crédit', 'TAEG', 'Prêt immo', 'Simulation'],
+        icon:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><circle cx="7" cy="15" r="1" fill="currentColor"/><line x1="11" y1="15" x2="17" y2="15" stroke-linecap="round"/></svg>`,
+        url:      'comparateur-immobilier',
+        featured: true,
+        color:    'var(--cat-credit)',
+        bg:       'var(--cat-credit-bg)',
+      },
+      {
+        id:       'energie',
+        name:     "Simulateur de facture d'énergie",
+        desc:     "Estimez votre consommation d'électricité ou de gaz selon votre surface, isolation et chauffage. Comparez les offres du marché.",
+        tags:     ['Électricité', 'Gaz', 'Estimation', 'Isolation'],
+        icon:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linejoin="round"/></svg>`,
+        url:      'simulateur-energie/',
+        featured: false,
+        color:    'var(--cat-energy)',
+        bg:       'var(--cat-energy-bg)',
+      },
+      {
+        id:       'budget',
+        name:     "Analyseur de budget mensuel",
+        desc:     "Entrez vos revenus et dépenses pour détecter les fuites, visualiser la répartition et obtenir des suggestions d'économies concrètes.",
+        tags:     ['Budget', 'Épargne', 'Gestion', 'Alertes'],
+        icon:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`,
+        url:      'analyser-budget-mensuel/',
+        featured: false,
+        color:    'var(--cat-budget)',
+        bg:       'var(--cat-budget-bg)',
+      },
+      {
+        id:       'assurance',
+        name:     "comparateur assurance emprunteur",
+        desc:     "Entrez vos revenus et dépenses pour détecter les fuites, visualiser la répartition et obtenir des suggestions d'économies concrètes.",
+        tags:     ['emprunter', 'assurance', 'Gestion', 'Alertes'],
+        icon:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`,
+        url:      'comparateurd-assurance-emprunteur/',
+        featured: false,
+        color:    'var(--cat-budget)',
+        bg:       'var(--cat-budget-bg)',
+      },
+    ];
+
+    /* ── 2. RENDU DES CARTES ── */
+    const grid       = document.getElementById('toolsGrid');
+    const searchInp  = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    const countEl    = document.getElementById('searchCount');
+
+    function renderCards(query) {
+      const q = (query || '').toLowerCase().trim();
+      grid.innerHTML = '';
+      let n = 0;
+
+      TOOLS.forEach(function (t, i) {
+        const match = !q
+          || t.name.toLowerCase().includes(q)
+          || t.desc.toLowerCase().includes(q)
+          || t.tags.some(function (tag) { return tag.toLowerCase().includes(q); });
+
+        if (!match) return;
+        n++;
+
+        const a = document.createElement('a');
+        a.href      = t.url;
+        a.className = 'tool-card reveal reveal-d' + (i + 1);
+        a.setAttribute('role', 'listitem');
+        a.setAttribute('aria-label', t.name);
+        a.id        = t.id;
+
+        if (t.featured) a.classList.add('featured');
+
+        a.innerHTML =
+          '<div class="card-top">' +
+            '<div class="card-icon" style="background:' + t.bg + ';color:' + t.color + '">' + t.icon + '</div>' +
+            '<div class="card-arrow" aria-hidden="true">' +
+              '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 7.5l5-5M7.5 7V2.5H3"/></svg>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card-name">' + t.name + '</div>' +
+          '<p class="card-desc">' + t.desc + '</p>' +
+          '<div class="card-tags">' +
+            t.tags.map(function (tag) { return '<span class="card-tag">' + tag + '</span>'; }).join('') +
+          '</div>' +
+          (t.featured ? '<span class="featured-badge" aria-label="Outil populaire">Populaire</span>' : '');
+
+        grid.appendChild(a);
+      });
+
+      /* Message zéro résultat */
+      let noRes = document.getElementById('noResults');
+      if (!noRes) {
+        noRes = document.createElement('div');
+        noRes.id = 'noResults';
+        noRes.className = 'no-results';
+        noRes.innerHTML = '<p>😕</p><p>Aucun outil trouvé pour <strong>"' + q + '"</strong>.<br>Essayez "crédit", "énergie" ou "budget".</p>';
+      }
+
+      if (n === 0) {
+        grid.appendChild(noRes);
+        noRes.style.display = 'block';
+        countEl.textContent = '';
+      } else {
+        noRes.style.display = 'none';
+        countEl.textContent = q
+          ? n + ' outil' + (n > 1 ? 's' : '') + ' trouvé' + (n > 1 ? 's' : '')
+          : '';
+      }
+
+      /* Bouton clear */
+      searchClear.classList.toggle('visible', q.length > 0);
+    }
+
+    /* Input avec debounce pour performance */
+    let debounceTimer;
+    searchInp.addEventListener('input', function () {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        renderCards(searchInp.value);
+      }, 120);
+    });
+
+    searchClear.addEventListener('click', function () {
+      searchInp.value = '';
+      searchInp.focus();
+      renderCards('');
+    });
+
+    /* Raccourci clavier : "/" pour focus recherche */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '/' && document.activeElement !== searchInp) {
+        e.preventDefault();
+        searchInp.focus();
+      }
+    });
+
+    renderCards('');
+
+    /* ── 3. THÈME SOMBRE/CLAIR ── */
+    var saved = localStorage.getItem('sb-theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var currentTheme = saved || (prefersDark ? 'dark' : 'light');
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('iconSun').style.display  = theme === 'dark' ? 'none' : '';
+      document.getElementById('iconMoon').style.display = theme === 'dark' ? ''     : 'none';
+      localStorage.setItem('sb-theme', theme);
+      currentTheme = theme;
+    }
+
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    /* Réagit si l'OS change de préférence */
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!localStorage.getItem('sb-theme')) applyTheme(e.matches ? 'dark' : 'light');
+    });
+
+    applyTheme(currentTheme);
+
+    /* ── 4. FAQ ACCORDION — bouton natif (accessibilité correcte) ── */
+    document.querySelectorAll('.faq-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var item    = btn.closest('.faq-item');
+        var isOpen  = item.classList.contains('open');
+
+        /* Fermer tous les autres */
+        document.querySelectorAll('.faq-item.open').forEach(function (openItem) {
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ── 5. SCROLL REVEAL (IntersectionObserver) ── */
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'none';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.why-card, .seo-block').forEach(function (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(14px)';
+        el.style.transition = 'opacity .4s ease, transform .4s ease';
+        observer.observe(el);
+      });
+    }
+
+    /* ── 6. PREFETCH des pages outils au hover ── */
+    document.querySelectorAll('.tool-card').forEach(function (card) {
+      card.addEventListener('mouseenter', function () {
+        var href = card.getAttribute('href');
+        if (href && href.startsWith('/') && !document.querySelector('link[rel=prefetch][href="' + href + '"]')) {
+          var link = document.createElement('link');
+          link.rel = 'prefetch'; link.href = href;
+          document.head.appendChild(link);
+        }
+      }, { once: true });
+    });
+
+  })();
+  </script>
+
+  <!-- Classe utilitaire pour screen readers -->
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+</body>
+</html>

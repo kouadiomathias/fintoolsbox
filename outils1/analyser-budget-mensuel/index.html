@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Analyseur de Budget Mensuel Gratuit | Détectez vos fuites d'argent</title>
+    <meta name="description" content="Analysez vos finances personnelles : entrez vos revenus et dépenses, obtenez un diagnostic complet, visualisez les fuites budgétaires et découvrez des économies immédiates. Sans inscription.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/analyseur-budget-mensuel/">
+    <meta property="og:title" content="Analyseur de Budget Mensuel | Trouvez vos fuites d'argent">
+    <meta property="og:description" content="Simulateur gratuit de budget familial : visualisez vos dépenses, repérez les excès et recevez un plan d'économies en PDF.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <style>
+        :root {
+            --bg: #f7fafc;
+            --surface: #ffffff;
+            --surface-alt: #edf2f7;
+            --primary: #1a365d;
+            --primary-light: #2a4a6b;
+            --accent: #319795;
+            --accent-light: #4fd1c5;
+            --accent-dark: #285e61;
+            --text: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #a0aec0;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --success: #2f855a;
+            --warning: #d69e2e;
+            --danger: #c53030;
+            --blue-accent: #2b6cb0;
+            --shadow-sm: 0 1px 3px rgba(26, 54, 93, 0.06);
+            --shadow-md: 0 4px 16px rgba(26, 54, 93, 0.08);
+            --shadow-lg: 0 8px 32px rgba(26, 54, 93, 0.12);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--primary);
+            position: sticky; top:0; z-index:100;
+            box-shadow: 0 2px 20px rgba(26,54,93,0.2);
+        }
+        .header-inner {
+            max-width: 1200px; margin:0 auto; padding:14px 24px;
+            display: flex; align-items:center; justify-content:space-between; gap:16px;
+        }
+        .logo {
+            display: flex; align-items:center; gap:10px; text-decoration:none;
+            color:#fff; font-weight:700; font-size:1.25rem; letter-spacing:-0.3px;
+        }
+        .logo-icon {
+            width:38px; height:38px; border-radius:10px;
+            background: var(--accent); display:flex; align-items:center; justify-content:center;
+            font-size:1.2rem; color:#fff; font-weight:800; flex-shrink:0;
+        }
+        .header-badge {
+            background: rgba(255,255,255,0.15); color:#fff; padding:6px 14px;
+            border-radius:20px; font-size:0.8rem; font-weight:500; letter-spacing:0.3px;
+            border:1px solid rgba(255,255,255,0.2); white-space:nowrap;
+        }
+
+        .main-container {
+            max-width:1200px; margin:0 auto; padding:24px 20px 60px;
+            display:grid; grid-template-columns: 440px 1fr; gap:24px;
+        }
+        @media (max-width: 1100px) { .main-container { grid-template-columns:1fr; max-width:600px; } }
+        @media (max-width: 600px) { .main-container { padding:12px 10px 40px; } }
+
+        .card {
+            background:var(--surface); border-radius:var(--radius-lg); padding:24px;
+            border:1px solid var(--border); box-shadow:var(--shadow-sm); transition:var(--transition);
+        }
+        .card:hover { box-shadow:var(--shadow-md); }
+        .card-header {
+            font-weight:700; font-size:1rem; letter-spacing:-0.2px; margin-bottom:16px;
+            display:flex; align-items:center; gap:8px; color:var(--primary);
+        }
+        .card-header .icon-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+        .form-panel { display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; align-self:start; }
+        @media (max-width: 1100px) { .form-panel { position:relative; top:auto; } }
+        .form-group { margin-bottom:6px; display:flex; flex-direction:column; gap:4px; }
+        .form-group label { font-weight:600; font-size:0.82rem; color:var(--text-secondary); display:flex; justify-content:space-between; }
+        .input-wrapper { position:relative; display:flex; align-items:center; }
+        .input-wrapper input {
+            width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:var(--radius);
+            font-size:0.95rem; font-family:'Inter',sans-serif; font-weight:500;
+            background:var(--surface-alt); transition:var(--transition); color:var(--text);
+            -moz-appearance:textfield;
+        }
+        .input-wrapper input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 4px rgba(49,151,149,0.1); background:#fff; }
+        .input-suffix { position:absolute; right:14px; font-weight:600; color:var(--text-muted); font-size:0.85rem; pointer-events:none; }
+
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center; gap:8px;
+            padding:13px 24px; border-radius:var(--radius); font-weight:600; font-size:0.95rem;
+            cursor:pointer; border:none; font-family:'Inter',sans-serif; letter-spacing:-0.2px;
+            transition:var(--transition); white-space:nowrap; text-decoration:none;
+        }
+        .btn-primary { background:var(--accent); color:#fff; box-shadow:0 4px 12px rgba(49,151,149,0.3); }
+        .btn-primary:hover { background:var(--accent-dark); transform:translateY(-1px); }
+        .btn-secondary { background:var(--surface); color:var(--primary); border:2px solid var(--border); }
+        .btn-secondary:hover { border-color:var(--accent); }
+        .btn-outline { background:transparent; color:var(--primary); border:2px solid var(--border); }
+        .btn-outline:hover { border-color:var(--accent); background:var(--surface-alt); }
+        .btn-sm { padding:8px 16px; font-size:0.8rem; border-radius:8px; }
+        .btn-group { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+
+        .hero-metric {
+            background:var(--primary); color:#fff; border-radius:var(--radius-xl);
+            padding:28px 32px; display:flex; flex-wrap:wrap; gap:24px; align-items:center;
+            justify-content:space-between; box-shadow:var(--shadow-lg);
+        }
+        .hero-metric .metric-main { display:flex; flex-direction:column; gap:4px; }
+        .hero-metric .metric-label { font-size:0.8rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.6); }
+        .hero-metric .metric-value { font-size:2.6rem; font-weight:900; letter-spacing:-1px; color:var(--accent-light); line-height:1; }
+        .hero-metric .metric-sub { font-size:0.85rem; color:rgba(255,255,255,0.7); }
+
+        .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:12px; }
+        .metric-card { background:var(--surface); border-radius:var(--radius); padding:16px 18px; border:1px solid var(--border); box-shadow:var(--shadow-sm); text-align:center; }
+        .metric-card .mc-value { font-size:1.4rem; font-weight:800; color:var(--primary); }
+        .metric-card .mc-label { font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+
+        .explanation-box { background:var(--surface-alt); border-radius:var(--radius); padding:16px 20px; border-left:4px solid var(--accent); font-size:0.9rem; color:var(--text-secondary); }
+
+        .chart-wrap { position:relative; width:100%; height:250px; margin-top:12px; }
+        .chart-wrap canvas { width:100%!important; height:100%!important; }
+
+        .faq-section { max-width:1200px; margin:0 auto; padding:0 20px 40px; }
+        .faq-item { border-bottom:1px solid var(--border); padding:16px 0; cursor:pointer; }
+        .faq-question { font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+        .faq-answer { max-height:0; overflow:hidden; transition:max-height 0.3s ease; color:var(--text-secondary); font-size:0.9rem; }
+        .faq-item.open .faq-answer { max-height:300px; margin-top:10px; }
+
+        .share-card-preview {
+            background:linear-gradient(135deg, #1a365d 0%, #2a4a6b 100%);
+            color:#fff; border-radius:var(--radius-lg); padding:24px 28px;
+            display:flex; flex-direction:column; gap:12px; max-width:400px;
+        }
+
+        .toast {
+            position:fixed; bottom:24px; right:24px; background:var(--primary);
+            color:#fff; padding:12px 20px; border-radius:24px; font-weight:600;
+            font-size:0.85rem; z-index:999; box-shadow:0 8px 24px rgba(0,0,0,0.2);
+            animation:slideUp 0.4s ease; display:none;
+        }
+        @keyframes slideUp { from{transform:translateY(20px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+
+        @media (max-width:768px) {
+            .hero-metric { padding:20px; }
+            .hero-metric .metric-value { font-size:2rem; }
+            .metrics-grid { grid-template-columns:1fr 1fr; }
+        }
+        @media print {
+            .header,.form-panel,.btn,.toast,.faq-section { display:none!important; }
+            .main-container { display:block; max-width:100%; }
+            .card { box-shadow:none; border:1px solid #ddd; }
+            .hero-metric { background:#fff!important; color:#000!important; }
+            .hero-metric .metric-value { color:#000!important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon"></div>
+                <span>Analyseur Budget</span>
+            </a>
+            <span class="header-badge"> Diagnostic financier gratuit</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="form-panel">
+            <div class="card">
+                <div class="card-header"><span class="icon-dot"></span> Vos revenus mensuels nets</div>
+                <div class="form-group">
+                    <label>Salaire principal</label>
+                    <div class="input-wrapper"><input type="number" id="salaire" value="2500" min="0" step="10"><span class="input-suffix">€</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Revenus complémentaires</label>
+                    <div class="input-wrapper"><input type="number" id="revenusAutres" value="400" min="0" step="10"><span class="input-suffix">€</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Allocations / aides</label>
+                    <div class="input-wrapper"><input type="number" id="allocations" value="150" min="0" step="10"><span class="input-suffix">€</span></div>
+                </div>
+                <div style="text-align:right; font-weight:700; padding-top:8px;" id="totalRevenusDisplay">Total : 3 050 €</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span class="icon-dot"></span> Dépenses mensuelles</div>
+                <div class="form-group"><label>Logement (loyer / crédit + charges)</label><div class="input-wrapper"><input type="number" id="logement" value="950" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Transport (essence, abonnement)</label><div class="input-wrapper"><input type="number" id="transport" value="180" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Alimentation (courses, cantine)</label><div class="input-wrapper"><input type="number" id="alimentation" value="450" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Shopping & loisirs</label><div class="input-wrapper"><input type="number" id="shopping" value="300" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Santé (mutuelle, frais)</label><div class="input-wrapper"><input type="number" id="sante" value="80" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Épargne (livrets, PEA)</label><div class="input-wrapper"><input type="number" id="epargne" value="300" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Crédits & dettes</label><div class="input-wrapper"><input type="number" id="dettes" value="120" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div class="form-group"><label>Autres dépenses</label><div class="input-wrapper"><input type="number" id="autres" value="100" min="0" step="10"><span class="input-suffix">€</span></div></div>
+                <div style="text-align:right; font-weight:700; padding-top:8px;" id="totalDepensesDisplay">Total dépenses : 2 480 €</div>
+            </div>
+            <button class="btn btn-primary" onclick="updateUI()" style="width:100%;"> Analyser mon budget</button>
+        </aside>
+
+        <section class="results-area">
+            <div class="hero-metric" id="heroMetric">
+                <div class="metric-main">
+                    <span class="metric-label">Reste à vivre mensuel</span>
+                    <span class="metric-value" id="heroSolde">570 €</span>
+                    <span class="metric-sub" id="heroComment">Excédent sain</span>
+                </div>
+                <span id="heroBadge" style="background:var(--accent);color:#fff;padding:8px 18px;border-radius:20px;font-weight:700;display:none;"></span>
+            </div>
+
+            <div class="metrics-grid" id="quickMetrics">
+                <div class="metric-card"><div class="mc-value" id="metRevenus">3 050 €</div><div class="mc-label">Revenus totaux</div></div>
+                <div class="metric-card"><div class="mc-value" id="metDepenses">2 480 €</div><div class="mc-label">Dépenses totales</div></div>
+                <div class="metric-card"><div class="mc-value" id="metTauxEpargne">9.8%</div><div class="mc-label">Taux d'épargne</div></div>
+                <div class="metric-card"><div class="mc-value" id="metScore">7/10</div><div class="mc-label">Score santé budgétaire</div></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span class="icon-dot"></span> Répartition des dépenses</div>
+                <div class="chart-wrap"><canvas id="doughnutChart"></canvas></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><span class="icon-dot"></span> Détection des fuites & suggestions</div>
+                <div id="alertsContainer" class="explanation-box" style="border-left-color: var(--danger);">
+                    <strong>🔍 Analyse :</strong> <span id="alertsText">Tout semble équilibré. Continuez à suivre vos dépenses.</span>
+                </div>
+                <div style="margin-top:12px;" id="suggestionsContainer">
+                    <p style="font-weight:600;">💡 Économies potentielles :</p>
+                    <ul id="suggestionsList" style="margin-left:20px; color:var(--text-secondary);"></ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="downloadPDF()"> Rapport PDF personnalisé</button>
+                <button class="btn btn-secondary" onclick="generateShareCard()"> Carte à partager</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="faq-section">
+        <h2 style="color:var(--primary); margin-bottom:20px;">Questions fréquentes sur l'analyseur de budget</h2>
+        <div class="faq-item"><div class="faq-question"> Comment fonctionne cet analyseur de budget ?<span>+</span></div><div class="faq-answer">Vous saisissez vos revenus mensuels et vos dépenses par catégorie. L'outil calcule immédiatement votre solde, votre taux d'épargne et détecte les postes qui dépassent les seuils recommandés (logement >35%, loisirs >20%, etc.). Il propose des réductions ciblées avec le gain annuel correspondant.</div></div>
+        <div class="faq-item"><div class="faq-question"> Qu'est-ce qu'une fuite budgétaire ?<span>+</span></div><div class="faq-answer">C'est une dépense récurrente qui, sans être indispensable, pèse lourdement sur votre budget. Par exemple, un abonnement oublié, des frais bancaires évitables ou des dépenses "plaisir" qui dépassent 20 % de vos revenus. Notre outil les met en évidence.</div></div>
+        <div class="faq-item"><div class="faq-question"> Quel est le bon taux d'épargne ?<span>+</span></div><div class="faq-answer">Les experts recommandent d'épargner au moins 10 % de vos revenus nets. L'outil vous alerte si vous êtes en dessous et vous montre comment atteindre cet objectif en réduisant certains postes.</div></div>
+        <div class="faq-item"><div class="faq-question"> Mes données sont-elles enregistrées ?<span>+</span></div><div class="faq-answer">Non, tout le calcul se fait dans votre navigateur. Aucune donnée n'est transmise à un serveur. Vous pouvez utiliser l'outil autant de fois que vous le souhaitez, en toute confidentialité.</div></div>
+    </div>
+
+    <div id="shareCardContainer" style="position:absolute; left:-9999px; top:0; width:400px;">
+        <div class="share-card-preview" id="shareCardContent">
+            <div style="font-weight:700;"> Analyseur Budget</div>
+            <div style="font-size:0.75rem; opacity:0.8;" id="scDate"></div>
+            <div style="font-size:2rem; font-weight:900;" id="scSolde">+570 €</div>
+            <div id="scDetail" style="font-size:0.8rem;">Reste à vivre mensuel</div>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type":"Question","name":"Comment fonctionne cet analyseur de budget ?","acceptedAnswer":{"@type":"Answer","text":"Vous saisissez vos revenus mensuels et vos dépenses par catégorie. L'outil calcule immédiatement votre solde, votre taux d'épargne et détecte les postes qui dépassent les seuils recommandés."}},
+                {"@type":"Question","name":"Qu'est-ce qu'une fuite budgétaire ?","acceptedAnswer":{"@type":"Answer","text":"Une dépense récurrente non indispensable qui pèse sur votre budget. L'outil identifie les catégories qui dépassent les seuils (loisirs >20% des revenus, etc.)."}},
+                {"@type":"Question","name":"Quel est le bon taux d'épargne ?","acceptedAnswer":{"@type":"Answer","text":"Il est recommandé d'épargner au moins 10 % de ses revenus nets. L'outil vous alerte si vous êtes en dessous."}},
+                {"@type":"Question","name":"Mes données sont-elles enregistrées ?","acceptedAnswer":{"@type":"Answer","text":"Non, le calcul se fait entièrement dans votre navigateur. Aucune donnée n'est transmise."}}
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            const ids = {
+                salaire: 'salaire', revenusAutres: 'revenusAutres', allocations: 'allocations',
+                logement: 'logement', transport: 'transport', alimentation: 'alimentation',
+                shopping: 'shopping', sante: 'sante', epargne: 'epargne', dettes: 'dettes', autres: 'autres'
+            };
+
+            function getNumber(id) { return parseFloat(document.getElementById(id).value) || 0; }
+            function fmt(num) { return new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(num); }
+
+            const thresholds = {
+                logement: 0.35,
+                transport: 0.15,
+                alimentation: 0.20,
+                shopping: 0.20,
+                dettes: 0.15
+            };
+
+            function updateUI() {
+                const revenus = getNumber(ids.salaire) + getNumber(ids.revenusAutres) + getNumber(ids.allocations);
+                const depensesData = {
+                    logement: getNumber(ids.logement),
+                    transport: getNumber(ids.transport),
+                    alimentation: getNumber(ids.alimentation),
+                    shopping: getNumber(ids.shopping),
+                    sante: getNumber(ids.sante),
+                    epargne: getNumber(ids.epargne),
+                    dettes: getNumber(ids.dettes),
+                    autres: getNumber(ids.autres)
+                };
+                const totalDepenses = Object.values(depensesData).reduce((a,b)=>a+b,0);
+                const solde = revenus - totalDepenses;
+                const tauxEpargne = revenus > 0 ? (depensesData.epargne / revenus) * 100 : 0;
+
+                document.getElementById('totalRevenusDisplay').textContent = `Total : ${fmt(revenus)}`;
+                document.getElementById('totalDepensesDisplay').textContent = `Total dépenses : ${fmt(totalDepenses)}`;
+
+                // Hero
+                const hero = document.getElementById('heroSolde');
+                hero.textContent = solde >= 0 ? `+ ${fmt(solde)}` : `- ${fmt(Math.abs(solde))}`;
+                hero.style.color = solde >= 0 ? 'var(--accent-light)' : '#fc8181';
+                const heroComment = document.getElementById('heroComment');
+                if (solde > 0) heroComment.textContent = 'Excédent mensuel';
+                else if (solde === 0) heroComment.textContent = 'Budget à l\'équilibre';
+                else heroComment.textContent = 'Déficit : attention !';
+                const heroBadge = document.getElementById('heroBadge');
+                if (solde < 0) {
+                    heroBadge.style.display = 'inline-block';
+                    heroBadge.textContent = '⚠️ Déséquilibre';
+                    heroBadge.style.background = 'var(--danger)';
+                } else if (tauxEpargne >= 10) {
+                    heroBadge.style.display = 'inline-block';
+                    heroBadge.textContent = '✅ Bonne épargne';
+                    heroBadge.style.background = 'var(--success)';
+                } else {
+                    heroBadge.style.display = 'none';
+                }
+
+                document.getElementById('metRevenus').textContent = fmt(revenus);
+                document.getElementById('metDepenses').textContent = fmt(totalDepenses);
+                document.getElementById('metTauxEpargne').textContent = tauxEpargne.toFixed(1) + '%';
+                const score = computeScore(solde, tauxEpargne, depensesData, revenus);
+                document.getElementById('metScore').textContent = score + '/10';
+
+                updateCharts(depensesData, revenus);
+                updateAlerts(depensesData, revenus, solde, tauxEpargne);
+            }
+
+            function computeScore(solde, tauxEpargne, depenses, revenus) {
+                let s = 5;
+                if (solde > 0) s += 2;
+                else if (solde < 0) s -= 3;
+                if (tauxEpargne >= 10) s += 2;
+                else if (tauxEpargne >= 5) s += 1;
+                if (depenses.logement / revenus > 0.35) s -= 1;
+                if (depenses.shopping / revenus > 0.20) s -= 1;
+                return Math.max(1, Math.min(10, s));
+            }
+
+            let doughnutChart;
+            function updateCharts(depenses, revenus) {
+                const ctx = document.getElementById('doughnutChart');
+                if (doughnutChart) doughnutChart.destroy();
+                const labels = Object.keys(depenses).filter(k => k !== 'epargne');
+                const data = labels.map(k => depenses[k]);
+                labels.push('Épargne');
+                data.push(depenses.epargne);
+                doughnutChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels.map(l => l.charAt(0).toUpperCase() + l.slice(1)),
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#319795','#38b2ac','#4fd1c5','#81e6d9','#b2f5ea','#c6f6d5','#9ae6b4','#fbd38d'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { responsive:true, maintainAspectRatio:false, plugins: { legend: { position:'bottom' } } }
+                });
+            }
+
+            function updateAlerts(depenses, revenus, solde, tauxEpargne) {
+                const alerts = [];
+                const suggestions = [];
+
+                if (solde < 0) alerts.push(`Votre budget est en déficit de ${fmt(Math.abs(solde))}. Réduisez vos dépenses ou augmentez vos revenus.`);
+                if (tauxEpargne < 10) {
+                    alerts.push(`Vous épargnez moins de 10% de vos revenus (${tauxEpargne.toFixed(1)}%). Essayez d'atteindre au moins 10%.`);
+                    const manque = (revenus * 0.1) - depenses.epargne;
+                    if (manque > 0) suggestions.push(`Augmentez votre épargne de ${fmt(manque)}/mois pour atteindre le seuil recommandé.`);
+                }
+
+                for (let [cat, threshold] of Object.entries(thresholds)) {
+                    const ratio = depenses[cat] / revenus;
+                    if (ratio > threshold) {
+                        const excess = depenses[cat] - (revenus * threshold);
+                        const catFr = { logement:'Logement', transport:'Transport', alimentation:'Alimentation', shopping:'Shopping & loisirs', dettes:'Crédits' }[cat];
+                        alerts.push(`Votre poste "${catFr}" représente ${(ratio*100).toFixed(0)}% de vos revenus (limite conseillée : ${(threshold*100).toFixed(0)}%).`);
+                        suggestions.push(`Réduire ce poste de 10% (soit ${fmt(depenses[cat]*0.1)}) libérerait ${fmt(depenses[cat]*0.1)}/mois, soit ${fmt(depenses[cat]*0.1*12)} par an.`);
+                    }
+                }
+
+                document.getElementById('alertsText').innerHTML = alerts.length ? alerts.join('<br>') : 'Votre budget est équilibré, continuez comme ça !';
+                const list = document.getElementById('suggestionsList');
+                list.innerHTML = suggestions.length ? suggestions.map(s => `<li>${s}</li>`).join('') : '<li>Aucune suggestion particulière, votre budget est sain.</li>';
+            }
+
+            // Event binding
+            document.querySelectorAll('input[type="number"]').forEach(el => el.addEventListener('input', updateUI));
+
+            // PDF generation
+            async function downloadPDF() {
+                const toast = showToast('Génération du rapport PDF...');
+                const reportDiv = document.createElement('div');
+                reportDiv.style.cssText = 'width:700px;padding:40px;background:#fff;font-family:Inter,sans-serif;';
+                const revenus = getNumber(ids.salaire)+getNumber(ids.revenusAutres)+getNumber(ids.allocations);
+                const depenses = {
+                    logement: getNumber(ids.logement),
+                    transport: getNumber(ids.transport),
+                    alimentation: getNumber(ids.alimentation),
+                    shopping: getNumber(ids.shopping),
+                    sante: getNumber(ids.sante),
+                    epargne: getNumber(ids.epargne),
+                    dettes: getNumber(ids.dettes),
+                    autres: getNumber(ids.autres)
+                };
+                const totalDep = Object.values(depenses).reduce((a,b)=>a+b,0);
+                const solde = revenus - totalDep;
+                reportDiv.innerHTML = `
+                    <h1 style="color:#1a365d;">Rapport d'analyse budgétaire</h1>
+                    <p>${new Date().toLocaleDateString('fr-FR')}</p>
+                    <table style="width:100%;margin:20px 0;">
+                        <tr><td><strong>Revenus</strong></td><td>${fmt(revenus)}</td></tr>
+                        <tr><td><strong>Dépenses</strong></td><td>${fmt(totalDep)}</td></tr>
+                        <tr><td><strong>Solde</strong></td><td>${fmt(solde)}</td></tr>
+                    </table>
+                    <h2>Détail des dépenses</h2>
+                    <ul>${Object.entries(depenses).map(([k,v])=>`<li>${k}: ${fmt(v)}</li>`).join('')}</ul>
+                `;
+                document.body.appendChild(reportDiv);
+                reportDiv.style.position='absolute'; reportDiv.style.left='-9999px';
+                const canvas = await html2canvas(reportDiv,{scale:2});
+                document.body.removeChild(reportDiv);
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p','mm','a4');
+                const w = pdf.internal.pageSize.getWidth();
+                const h = (canvas.height * w) / canvas.width;
+                pdf.addImage(imgData,'PNG',0,0,w,h);
+                pdf.save('analyse-budget.pdf');
+                showToast('✅ PDF téléchargé');
+            }
+
+            async function generateShareCard() {
+                const revenus = getNumber(ids.salaire)+getNumber(ids.revenusAutres)+getNumber(ids.allocations);
+                const depenses = Object.values({logement:getNumber(ids.logement),transport:getNumber(ids.transport),alimentation:getNumber(ids.alimentation),shopping:getNumber(ids.shopping),sante:getNumber(ids.sante),epargne:getNumber(ids.epargne),dettes:getNumber(ids.dettes),autres:getNumber(ids.autres)}).reduce((a,b)=>a+b,0);
+                const solde = revenus - depenses;
+                document.getElementById('scDate').textContent = new Date().toLocaleDateString('fr-FR');
+                document.getElementById('scSolde').textContent = solde >= 0 ? `+ ${fmt(solde)}` : `- ${fmt(Math.abs(solde))}`;
+                document.getElementById('scDetail').textContent = `Revenus: ${fmt(revenus)} · Dépenses: ${fmt(depenses)}`;
+                const container = document.getElementById('shareCardContainer');
+                container.style.position='fixed'; container.style.left='50%'; container.style.top='50%'; container.style.transform='translate(-50%,-50%)'; container.style.zIndex='9999';
+                await new Promise(r=>setTimeout(r,300));
+                const canvas = await html2canvas(document.getElementById('shareCardContent'),{scale:2});
+                const link = document.createElement('a');
+                link.download = 'mon-budget.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                container.style.position='absolute'; container.style.left='-9999px'; container.style.top='0'; container.style.transform='none';
+                showToast('✅ Image partageable téléchargée');
+            }
+
+            function showToast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg; t.style.display='block';
+                clearTimeout(t._t); t._t = setTimeout(()=>t.style.display='none',3000);
+                return t;
+            }
+
+            window.downloadPDF = downloadPDF;
+            window.generateShareCard = generateShareCard;
+            window.updateUI = updateUI;
+
+            // FAQ toggle
+            document.querySelectorAll('.faq-item').forEach(item => item.addEventListener('click', () => item.classList.toggle('open')));
+
+            updateUI();
+        })();
+    </script>
+</body>
+</html>

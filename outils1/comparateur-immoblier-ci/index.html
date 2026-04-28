@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Louer ou Acheter — Côte d'Ivoire</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+  :root {
+    --ink:    #1C1A16;
+    --paper:  #F7F3EC;
+    --green:  #1E3D2F;
+    --gold:   #C8922A;
+    --gold-l: #F0D080;
+    --sand:   #E8DFC8;
+    --muted:  #6B6455;
+    --line:   rgba(28,26,22,.12);
+    --radius: 16px;
+    --f-head: 'Fraunces', Georgia, serif;
+    --f-body: 'DM Sans', sans-serif;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--green);
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 28px,
+      rgba(255,255,255,.025) 28px, rgba(255,255,255,.025) 29px
+    );
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .eyebrow {
+    font-family: var(--f-body);
+    font-size: .7rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold-l);
+    margin-bottom: .75rem;
+  }
+  header h1 {
+    font-family: var(--f-head);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.1;
+    color: #fff;
+    max-width: 680px;
+  }
+  header h1 em {
+    font-style: italic;
+    color: var(--gold-l);
+  }
+  .header-sub {
+    margin-top: .9rem;
+    font-size: .9rem;
+    color: rgba(255,255,255,.65);
+    max-width: 520px;
+    line-height: 1.6;
+  }
+  .badge-ci {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: 1.2rem;
+    background: rgba(200,146,42,.18);
+    border: 1px solid rgba(200,146,42,.4);
+    border-radius: 100px;
+    padding: .35rem .85rem;
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--gold-l);
+  }
+  .flag { font-size: 1rem }
+
+  /* ── LAYOUT ── */
+  .layout {
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 0 1.25rem;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* ── PANEL ── */
+  .panel {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .panel-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .icon-green { background: #E8F2EC; }
+  .icon-gold  { background: #FBF2E0; }
+  .panel-head h2 {
+    font-family: var(--f-head);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .panel-body { padding: 1.4rem 1.5rem }
+
+  /* ── NEIGHBORHOOD PICKER ── */
+  .quartier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5rem;
+    margin-bottom: 1.4rem;
+  }
+  .q-btn {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: .55rem .4rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all .18s;
+    font-family: var(--f-body);
+  }
+  .q-btn:hover { border-color: var(--gold); background: #fffbf3 }
+  .q-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .q-name { font-size: .78rem; font-weight: 500; display: block }
+  .q-price { font-size: .65rem; color: var(--muted); display: block; margin-top: 2px }
+  .q-btn.active .q-price { color: rgba(255,255,255,.65) }
+
+  /* ── FORM FIELDS ── */
+  .field-group {
+    margin-bottom: 1.2rem;
+  }
+  .field-sep {
+    font-family: var(--f-head);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 1.1rem;
+    margin: 1.1rem 0 .9rem;
+  }
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: .4rem;
+  }
+  label span.hint {
+    font-size: .72rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .input-unit {
+    position: absolute;
+    right: .9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .78rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  input[type="number"], input[type="text"], select {
+    width: 100%;
+    padding: .65rem .9rem;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font-family: var(--f-body);
+    font-size: .9rem;
+    color: var(--ink);
+    background: var(--paper);
+    transition: border-color .15s;
+    appearance: none;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--green);
+    background: #fff;
+  }
+  input[type="number"] { padding-right: 3.5rem }
+
+  .taux-presets {
+    display: flex;
+    gap: .4rem;
+    margin-top: .5rem;
+    flex-wrap: wrap;
+  }
+  .taux-btn {
+    font-size: .7rem;
+    padding: .25rem .6rem;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    cursor: pointer;
+    font-family: var(--f-body);
+    transition: all .15s;
+  }
+  .taux-btn:hover, .taux-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
+
+  .duration-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .4rem;
+  }
+  .dur-btn {
+    padding: .5rem;
+    text-align: center;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--paper);
+    font-family: var(--f-body);
+    transition: all .15s;
+  }
+  .dur-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
+
+  .calc-btn {
+    width: 100%;
+    padding: .9rem;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--f-head);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1.4rem;
+    letter-spacing: .01em;
+    transition: background .2s, transform .1s;
+  }
+  .calc-btn:hover { background: #152d22 }
+  .calc-btn:active { transform: scale(.98) }
+
+  /* ── RESULTS ── */
+  .results-col { display: flex; flex-direction: column; gap: 1.2rem }
+
+  /* verdict card */
+  .verdict {
+    border-radius: var(--radius);
+    padding: 1.6rem 1.8rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict.buy  { background: var(--green); color: #fff }
+  .verdict.rent { background: var(--ink);   color: #fff }
+  .verdict.draw { background: var(--gold);  color: var(--ink) }
+  .verdict::after {
+    content: attr(data-icon);
+    position: absolute;
+    right: 1.5rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 5rem;
+    opacity: .08;
+    pointer-events: none;
+  }
+  .verdict-label {
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    opacity: .7;
+    margin-bottom: .4rem;
+  }
+  .verdict h3 {
+    font-family: var(--f-head);
+    font-size: 1.55rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: .5rem;
+  }
+  .verdict p { font-size: .85rem; opacity: .8; line-height: 1.55; max-width: 480px }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .kpi-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.4rem;
+  }
+  .kpi-card.buy-card { border-top: 3px solid var(--green) }
+  .kpi-card.rent-card { border-top: 3px solid var(--gold) }
+  .kpi-top {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .8rem;
+  }
+  .kpi-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-green { background: var(--green) }
+  .dot-gold  { background: var(--gold) }
+  .kpi-title { font-size: .75rem; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--muted) }
+  .kpi-amount {
+    font-family: var(--f-head);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: .3rem;
+  }
+  .kpi-sub { font-size: .75rem; color: var(--muted) }
+  .kpi-details {
+    margin-top: .9rem;
+    padding-top: .9rem;
+    border-top: 1px solid var(--line);
+  }
+  .kpi-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: .78rem;
+    color: var(--muted);
+    padding: .2rem 0;
+  }
+  .kpi-row strong { color: var(--ink); font-weight: 500 }
+
+  /* chart */
+  .chart-wrap {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 1.4rem 1.5rem;
+  }
+  .chart-head {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  .chart-head h3 {
+    font-family: var(--f-head);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .chart-sub { font-size: .78rem; color: var(--muted) }
+  .chart-container { position: relative; height: 220px }
+  .legend {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: .9rem;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .75rem;
+    color: var(--muted);
+  }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50% }
+
+  /* breakeven banner */
+  .breakeven {
+    background: var(--sand);
+    border-radius: 12px;
+    padding: .9rem 1.2rem;
+    font-size: .82rem;
+    color: var(--ink);
+    line-height: 1.5;
+    border-left: 3px solid var(--gold);
+    margin-top: .4rem;
+  }
+  .breakeven strong { font-weight: 600 }
+
+  /* tip rows */
+  .tips {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    padding: 1.3rem 1.5rem;
+  }
+  .tips h3 {
+    font-family: var(--f-head);
+    font-size: .95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .tip {
+    display: flex;
+    gap: .75rem;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: .82rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .tip:last-child { border-bottom: none }
+  .tip-icon {
+    font-size: .9rem;
+    flex-shrink: 0;
+    margin-top: .05rem;
+  }
+
+  /* empty state */
+  .empty {
+    text-align: center;
+    padding: 3.5rem 2rem;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4 }
+  .empty h3 {
+    font-family: var(--f-head);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: .5rem;
+  }
+  .empty p { font-size: .85rem; line-height: 1.6 }
+
+  /* export btn */
+  .export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .55rem 1.1rem;
+    border: 1.5px solid var(--green);
+    border-radius: 9px;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--green);
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--f-body);
+    transition: all .15s;
+    margin-top: .75rem;
+  }
+  .export-btn:hover { background: var(--green); color: #fff }
+
+  /* responsive */
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr 1fr }
+    .quartier-grid { grid-template-columns: repeat(3,1fr) }
+  }
+  @media (max-width: 500px) {
+    .kpi-grid { grid-template-columns: 1fr }
+    .quartier-grid { grid-template-columns: repeat(2,1fr) }
+  }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px) }
+    to   { opacity: 1; transform: translateY(0) }
+  }
+  .anim { animation: fadeUp .35s ease both }
+  .anim-d1 { animation-delay: .05s }
+  .anim-d2 { animation-delay: .12s }
+  .anim-d3 { animation-delay: .19s }
+  .anim-d4 { animation-delay: .26s }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: .75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Outil de simulation immobilière</p>
+    <h1>Vaut-il mieux <em>louer ou acheter</em> à Abidjan ?</h1>
+    <p class="header-sub">Comparez le coût réel sur 10, 15 ou 20 ans avec les taux bancaires ivoiriens, adaptés à votre quartier.</p>
+    <span class="badge-ci"><span class="flag">🇨🇮</span> Données adaptées à la Côte d'Ivoire — FCFA</span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ═══ LEFT PANEL : INPUTS ═══ -->
+  <div>
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-icon icon-green">🏠</div>
+        <h2>Paramètres de votre projet</h2>
+      </div>
+      <div class="panel-body">
+
+        <!-- Quartier -->
+        <div class="field-group">
+          <label>Choisissez votre quartier <span class="hint">prix moyens du marché</span></label>
+          <div class="quartier-grid" id="quartierGrid"></div>
+        </div>
+
+        <!-- Achat -->
+        <div class="field-sep">Scénario Achat</div>
+
+        <div class="field-group">
+          <label>Prix du bien <span class="hint">FCFA</span></label>
+          <div class="input-wrap">
+            <input type="number" id="prixBien" value="85000000" step="1000000">
+            <span class="input-unit">FCFA</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Apport personnel <span class="hint">min. 20% recommandé</span></label>
+          <div class="input-wrap">
+            <input type="number" id="apport" value="17000000" step="500000">
+            <span class="input-unit">FCFA</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Taux d'intérêt annuel <span class="hint">banques CI</span></label>
+          <div class="input-wrap">
+            <input type="number" id="taux" value="8.5" step="0.1" min="1" max="25">
+            <span class="input-unit">%</span>
+          </div>
+          <div class="taux-presets">
+            <span style="font-size:.7rem;color:var(--muted);align-self:center;">Présets :</span>
+            <button class="taux-btn" onclick="setTaux(7)">BICICI 7%</button>
+            <button class="taux-btn active" onclick="setTaux(8.5)">SIB 8.5%</button>
+            <button class="taux-btn" onclick="setTaux(9.5)">SGBCI 9.5%</button>
+            <button class="taux-btn" onclick="setTaux(11)">BNI 11%</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Durée du prêt</label>
+          <div class="duration-grid" id="durGrid">
+            <button class="dur-btn" onclick="setDur(10, this)">10 ans</button>
+            <button class="dur-btn" onclick="setDur(15, this)">15 ans</button>
+            <button class="dur-btn active" onclick="setDur(20, this)">20 ans</button>
+            <button class="dur-btn" onclick="setDur(25, this)">25 ans</button>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Charges annuelles estimées <span class="hint">entretien, assurance…</span></label>
+          <div class="input-wrap">
+            <input type="number" id="charges" value="1" step="0.1" min="0" max="5">
+            <span class="input-unit">% du bien</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Valorisation annuelle du bien <span class="hint">Abidjan ~4–6%/an</span></label>
+          <div class="input-wrap">
+            <input type="number" id="valorisation" value="5" step="0.5" min="0" max="15">
+            <span class="input-unit">%/an</span>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="field-sep">Scénario Location</div>
+
+        <div class="field-group">
+          <label>Loyer mensuel actuel <span class="hint">FCFA</span></label>
+          <div class="input-wrap">
+            <input type="number" id="loyer" value="350000" step="10000">
+            <span class="input-unit">FCFA</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Hausse annuelle du loyer <span class="hint">typ. 3–5% CI</span></label>
+          <div class="input-wrap">
+            <input type="number" id="hausseLoyer" value="4" step="0.5" min="0" max="15">
+            <span class="input-unit">%/an</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Rendement si apport placé <span class="hint">BRVM, tontine, OPCVM</span></label>
+          <div class="input-wrap">
+            <input type="number" id="rendPlacement" value="6" step="0.5" min="0" max="20">
+            <span class="input-unit">%/an</span>
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculer()">Calculer ma simulation →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT : RESULTS ═══ -->
+  <div class="results-col" id="resultsCol">
+    <div class="panel">
+      <div class="empty">
+        <div class="empty-icon">📊</div>
+        <h3>Votre analyse apparaîtra ici</h3>
+        <p>Renseignez vos paramètres à gauche et cliquez sur <strong>Calculer</strong> pour obtenir une comparaison complète adaptée à votre situation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Simulation indicative — Côte d'Ivoire — Résultats basés sur vos hypothèses, ne constituent pas un conseil financier.
+</footer>
+
+<script>
+// ── DATA QUARTIERS ──
+const quartiers = [
+  { nom:'Cocody',     prixMoy:120000000, loyerMoy:480000  },
+  { nom:'Plateau',    prixMoy:200000000, loyerMoy:900000  },
+  { nom:'Riviera',    prixMoy:110000000, loyerMoy:420000  },
+  { nom:'Marcory',    prixMoy:75000000,  loyerMoy:280000  },
+  { nom:'Yopougon',   prixMoy:45000000,  loyerMoy:160000  },
+  { nom:'2 Plateaux', prixMoy:160000000, loyerMoy:650000  },
+];
+
+let selectedDur = 20;
+let chart = null;
+
+// ── BUILD QUARTIER GRID ──
+const qGrid = document.getElementById('quartierGrid');
+quartiers.forEach((q, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'q-btn' + (i === 0 ? ' active' : '');
+  btn.innerHTML = `<span class="q-name">${q.nom}</span><span class="q-price">${fmt(q.prixMoy)} FCFA</span>`;
+  btn.onclick = () => {
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('prixBien').value   = q.prixMoy;
+    document.getElementById('apport').value     = Math.round(q.prixMoy * 0.2);
+    document.getElementById('loyer').value      = q.loyerMoy;
+  };
+  qGrid.appendChild(btn);
+});
+
+// Init with Cocody
+document.getElementById('prixBien').value  = 120000000;
+document.getElementById('apport').value   = 24000000;
+document.getElementById('loyer').value    = 480000;
+
+function setTaux(v) {
+  document.getElementById('taux').value = v;
+  document.querySelectorAll('.taux-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function setDur(v, el) {
+  selectedDur = v;
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function fmt(n) {
+  return Math.round(n).toLocaleString('fr-FR');
+}
+function fmtM(n) {
+  if (Math.abs(n) >= 1e9) return (n/1e9).toFixed(1) + ' Md';
+  if (Math.abs(n) >= 1e6) return (n/1e6).toFixed(1) + ' M';
+  return fmt(n);
+}
+
+// ── CORE CALCULATION ──
+function calculer() {
+  const prix     = +document.getElementById('prixBien').value;
+  const apport   = +document.getElementById('apport').value;
+  const tauxAn   = +document.getElementById('taux').value / 100;
+  const duree    = selectedDur;
+  const chargesPct = +document.getElementById('charges').value / 100;
+  const valoPct  = +document.getElementById('valorisation').value / 100;
+  const loyerM   = +document.getElementById('loyer').value;
+  const haussePct = +document.getElementById('hausseLoyer').value / 100;
+  const rendPct  = +document.getElementById('rendPlacement').value / 100;
+
+  const capital  = prix - apport;
+  const tauxM    = tauxAn / 12;
+  const n        = duree * 12;
+
+  // Mensualité
+  const mensualite = capital * tauxM * Math.pow(1 + tauxM, n) / (Math.pow(1 + tauxM, n) - 1);
+
+  // Calcul année par année
+  let coutAchat  = apport; // coût total achat (tout sorti)
+  let coutLoyer  = 0;
+  let valeurBien = prix;
+  let loyerCourant = loyerM;
+  let placementLoyer = apport; // apport investi si on loue
+
+  const yearsData = [];
+  let breakeven = null;
+
+  for (let y = 1; y <= duree; y++) {
+    // Achat : mensualités + charges - valeur bien
+    const mensAnnee = mensualite * 12;
+    const chargesAnnee = prix * chargesPct;
+    coutAchat += mensAnnee + chargesAnnee;
+    valeurBien *= (1 + valoPct);
+    const patrimoineAchat = valeurBien - (capital * Math.pow(1 + tauxM, y * 12) - capital); // simplifié
+    const coutNetAchat = coutAchat - valeurBien;
+
+    // Location : loyers + placement de l'apport
+    const loyerAnnee = loyerCourant * 12;
+    coutLoyer += loyerAnnee;
+    loyerCourant *= (1 + haussePct);
+    placementLoyer *= (1 + rendPct);
+    const coutNetLoyer = coutLoyer - (placementLoyer - apport);
+
+    yearsData.push({
+      year: y,
+      achat: Math.round(coutNetAchat),
+      louer: Math.round(coutNetLoyer),
+      mensualite: Math.round(mensualite),
+      loyerY: Math.round(loyerCourant),
+    });
+
+    if (!breakeven && coutNetAchat < coutNetLoyer) {
+      breakeven = y;
+    }
+  }
+
+  const final = yearsData[yearsData.length - 1];
+  const diff = final.louer - final.achat;
+  const avantageux = diff > 0 ? 'buy' : diff < -500000 ? 'rent' : 'draw';
+
+  renderResults({
+    yearsData, final, diff, avantageux, breakeven,
+    mensualite, loyerM, duree, prix, apport, capital, tauxAn, valoPct,
+    chargesPct, haussePct, rendPct
+  });
+}
+
+function renderResults(d) {
+  const col = document.getElementById('resultsCol');
+  const { yearsData, final, diff, avantageux, breakeven, mensualite, loyerM, duree, prix, apport, capital, tauxAn, valoPct, chargesPct, haussePct, rendPct } = d;
+
+  const totalMensualites = mensualite * 12 * duree;
+  const totalCharges = prix * chargesPct * duree;
+  const valeurFinaleBien = prix * Math.pow(1 + valoPct, duree);
+  const totalLoyers = yearsData.reduce((s, y) => s + y.loyerY * 12, 0);
+  const placementFinal = apport * Math.pow(1 + rendPct, duree);
+
+  let verdictTxt = '', verdictSub = '', verdictIcon = '';
+  if (avantageux === 'buy') {
+    verdictTxt = `Acheter est plus avantageux sur ${duree} ans`;
+    verdictSub = `En devenant propriétaire, vous économisez <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à la location sur la même période, en tenant compte de la valorisation du bien.`;
+    verdictIcon = '🏠';
+  } else if (avantageux === 'rent') {
+    verdictTxt = `Louer est plus avantageux sur ${duree} ans`;
+    verdictSub = `En louant et en plaçant votre apport, vous optimisez de <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à l'achat sur la même période.`;
+    verdictIcon = '🔑';
+  } else {
+    verdictTxt = 'Les deux options sont équivalentes';
+    verdictSub = `L'écart est inférieur à 500 000 FCFA sur ${duree} ans. La décision dépend surtout de votre stabilité professionnelle et de vos projets de vie.`;
+    verdictIcon = '⚖';
+  }
+
+  const breakevenHtml = breakeven
+    ? `<div class="breakeven">📍 <strong>Point de bascule :</strong> l'achat devient plus rentable que la location à partir de <strong>l'année ${breakeven}</strong>. Si vous comptez rester moins longtemps, mieux vaut louer.</div>`
+    : `<div class="breakeven">📍 Sur la période analysée, l'achat ne rattrape pas la location. Envisagez une durée plus longue ou un loyer plus élevé.</div>`;
+
+  col.innerHTML = `
+    <div class="verdict ${avantageux} anim" data-icon="${verdictIcon}">
+      <div class="verdict-label">Conclusion de votre simulation</div>
+      <h3>${verdictTxt}</h3>
+      <p>${verdictSub}</p>
+      <button class="export-btn" onclick="window.print()">↓ Imprimer / Sauvegarder</button>
+    </div>
+
+    <div class="kpi-grid anim anim-d1">
+      <div class="kpi-card buy-card">
+        <div class="kpi-top"><div class="kpi-dot dot-green"></div><div class="kpi-title">Scénario Achat</div></div>
+        <div class="kpi-amount">${fmtM(final.achat)} FCFA</div>
+        <div class="kpi-sub">coût net sur ${duree} ans (après valorisation)</div>
+        <div class="kpi-details">
+          <div class="kpi-row"><span>Mensualité</span><strong>${fmt(Math.round(mensualite))} FCFA</strong></div>
+          <div class="kpi-row"><span>Total remboursé</span><strong>${fmtM(totalMensualites)} FCFA</strong></div>
+          <div class="kpi-row"><span>Charges cumulées</span><strong>${fmtM(totalCharges)} FCFA</strong></div>
+          <div class="kpi-row"><span>Valeur bien en ${new Date().getFullYear() + duree}</span><strong>${fmtM(valeurFinaleBien)} FCFA</strong></div>
+        </div>
+      </div>
+      <div class="kpi-card rent-card">
+        <div class="kpi-top"><div class="kpi-dot dot-gold"></div><div class="kpi-title">Scénario Location</div></div>
+        <div class="kpi-amount">${fmtM(final.louer)} FCFA</div>
+        <div class="kpi-sub">coût net sur ${duree} ans (après placement apport)</div>
+        <div class="kpi-details">
+          <div class="kpi-row"><span>Loyer mensuel aujourd'hui</span><strong>${fmt(loyerM)} FCFA</strong></div>
+          <div class="kpi-row"><span>Total loyers cumulés</span><strong>${fmtM(totalLoyers)} FCFA</strong></div>
+          <div class="kpi-row"><span>Hausse loyer / an</span><strong>${haussePct * 100}%</strong></div>
+          <div class="kpi-row"><span>Apport placé → valeur</span><strong>${fmtM(placementFinal)} FCFA</strong></div>
+        </div>
+      </div>
+    </div>
+
+    ${breakevenHtml}
+
+    <div class="chart-wrap anim anim-d2">
+      <div class="chart-head">
+        <h3>Évolution du coût net cumulé</h3>
+        <span class="chart-sub">en millions FCFA</span>
+      </div>
+      <div class="chart-container"><canvas id="myChart"></canvas></div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Achat (coût net)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Location (coût net)</div>
+      </div>
+    </div>
+
+    <div class="tips anim anim-d3">
+      <h3>Points clés pour votre décision</h3>
+      <div class="tip"><div class="tip-icon">🏦</div><div>Les banques ivoiriennes exigent généralement <strong>20 à 30% d'apport</strong>. Un apport plus élevé réduit les intérêts et améliore le score crédit.</div></div>
+      <div class="tip"><div class="tip-icon">📈</div><div>L'immobilier à Abidjan a connu une valorisation moyenne de <strong>4 à 7% par an</strong> dans les quartiers résidentiels entre 2015 et 2024.</div></div>
+      <div class="tip"><div class="tip-icon">⚠️</div><div>Prévoyez des frais d'acte notarié et de mutation d'environ <strong>10 à 15% du prix</strong> du bien, non inclus dans cette simulation.</div></div>
+      <div class="tip"><div class="tip-icon">💡</div><div>Si vous prévoyez de rester <strong>moins de 7 ans</strong>, la location est souvent plus flexible et moins coûteuse à court terme.</div></div>
+    </div>
+  `;
+
+  // ── CHART ──
+  if (chart) chart.destroy();
+  const ctx = document.getElementById('myChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: yearsData.map(y => `An ${y.year}`),
+      datasets: [
+        {
+          label: 'Achat',
+          data: yearsData.map(y => +(y.achat / 1e6).toFixed(1)),
+          borderColor: '#1E3D2F',
+          backgroundColor: 'rgba(30,61,47,.07)',
+          borderWidth: 2.5,
+          tension: .4,
+          fill: true,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+        },
+        {
+          label: 'Location',
+          data: yearsData.map(y => +(y.louer / 1e6).toFixed(1)),
+          borderColor: '#C8922A',
+          backgroundColor: 'rgba(200,146,42,.07)',
+          borderWidth: 2.5,
+          tension: .4,
+          fill: true,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.dataset.label} : ${ctx.parsed.y.toFixed(1)} M FCFA`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'DM Sans', size: 11 }, color: '#6B6455',
+            maxTicksLimit: 8 }
+        },
+        y: {
+          grid: { color: 'rgba(0,0,0,.05)' },
+          ticks: {
+            font: { family: 'DM Sans', size: 11 },
+            color: '#6B6455',
+            callback: v => v + ' M'
+          }
+        }
+      }
+    }
+  });
+}
+
+// Lancer au load pour afficher un exemple
+window.addEventListener('load', () => setTimeout(calculer, 300));
+</script>
+</body>
+</html>

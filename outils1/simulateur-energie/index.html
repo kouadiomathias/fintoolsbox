@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Simulateur de Facture d'Énergie 2026 | Électricité & Gaz – Estimation Gratuite</title>
+    <meta name="description" content="Estimez votre facture d'électricité ou de gaz selon votre surface, vos appareils et vos habitudes. Comparez les offres, visualisez les économies possibles et téléchargez un rapport PDF personnalisé.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Simulateur de Facture d'Énergie 2026 | Estimation Électricité & Gaz">
+    <meta property="og:description" content="Calculez votre facture énergétique en France. Comparez le tarif réglementé et les offres de marché, recevez un rapport PDF et une carte partageable.">
+    <meta property="og:url" content="https://www.fintoolsbox.com/simulateur-energie/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Simulateur de Facture d'Énergie 2026">
+    <meta name="twitter:description" content="Estimation instantanée de votre facture d'électricité ou de gaz. Comparez, économisez, partagez.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <style>
+        :root {
+            --bg: #f7f9f6;
+            --surface: #ffffff;
+            --surface-alt: #f0f4ef;
+            --primary: #1b3b2b;
+            --primary-light: #2d5a3e;
+            --accent: #e9a23b;
+            --accent-light: #f6c26b;
+            --accent-dark: #c7851a;
+            --text: #1a1f1c;
+            --text-secondary: #4b5350;
+            --text-muted: #7a8782;
+            --border: #dce4dd;
+            --border-light: #edf2ee;
+            --success: #2e7d32;
+            --warning: #e69b00;
+            --danger: #c44536;
+            --blue-accent: #226b5b;
+            --shadow-sm: 0 1px 3px rgba(27, 59, 43, 0.06);
+            --shadow-md: 0 4px 16px rgba(27, 59, 43, 0.08);
+            --shadow-lg: 0 8px 32px rgba(27, 59, 43, 0.12);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: var(--primary);
+            position: sticky; top:0; z-index:100;
+            box-shadow: 0 2px 20px rgba(27,59,43,0.2);
+        }
+        .header-inner {
+            max-width: 1200px; margin:0 auto; padding:14px 24px;
+            display: flex; align-items:center; justify-content:space-between; gap:16px;
+        }
+        .logo {
+            display: flex; align-items:center; gap:10px; text-decoration:none;
+            color:#fff; font-weight:700; font-size:1.25rem; letter-spacing:-0.3px;
+        }
+        .logo-icon {
+            width:38px; height:38px; border-radius:10px;
+            background: var(--accent); display:flex; align-items:center; justify-content:center;
+            font-size:1.2rem; color:var(--primary); font-weight:800; flex-shrink:0;
+        }
+        .header-badge {
+            background: rgba(255,255,255,0.1); color:#fff; padding:6px 14px;
+            border-radius:20px; font-size:0.8rem; font-weight:500; letter-spacing:0.3px;
+            border:1px solid rgba(255,255,255,0.2); white-space:nowrap;
+        }
+
+        .main-container {
+            max-width:1200px; margin:0 auto; padding:24px 20px 60px;
+            display:grid; grid-template-columns: 420px 1fr; gap:24px;
+        }
+        @media (max-width:1024px) { .main-container { grid-template-columns:1fr; max-width:600px; } }
+        @media (max-width:600px) { .main-container { padding:12px 10px 40px; } }
+
+        .card {
+            background:var(--surface); border-radius:var(--radius-lg); padding:24px;
+            border:1px solid var(--border); box-shadow:var(--shadow-sm); transition:var(--transition);
+        }
+        .card:hover { box-shadow:var(--shadow-md); }
+        .card-header {
+            font-weight:700; font-size:1rem; letter-spacing:-0.2px; margin-bottom:16px;
+            display:flex; align-items:center; gap:8px; color:var(--primary);
+        }
+        .card-header .icon-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+
+        .form-panel { display:flex; flex-direction:column; gap:16px; position:sticky; top:90px; align-self:start; }
+        @media (max-width:1024px) { .form-panel { position:relative; top:auto; } }
+        .form-group { display:flex; flex-direction:column; gap:4px; }
+        .form-group label { font-weight:600; font-size:0.82rem; color:var(--text-secondary); letter-spacing:-0.1px; }
+        .input-wrapper { position:relative; display:flex; align-items:center; }
+        .input-wrapper input, .input-wrapper select {
+            width:100%; padding:12px 14px; border:2px solid var(--border); border-radius:var(--radius);
+            font-size:1rem; font-family:'Inter',sans-serif; font-weight:500;
+            background:var(--surface-alt); transition:var(--transition); color:var(--text);
+            -moz-appearance:textfield; appearance:none;
+        }
+        .input-wrapper select { background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%234b5350"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }
+        .input-wrapper input:focus, .input-wrapper select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 4px rgba(233,162,59,0.1); background:#fff; }
+        .input-suffix { position:absolute; right:14px; font-weight:600; color:var(--text-muted); font-size:0.9rem; pointer-events:none; }
+        .radio-group { display:flex; gap:12px; flex-wrap:wrap; }
+        .radio-group label { display:flex; align-items:center; gap:6px; font-weight:500; cursor:pointer; padding:8px 14px; border:2px solid var(--border); border-radius:var(--radius); transition:var(--transition); background:var(--surface-alt); }
+        .radio-group label.active { border-color:var(--accent); background:var(--accent); color:#fff; }
+        .radio-group input[type=radio] { accent-color:var(--accent); width:16px; height:16px; }
+
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center; gap:8px;
+            padding:13px 24px; border-radius:var(--radius); font-weight:600; font-size:0.95rem;
+            cursor:pointer; border:none; font-family:'Inter',sans-serif; letter-spacing:-0.2px;
+            transition:var(--transition); white-space:nowrap; text-decoration:none;
+        }
+        .btn-primary { background:var(--accent); color:var(--primary); box-shadow:0 4px 12px rgba(233,162,59,0.3); }
+        .btn-primary:hover { background:var(--accent-dark); color:#fff; transform:translateY(-1px); }
+        .btn-secondary { background:var(--surface); color:var(--primary); border:2px solid var(--border); }
+        .btn-secondary:hover { border-color:var(--accent); background:var(--surface-alt); }
+        .btn-outline { background:transparent; color:var(--primary); border:2px solid var(--border); }
+        .btn-outline:hover { border-color:var(--accent); }
+        .btn-sm { padding:8px 16px; font-size:0.8rem; border-radius:8px; }
+        .btn-xs { padding:5px 10px; font-size:0.72rem; border-radius:6px; font-weight:500; }
+        .btn-group { display:flex; gap:8px; flex-wrap:wrap; }
+
+        .hero-metric {
+            background:var(--primary); color:#fff; border-radius:var(--radius-xl);
+            padding:28px 32px; display:flex; flex-wrap:wrap; gap:24px; align-items:center;
+            justify-content:space-between; box-shadow:var(--shadow-lg);
+        }
+        .hero-metric .metric-main { display:flex; flex-direction:column; gap:2px; }
+        .hero-metric .metric-label { font-size:0.8rem; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.6); }
+        .hero-metric .metric-value { font-size:2.8rem; font-weight:900; letter-spacing:-1px; color:var(--accent-light); line-height:1; }
+        .hero-metric .metric-sub { font-size:0.85rem; color:rgba(255,255,255,0.7); }
+        .metrics-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:12px; }
+        .metric-card { background:var(--surface); border-radius:var(--radius); padding:16px 18px; border:1px solid var(--border); box-shadow:var(--shadow-sm); text-align:center; }
+        .metric-card .mc-value { font-size:1.4rem; font-weight:800; color:var(--primary); }
+        .metric-card .mc-label { font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+        .explanation-box { background:var(--surface-alt); border-radius:var(--radius); padding:16px 20px; border-left:4px solid var(--accent); font-size:0.88rem; color:var(--text-secondary); }
+        .chart-wrap { position:relative; width:100%; height:280px; }
+        .chart-wrap canvas { width:100%!important; height:100%!important; }
+        .share-card-preview {
+            background:linear-gradient(135deg, #1b3b2b 0%, #2d5a3e 100%);
+            color:#fff; border-radius:var(--radius-lg); padding:24px 28px;
+            display:flex; flex-direction:column; gap:12px; max-width:400px;
+        }
+        .toast {
+            position:fixed; bottom:24px; right:24px; background:var(--primary);
+            color:#fff; padding:12px 20px; border-radius:24px; font-weight:600;
+            font-size:0.85rem; z-index:999; box-shadow:0 8px 24px rgba(0,0,0,0.2);
+            animation:slideUp 0.4s cubic-bezier(0.16,1,0.3,1); display:none;
+        }
+        @keyframes slideUp { from{transform:translateY(20px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+
+        .faq-section { margin-top:48px; }
+        .faq-item { border-bottom:1px solid var(--border); padding:16px 0; cursor:pointer; }
+        .faq-question { font-weight:600; display:flex; justify-content:space-between; align-items:center; }
+        .faq-answer { max-height:0; overflow:hidden; transition:max-height 0.3s ease; color:var(--text-secondary); font-size:0.9rem; }
+        .faq-item.open .faq-answer { max-height:300px; margin-top:10px; }
+
+        @media (max-width:768px) {
+            .hero-metric { padding:20px; }
+            .hero-metric .metric-value { font-size:2rem; }
+            .metrics-grid { grid-template-columns: repeat(2,1fr); }
+            .btn-group .btn { width:100%; }
+        }
+        @media print {
+            .header,.form-panel,.btn,.toast,.faq-section { display:none!important; }
+            .main-container { display:block; max-width:100%; }
+            .card { box-shadow:none; border:1px solid #ddd; }
+            .hero-metric { background:#fff!important; color:#000!important; }
+            .hero-metric .metric-value { color:#000!important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>Simulateur Énergie</span>
+            </a>
+            <span class="header-badge">🇫🇷 Tarifs France 2026</span>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="form-panel" id="formPanel">
+            <div class="card">
+                <div class="card-header"><span class="icon-dot"></span> Votre situation</div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div class="form-group">
+                        <label>Type d'énergie à estimer</label>
+                        <div class="radio-group" id="energyTypeGroup">
+                            <label class="active"><input type="radio" name="energyType" value="electricite" checked> Électricité</label>
+                            <label><input type="radio" name="energyType" value="gaz"> Gaz</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Surface habitable (m²)</label>
+                        <div class="input-wrapper"><input type="number" id="surface" value="80" min="10" max="500" step="1"><span class="input-suffix">m²</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre d'occupants</label>
+                        <div class="input-wrapper"><input type="number" id="occupants" value="3" min="1" max="15"></div>
+                    </div>
+                    <div class="form-group" id="heatingGroup">
+                        <label>Chauffage principal</label>
+                        <div class="input-wrapper">
+                            <select id="heatingType">
+                                <option value="radiateurs">Radiateurs électriques</option>
+                                <option value="pompeChaleur">Pompe à chaleur</option>
+                                <option value="chaudiereGaz">Chaudière gaz standard</option>
+                                <option value="chaudiereCondensation">Chaudière gaz condensation</option>
+                                <option value="aucun">Aucun / logement passif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Qualité d'isolation</label>
+                        <div class="input-wrapper">
+                            <select id="insulation">
+                                <option value="bonne">Bonne (récent, normes RT2012)</option>
+                                <option value="moyenne" selected>Moyenne (années 2000)</option>
+                                <option value="mauvaise">Mauvaise (ancien, passoire thermique)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="hotWaterGroup" style="display:none;">
+                        <label>Eau chaude sanitaire</label>
+                        <div class="radio-group" id="hotWaterType">
+                            <label class="active"><input type="radio" name="hotWater" value="gaz" checked> Au gaz</label>
+                            <label><input type="radio" name="hotWater" value="electrique"> Électrique</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fournisseur & tarif</label>
+                        <div class="input-wrapper">
+                            <select id="tariffOption">
+                                <option value="reglemente">Tarif réglementé (EDF / Engie)</option>
+                                <option value="marche">Offre de marché (-5% sur le kWh)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="updateUI()" style="width:100%;"> Estimer ma facture</button>
+        </aside>
+
+        <section class="results-area" id="resultsArea">
+            <div class="hero-metric" id="heroMetric">
+                <div class="metric-main">
+                    <span class="metric-label" id="heroLabel">Facture annuelle estimée</span>
+                    <span class="metric-value" id="heroCost">—</span>
+                    <span class="metric-sub" id="heroSub">Complétez le formulaire</span>
+                </div>
+                <span class="metric-badge" id="heroBadge" style="background:var(--accent);color:var(--primary);padding:8px 18px;border-radius:20px;font-weight:700;display:none;"></span>
+            </div>
+
+            <div class="metrics-grid" id="quickMetrics">
+                <div class="metric-card"><div class="mc-value" id="metConso">—</div><div class="mc-label">Conso. annuelle</div></div>
+                <div class="metric-card"><div class="mc-value" id="metPrixKwh">—</div><div class="mc-label">Prix moyen/kWh</div></div>
+                <div class="metric-card"><div class="mc-value" id="metMensuel">—</div><div class="mc-label">Mensualité moyenne</div></div>
+                <div class="metric-card"><div class="mc-value" id="metAbonnement">—</div><div class="mc-label">Abonnement/an</div></div>
+            </div>
+
+            <div class="card"><div class="card-header"><span class="icon-dot"></span> Répartition de la consommation</div><div class="chart-wrap"><canvas id="doughnutChart"></canvas></div></div>
+            <div class="card"><div class="card-header"><span class="icon-dot"></span> Évolution mensuelle de la facture</div><div class="chart-wrap"><canvas id="barChart"></canvas></div></div>
+
+            <div class="card" id="comparisonCard">
+                <div class="card-header"><span class="icon-dot"></span> Économies potentielles</div>
+                <div id="comparisonScenarios" class="metrics-grid" style="grid-template-columns:1fr 1fr;"></div>
+            </div>
+
+            <div class="explanation-box" id="explanationBox">
+                <strong>💡 Analyse :</strong> <span id="explanationText">Remplissez les informations pour obtenir une estimation personnalisée.</span>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="downloadPDF()"> Télécharger le rapport PDF</button>
+                <button class="btn btn-secondary" onclick="generateShareCard()"> Créer une carte à partager</button>
+            </div>
+        </section>
+    </div>
+
+    <div style="max-width:1200px;margin:0 auto;padding:0 20px;">
+        <div class="faq-section">
+            <h2 style="color:var(--primary);margin-bottom:20px;">Foire aux questions</h2>
+            <div class="faq-item"><div class="faq-question"> Comment fonctionne ce simulateur de facture ?<span>+</span></div><div class="faq-answer"><p>Notre outil estime votre consommation annuelle en kWh (électricité) ou en kWh PCS (gaz) à partir de votre surface, du nombre d'occupants, du mode de chauffage et de la qualité d'isolation. Il applique les tarifs réglementés français en vigueur (EDF pour l'électricité, Engie pour le gaz) ou une offre de marché avec une remise indicative de 5 %. Le résultat est immédiat, sans inscription.</p></div></div>
+            <div class="faq-item"><div class="faq-question"> Quels facteurs influencent le plus ma facture ?<span>+</span></div><div class="faq-answer"><p>Le chauffage représente en moyenne 60 à 70 % de la consommation d'un logement. La surface, l'isolation et le type de chauffage (électrique, pompe à chaleur, chaudière gaz) sont donc déterminants. Viennent ensuite l'eau chaude sanitaire et les appareils électroménagers.</p></div></div>
+            <div class="faq-item"><div class="faq-question"> Peut-on comparer les offres des fournisseurs ?<span>+</span></div><div class="faq-answer"><p>Oui, le simulateur vous propose deux profils tarifaires : le tarif réglementé (tarif bleu EDF ou tarif gaz Engie) et une offre de marché indicielle. Cela vous donne une idée des économies possibles en changeant de fournisseur.</p></div></div>
+            <div class="faq-item"><div class="faq-question"> Comment réduire efficacement ma facture ?<span>+</span></div><div class="faq-answer"><p>Baisser le thermostat de 1 °C fait économiser environ 7 % sur le chauffage. Améliorer l'isolation, installer une pompe à chaleur ou une chaudière à condensation, et utiliser des appareils électroménagers performants sont les leviers les plus efficaces.</p></div></div>
+            <div class="faq-item"><div class="faq-question"> Les tarifs sont-ils à jour ?<span>+</span></div><div class="faq-answer"><p>Les tarifs utilisés correspondent aux grilles en vigueur au 1er janvier 2026 (abonnement et prix du kWh TTC). Les offres de marché sont basées sur une remise moyenne de 5 %, constatée chez plusieurs fournisseurs alternatifs.</p></div></div>
+        </div>
+    </div>
+
+    <div id="shareCardContainer" style="position:absolute;left:-9999px;top:0;width:400px;">
+        <div class="share-card-preview" id="shareCardContent">
+            <div style="font-weight:700;font-size:0.9rem;"> Simulateur Énergie France</div>
+            <div style="font-size:0.75rem;opacity:0.7;" id="scDate"></div>
+            <div class="sc-big-number" style="font-size:2.2rem;font-weight:900;" id="scBigNumber">—</div>
+            <div style="font-weight:600;" id="scTitle">—</div>
+            <div style="font-size:0.8rem;opacity:0.9;" id="scDetail">—</div>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type":"Question","name":"Comment fonctionne ce simulateur de facture d'énergie ?","acceptedAnswer":{"@type":"Answer","text":"Notre outil estime votre consommation annuelle en kWh (électricité) ou en kWh PCS (gaz) à partir de votre surface, du nombre d'occupants, du mode de chauffage et de la qualité d'isolation. Il applique les tarifs réglementés français en vigueur ou une offre de marché indicative."}},
+                {"@type":"Question","name":"Quels facteurs influencent le plus ma facture ?","acceptedAnswer":{"@type":"Answer","text":"Le chauffage représente 60 à 70 % de la consommation. L'isolation, le type de chauffage et la surface sont déterminants."}},
+                {"@type":"Question","name":"Peut-on comparer les offres des fournisseurs ?","acceptedAnswer":{"@type":"Answer","text":"Oui, le simulateur compare le tarif réglementé et une offre de marché avec une remise indicative de 5 %."}},
+                {"@type":"Question","name":"Comment réduire efficacement ma facture d'énergie ?","acceptedAnswer":{"@type":"Answer","text":"Baisser le thermostat de 1°C économise 7% sur le chauffage. Améliorer l'isolation et installer un équipement performant sont les leviers clés."}},
+                {"@type":"Question","name":"Les tarifs sont-ils à jour ?","acceptedAnswer":{"@type":"Answer","text":"Les tarifs correspondent aux grilles en vigueur au 1er janvier 2026. Les offres de marché reflètent les remises couramment proposées."}}
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Simulateur de Facture d'Énergie",
+            "operatingSystem": "Web",
+            "applicationCategory": "FinanceApplication",
+            "description": "Estimez votre facture d'électricité ou de gaz selon votre surface, vos habitudes et comparez les offres.",
+            "url": "https://www.fintoolsbox.com/simulateur-energie/"
+        }
+    </script>
+
+    <script>
+        (function() {
+            const state = {
+                energyType: 'electricite',
+                surface: 80,
+                occupants: 3,
+                heatingType: 'radiateurs',
+                insulation: 'moyenne',
+                hotWater: 'gaz',
+                tariffOption: 'reglemente'
+            };
+
+            const $ = (id) => document.getElementById(id);
+            const inputs = ['surface','occupants','heatingType','insulation','tariffOption'];
+            const radioGroups = ['energyTypeGroup','hotWaterType'];
+
+            // ── TARIFS 2026 ──
+            const tariffs = {
+                electricite: {
+                    reglemente: { abonnement: 151.20, prixKwh: 0.2516 },
+                    marche: { abonnement: 151.20, prixKwh: 0.2390 }
+                },
+                gaz: {
+                    reglemente: { abonnement: 111.60, prixKwh: 0.1120 },
+                    marche: { abonnement: 111.60, prixKwh: 0.1064 }
+                }
+            };
+
+            // ── CALCUL CONSO ──
+            function estimateConsumption() {
+                const s = state;
+                let heatingKwh = 0, hotWaterKwh = 0, appliancesKwh = 0;
+                let heatingThermal = 0; // besoin thermique
+
+                // Besoin thermique chauffage (kWh/m²/an)
+                const baseHeatingNeed = {
+                    radiateurs: 130, pompeChaleur: 45, chaudiereGaz: 130, chaudiereCondensation: 110, aucun:0
+                }[s.heatingType] || 130;
+
+                const insulationFactor = { bonne:0.7, moyenne:1.0, mauvaise:1.4 }[s.insulation];
+                heatingThermal = baseHeatingNeed * s.surface * insulationFactor;
+
+                // Eau chaude (kWh thermique / personne)
+                const hotWaterBase = 600;
+                hotWaterKwh = hotWaterBase * s.occupants * insulationFactor;
+
+                // Appareils électriques (hors chauffage/ECS)
+                appliancesKwh = 1500 + Math.max(0, s.occupants-1) * 500;
+
+                // Conversion selon énergie
+                if (s.energyType === 'electricite') {
+                    let elecHeating = 0, elecHotWater = 0;
+                    if (s.heatingType === 'pompeChaleur') elecHeating = heatingThermal / 3; // COP 3
+                    else if (s.heatingType === 'radiateurs' || s.heatingType === 'aucun') elecHeating = heatingThermal;
+                    elecHotWater = hotWaterKwh; // électrique par défaut pour élec
+                    if (s.heatingType.includes('chaudiere')) { // gaz pour chauffage mais énergie élec ? on ignore
+                        elecHeating = 0; elecHotWater = 0;
+                    }
+                    return {
+                        consoPrincipale: elecHeating + elecHotWater + appliancesKwh,
+                        consoSecondaire: 0,
+                        breakdown: { chauffage: elecHeating, eauChaude: elecHotWater, appareils: appliancesKwh },
+                        abonnement: tariffs.electricite[s.tariffOption].abonnement,
+                        prixKwh: tariffs.electricite[s.tariffOption].prixKwh,
+                    };
+                } else { // gaz
+                    let gasHeating = 0, gasHotWater = 0;
+                    let elecResiduelle = appliancesKwh;
+                    const boilerEff = s.heatingType === 'chaudiereCondensation' ? 0.95 : 0.88;
+                    if (s.heatingType.includes('chaudiere')) {
+                        gasHeating = heatingThermal / boilerEff;
+                    }
+                    if (s.hotWater === 'gaz') {
+                        gasHotWater = hotWaterKwh / boilerEff;
+                        elecResiduelle = appliancesKwh; // l'électricité vient en plus
+                    } else {
+                        elecResiduelle = appliancesKwh + hotWaterKwh; // eau chaude électrique
+                    }
+                    const gasTotal = gasHeating + gasHotWater;
+                    return {
+                        consoPrincipale: gasTotal,
+                        consoSecondaire: elecResiduelle,
+                        breakdownGaz: { chauffage: gasHeating, eauChaude: gasHotWater },
+                        breakdownElec: { appareils: elecResiduelle },
+                        abonnement: tariffs.gaz[s.tariffOption].abonnement,
+                        prixKwh: tariffs.gaz[s.tariffOption].prixKwh,
+                    };
+                }
+            }
+
+            function calculateCost(estimation) {
+                if (state.energyType === 'electricite') {
+                    return {
+                        coutPrincipal: estimation.abonnement + estimation.consoPrincipale * estimation.prixKwh,
+                        coutSecondaire: 0,
+                        consoPrincipale: estimation.consoPrincipale
+                    };
+                } else {
+                    const coutGaz = estimation.abonnement + estimation.consoPrincipale * estimation.prixKwh;
+                    const coutElec = tariffs.electricite.reglemente.abonnement + estimation.consoSecondaire * tariffs.electricite.reglemente.prixKwh;
+                    return {
+                        coutPrincipal: coutGaz,
+                        coutSecondaire: coutElec,
+                        consoPrincipale: estimation.consoPrincipale
+                    };
+                }
+            }
+
+            // ── UI ──
+            function updateUI() {
+                const est = estimateConsumption();
+                const cost = calculateCost(est);
+                const totalAnnual = cost.coutPrincipal + cost.coutSecondaire;
+                const monthly = totalAnnual / 12;
+                const heroLabel = state.energyType === 'electricite' ? 'Facture électricité estimée' : 'Facture gaz estimée';
+                const heroSub = state.energyType === 'electricite' ?
+                    `${cost.consoPrincipale.toFixed(0)} kWh/an` :
+                    `${cost.consoPrincipale.toFixed(0)} kWh PCS gaz + ${est.consoSecondaire.toFixed(0)} kWh élec`;
+
+                $('heroLabel').textContent = heroLabel;
+                $('heroCost').textContent = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(totalAnnual);
+                $('heroSub').textContent = heroSub;
+                const badge = $('heroBadge');
+                if (cost.coutSecondaire > 0) {
+                    badge.style.display = 'inline-block';
+                    badge.textContent = `+ ${new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(cost.coutSecondaire)} électricité`;
+                } else badge.style.display = 'none';
+
+                $('metConso').textContent = (cost.consoPrincipale + est.consoSecondaire).toFixed(0) + ' kWh';
+                $('metPrixKwh').textContent = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', minimumFractionDigits:4 }).format(est.prixKwh);
+                $('metMensuel').textContent = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(monthly);
+                $('metAbonnement').textContent = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR', maximumFractionDigits:0 }).format(est.abonnement);
+
+                updateCharts(est);
+                updateComparison(est, cost, totalAnnual);
+                updateExplanation(est, cost, totalAnnual);
+            }
+
+            let doughnutChart, barChart;
+            function updateCharts(est) {
+                const ctx1 = $('doughnutChart');
+                if (doughnutChart) doughnutChart.destroy();
+                let labels=[], data=[];
+                if (state.energyType==='electricite') {
+                    labels = ['Chauffage','Eau chaude','Appareils'];
+                    data = [est.breakdown.chauffage, est.breakdown.eauChaude, est.breakdown.appareils];
+                } else {
+                    labels = ['Chauffage gaz','Eau chaude gaz'];
+                    data = [est.breakdownGaz.chauffage, est.breakdownGaz.eauChaude];
+                    if (est.consoSecondaire>0) { labels.push('Appareils élec.'); data.push(est.consoSecondaire); }
+                }
+                doughnutChart = new Chart(ctx1, {
+                    type:'doughnut',
+                    data:{
+                        labels:labels,
+                        datasets:[{data:data, backgroundColor:['#e9a23b','#f6c26b','#226b5b','#7a8782'], borderWidth:0 }]
+                    },
+                    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom'}} }
+                });
+
+                const ctx2 = $('barChart');
+                if (barChart) barChart.destroy();
+                const monthlyWeights = [0.08,0.07,0.08,0.09,0.11,0.13,0.14,0.13,0.09,0.07,0.05,0.04];
+                const consoPrincipale = est.consoPrincipale;
+                const monthlyData = monthlyWeights.map(w => w * consoPrincipale + (est.consoSecondaire||0)/12);
+                barChart = new Chart(ctx2, {
+                    type:'bar',
+                    data:{
+                        labels:['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'],
+                        datasets:[{label:'Consommation (kWh)', data:monthlyData, backgroundColor:'#e9a23b', borderRadius:6 }]
+                    },
+                    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} }
+                });
+            }
+
+            function updateComparison(est, cost, totalAnnual) {
+                const container = $('comparisonScenarios');
+                let html = '';
+                if (state.heatingType !== 'aucun') {
+                    const savingThermostat = totalAnnual * 0.07 * (est.consoPrincipale/(est.consoPrincipale+est.consoSecondaire||1));
+                    html += `<div class="metric-card"><div class="mc-value" style="color:#2e7d32;">- ${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(savingThermostat)}</div><div class="mc-label">En baissant le thermostat de 1°C</div></div>`;
+                }
+                if (state.insulation === 'mauvaise') {
+                    const savingInsul = totalAnnual * 0.15;
+                    html += `<div class="metric-card"><div class="mc-value" style="color:#2e7d32;">- ${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(savingInsul)}</div><div class="mc-label">Avec une isolation moyenne</div></div>`;
+                }
+                if (state.heatingType === 'radiateurs' && state.energyType==='electricite') {
+                    html += `<div class="metric-card"><div class="mc-value" style="color:#2e7d32;">~ -40%</div><div class="mc-label">En passant à une pompe à chaleur</div></div>`;
+                }
+                container.innerHTML = html || '<div class="metric-card"><div class="mc-value">—</div><div class="mc-label">Ajustez les paramètres</div></div>';
+            }
+
+            function updateExplanation(est, cost, totalAnnual) {
+                const parts = [];
+                parts.push(`Votre consommation annuelle estimée est de <strong>${(cost.consoPrincipale+est.consoSecondaire).toFixed(0)} kWh</strong>.`);
+                parts.push(`Cela représente une facture totale de <strong>${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(totalAnnual)}</strong>, soit environ <strong>${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(totalAnnual/12)} par mois</strong>.`);
+                if (state.energyType==='gaz' && cost.coutSecondaire>0) {
+                    parts.push(`La part gaz s'élève à <strong>${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(cost.coutPrincipal)}</strong> et l'électricité (appareils) à <strong>${new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(cost.coutSecondaire)}</strong>.`);
+                }
+                $('explanationText').innerHTML = parts.join(' ');
+            }
+
+            // ── EVENTS ──
+            function syncState() {
+                state.surface = parseFloat($('surface').value)||80;
+                state.occupants = parseInt($('occupants').value)||3;
+                state.heatingType = $('heatingType').value;
+                state.insulation = $('insulation').value;
+                state.tariffOption = $('tariffOption').value;
+                state.energyType = document.querySelector('input[name="energyType"]:checked').value;
+                const hotWaterRadio = document.querySelector('input[name="hotWater"]:checked');
+                state.hotWater = hotWaterRadio ? hotWaterRadio.value : 'gaz';
+                updateUI();
+            }
+
+            document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', syncState));
+            document.querySelectorAll('input[type=radio]').forEach(el => el.addEventListener('change', syncState));
+
+            document.getElementById('energyTypeGroup').addEventListener('change', function() {
+                const isGaz = document.querySelector('input[name="energyType"]:checked').value === 'gaz';
+                document.getElementById('hotWaterGroup').style.display = isGaz ? 'block' : 'none';
+                const heatingSelect = document.getElementById('heatingType');
+                if (isGaz) {
+                    heatingSelect.innerHTML = `<option value="chaudiereGaz">Chaudière gaz standard</option><option value="chaudiereCondensation">Chaudière gaz condensation</option><option value="aucun">Aucun</option>`;
+                } else {
+                    heatingSelect.innerHTML = `<option value="radiateurs">Radiateurs électriques</option><option value="pompeChaleur">Pompe à chaleur</option><option value="aucun">Aucun / passif</option>`;
+                }
+                syncState();
+            });
+            document.getElementById('energyTypeGroup').dispatchEvent(new Event('change'));
+
+            // style radio active
+            document.querySelectorAll('.radio-group').forEach(group => {
+                group.addEventListener('change', function(e) {
+                    if (e.target.type==='radio') {
+                        group.querySelectorAll('label').forEach(l => l.classList.remove('active'));
+                        e.target.closest('label').classList.add('active');
+                    }
+                });
+            });
+            document.querySelectorAll('.radio-group label.active input').forEach(r => r.checked = true);
+
+            // ── PDF / SHARE ──
+            async function downloadPDF() {
+                const toast = showToast('Génération du PDF...');
+                const reportDiv = document.createElement('div');
+                reportDiv.style.cssText = 'width:700px;padding:40px;background:#fff;font-family:Inter,sans-serif;';
+                const est = estimateConsumption();
+                const cost = calculateCost(est);
+                reportDiv.innerHTML = `<h1 style="color:#1b3b2b;">Rapport de simulation énergie</h1><p>${new Date().toLocaleDateString('fr-FR')}</p>
+                <table style="width:100%;margin:20px 0;">${Object.entries({
+                    'Surface': state.surface+' m²','Occupants':state.occupants,
+                    'Chauffage':state.heatingType,'Isolation':state.insulation,
+                    'Consommation':(cost.consoPrincipale+est.consoSecondaire).toFixed(0)+' kWh',
+                    'Facture annuelle':new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(cost.coutPrincipal+cost.coutSecondaire)
+                }).map(([k,v])=>`<tr><td>${k}</td><td><strong>${v}</strong></td></tr>`).join('')}</table>`;
+                document.body.appendChild(reportDiv);
+                reportDiv.style.position='absolute'; reportDiv.style.left='-9999px';
+                const canvas = await html2canvas(reportDiv,{scale:2});
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p','mm','a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                pdf.addImage(imgData,'PNG',0,0,pdfWidth,pdfHeight);
+                pdf.save('simulation-energie.pdf');
+                document.body.removeChild(reportDiv);
+                showToast('✅ PDF téléchargé');
+            }
+
+            async function generateShareCard() {
+                const est = estimateConsumption();
+                const cost = calculateCost(est);
+                document.getElementById('scDate').textContent = new Date().toLocaleDateString('fr-FR');
+                document.getElementById('scBigNumber').textContent = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(cost.coutPrincipal+cost.coutSecondaire);
+                document.getElementById('scTitle').textContent = state.energyType==='electricite'?'Facture électricité estimée':'Facture gaz estimée';
+                document.getElementById('scDetail').textContent = `${(cost.consoPrincipale+est.consoSecondaire).toFixed(0)} kWh/an · ${state.surface} m²`;
+                const container = document.getElementById('shareCardContainer');
+                container.style.position='fixed'; container.style.left='50%'; container.style.top='50%'; container.style.transform='translate(-50%,-50%)'; container.style.zIndex='9999';
+                await new Promise(r=>setTimeout(r,300));
+                const canvas = await html2canvas(document.getElementById('shareCardContent'),{scale:2});
+                const imgData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'ma-facture-energie.png';
+                link.href = imgData;
+                link.click();
+                container.style.position='absolute'; container.style.left='-9999px'; container.style.top='0'; container.style.transform='none';
+                showToast('✅ Image téléchargée');
+            }
+
+            function showToast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg; t.style.display='block';
+                clearTimeout(t._t); t._t = setTimeout(()=>t.style.display='none',3000);
+                return t;
+            }
+
+            window.downloadPDF = downloadPDF;
+            window.generateShareCard = generateShareCard;
+            window.updateUI = updateUI;
+
+            // FAQ toggle
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.addEventListener('click', () => item.classList.toggle('open'));
+            });
+
+            updateUI();
+        })();
+    </script>
+</body>
+</html>

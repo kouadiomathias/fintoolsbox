@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparateur de Crédit | Simulateur Immobilier France</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+
+    <style>
+        :root {
+            --bg: #f9f7f3;
+            --surface: #ffffff;
+            --surface-alt: #f5f2ec;
+            --primary: #0f1c2e;
+            --primary-light: #1a2f4a;
+            --accent: #c4a35a;
+            --accent-light: #d9c48b;
+            --accent-dark: #a88b42;
+            --text: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --text-muted: #8a8a8a;
+            --border: #e6e0d8;
+            --border-light: #f0ebe3;
+            --success: #2d7d4a;
+            --warning: #c2842a;
+            --danger: #b8433d;
+            --blue-accent: #2c5f8a;
+            --shadow-sm: 0 1px 3px rgba(15, 28, 46, 0.06);
+            --shadow-md: 0 4px 16px rgba(15, 28, 46, 0.08);
+            --shadow-lg: 0 8px 32px rgba(15, 28, 46, 0.12);
+            --shadow-xl: 0 16px 48px rgba(15, 28, 46, 0.16);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(15, 28, 46, 0.25);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.3px;
+        }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .header-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 12px 10px 40px;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .card-header {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: -0.2px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+        .card-header .icon-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* Form Panel */
+        .form-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: sticky;
+            top: 90px;
+            align-self: start;
+        }
+        @media (max-width: 1024px) {
+            .form-panel {
+                position: relative;
+                top: auto;
+            }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            letter-spacing: -0.1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-group label .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--border);
+            font-size: 0.65rem;
+            cursor: help;
+            color: var(--text-muted);
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        .form-group label .info-icon:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            background: var(--surface-alt);
+            transition: var(--transition);
+            color: var(--text);
+            letter-spacing: -0.2px;
+            -moz-appearance: textfield;
+        }
+        .input-wrapper input::-webkit-outer-spin-button,
+        .input-wrapper input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(196, 163, 90, 0.1);
+            background: #fff;
+        }
+        .input-suffix {
+            position: absolute;
+            right: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        .input-prefix {
+            position: absolute;
+            left: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+        .input-wrapper input.has-prefix {
+            padding-left: 32px;
+        }
+        .input-wrapper input.has-suffix {
+            padding-right: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 24px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.2px;
+            transition: var(--transition);
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(196, 163, 90, 0.3);
+        }
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(168, 139, 66, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: var(--surface-alt);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            background: var(--surface-alt);
+        }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            border-radius: 8px;
+        }
+        .btn-xs {
+            padding: 5px 10px;
+            font-size: 0.72rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Results Area */
+        .results-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .hero-metric {
+            background: var(--primary);
+            color: #fff;
+            border-radius: var(--radius-xl);
+            padding: 28px 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-metric .metric-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .hero-metric .metric-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        .hero-metric .metric-value {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--accent-light);
+            line-height: 1;
+        }
+        .hero-metric .metric-sub {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .hero-metric .metric-badge {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: -0.2px;
+        }
+
+        /* Metric Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        .metric-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            text-align: center;
+        }
+        .metric-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .metric-card .mc-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--primary);
+        }
+        .metric-card .mc-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .comparison-table th {
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            background: var(--surface-alt);
+            border-radius: 4px 4px 0 0;
+        }
+        .comparison-table .highlight-row {
+            background: rgba(196, 163, 90, 0.06);
+            font-weight: 600;
+        }
+        .comparison-table .best-value {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            background: var(--surface-alt);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            border-left: 4px solid var(--accent);
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .explanation-box strong {
+            color: var(--primary);
+        }
+
+        /* Score */
+        .score-ring {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .score-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+            border: 4px solid;
+        }
+        .score-good {
+            background: #e6f4ea;
+            border-color: var(--success);
+            color: var(--success);
+        }
+        .score-medium {
+            background: #fef7e8;
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+        .score-bad {
+            background: #fde8e7;
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* Chart Container */
+        .chart-wrap {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+        .chart-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Share Card Preview */
+        .share-card-preview {
+            background: linear-gradient(135deg, #0f1c2e 0%, #1a3555 100%);
+            color: #fff;
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            max-width: 400px;
+        }
+        .share-card-preview::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(196, 163, 90, 0.15);
+            pointer-events: none;
+        }
+        .share-card-preview .sc-logo {
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: -0.2px;
+            color: var(--accent-light);
+        }
+        .share-card-preview .sc-big-number {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        .share-card-preview .sc-detail {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 999;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: none;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-metric {
+                padding: 20px;
+                gap: 12px;
+            }
+            .hero-metric .metric-value {
+                font-size: 2rem;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .metric-card {
+                padding: 12px 10px;
+            }
+            .metric-card .mc-value {
+                font-size: 1.1rem;
+            }
+            .chart-wrap {
+                height: 220px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn-group .btn {
+                width: 100%;
+            }
+            .share-card-preview {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 400px) {
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .hero-metric .metric-value {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 16px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: #fff;
+                font-size: 11px;
+            }
+            .header,
+            .form-panel,
+            .btn,
+            .toast,
+            .share-card-preview,
+            #shareCardContainer {
+                display: none !important;
+            }
+            .main-container {
+                display: block;
+                max-width: 100%;
+                padding: 0;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+                margin-bottom: 12px;
+                page-break-inside: avoid;
+            }
+            .hero-metric {
+                background: #fff !important;
+                color: #000 !important;
+                border: 2px solid #000;
+            }
+            .hero-metric .metric-value {
+                color: #000 !important;
+            }
+            .hero-metric .metric-label {
+                color: #555 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">C</div>
+                <span>Comparateur Crédit</span>
+            </a>
+            <span class="header-badge">🇫🇷 Marché Français</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Left: Form Panel -->
+        <aside class="form-panel" id="formPanel">
+            <div class="card" style="box-shadow: var(--shadow-md);">
+                <div class="card-header">
+                    <span class="icon-dot"></span> Simulation de prêt
+                </div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                    <!-- Montant -->
+                    <div class="form-group">
+                        <label>
+                            Montant emprunté
+                            <span class="info-icon" title="Montant total du prêt hors apport personnel">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="montant" value="250000" min="10000" max="2000000" step="1000" class="has-suffix" placeholder="250 000">
+                            <span class="input-suffix">€</span>
+                        </div>
+                    </div>
+                    <!-- Durée -->
+                    <div class="form-group">
+                        <label>
+                            Durée du prêt
+                            <span class="info-icon" title="Durée totale de remboursement en années">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="duree" value="20" min="5" max="35" step="1" class="has-suffix" placeholder="20">
+                            <span class="input-suffix">ans</span>
+                        </div>
+                    </div>
+                    <!-- Taux -->
+                    <div class="form-group">
+                        <label>
+                            Taux d'intérêt nominal
+                            <span class="info-icon" title="Taux annuel hors assurance. Actuellement ~3.3% sur 20 ans en France">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="taux" value="3.3" min="0.1" max="15" step="0.01" class="has-suffix" placeholder="3.3">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <!-- Assurance -->
+                    <div class="form-group">
+                        <label>
+                            Taux assurance emprunteur
+                            <span class="info-icon" title="Taux annuel sur capital initial. Moyenne France : 0.34%">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="assurance" value="0.34" min="0" max="3" step="0.01" class="has-suffix" placeholder="0.34">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <!-- Frais de dossier -->
+                    <div class="form-group">
+                        <label>
+                            Frais de dossier + garantie
+                            <span class="info-icon" title="Frais de dossier bancaire + frais de garantie (caution ou hypothèque)">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="frais" value="1500" min="0" max="50000" step="100" class="has-suffix" placeholder="1 500">
+                            <span class="input-suffix">€</span>
+                        </div>
+                    </div>
+                    <!-- Loyer de référence -->
+                    <div class="form-group">
+                        <label>
+                            Loyer mensuel de référence (pour comparaison)
+                            <span class="info-icon" title="Loyer moyen dans votre zone pour un bien équivalent">?</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="loyerRef" value="850" min="100" max="10000" step="10" class="has-suffix" placeholder="850">
+                            <span class="input-suffix">€/mois</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick actions -->
+            <div class="btn-group" style="margin-top:4px;">
+                <button class="btn btn-outline btn-sm" onclick="resetToMarketAverage()" title="Appliquer les taux moyens du marché français">
+                     Taux moyens du marché
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="optimizeScenario()">
+                     Scénario optimisé
+                </button>
+            </div>
+        </aside>
+
+        <!-- Right: Results Area -->
+        <section class="results-area" id="resultsArea">
+            <!-- Hero Metric -->
+            <div class="hero-metric" id="heroMetric">
+                <div class="metric-main">
+                    <span class="metric-label">Coût total du crédit</span>
+                    <span class="metric-value" id="heroCost">—</span>
+                    <span class="metric-sub" id="heroSub">Complétez les informations</span>
+                </div>
+                <span class="metric-badge" id="heroBadge" style="display:none;">Équivaut à — loyers</span>
+            </div>
+
+            <!-- Quick Metrics -->
+            <div class="metrics-grid" id="quickMetrics">
+                <div class="metric-card">
+                    <div class="mc-value" id="metMensualite">—</div>
+                    <div class="mc-label">Mensualité (hors assurance)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="mc-value" id="metMensualiteTot">—</div>
+                    <div class="mc-label">Mensualité totale</div>
+                </div>
+                <div class="metric-card">
+                    <div class="mc-value" id="metInterets">—</div>
+                    <div class="mc-label">Intérêts totaux</div>
+                </div>
+                <div class="metric-card">
+                    <div class="mc-value" id="metTAEG">—</div>
+                    <div class="mc-label">TAEG estimé</div>
+                </div>
+                <div class="metric-card">
+                    <div class="mc-value" id="metCoutJour">—</div>
+                    <div class="mc-label">Coût / jour</div>
+                </div>
+                <div class="metric-card">
+                    <div class="mc-value" id="metEquivalentLoyers">—</div>
+                    <div class="mc-label">Équivalent en loyers</div>
+                </div>
+            </div>
+
+            <!-- Score + Explanation -->
+            <div class="card" id="scoreCard">
+                <div class="card-header"><span class="icon-dot"></span> Score de santé du prêt</div>
+                <div class="score-ring" id="scoreRing" style="align-items:center;">
+                    <div class="score-circle score-medium" id="scoreCircle">—</div>
+                    <div style="flex:1;">
+                        <p style="font-weight:600;margin:0;color:var(--primary);" id="scoreLabel">En attente des données</p>
+                        <p style="font-size:0.8rem;color:var(--text-muted);margin:4px 0 0;" id="scoreDesc">Renseignez les paramètres pour obtenir votre score</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explanation -->
+            <div class="explanation-box" id="explanationBox">
+                <strong> Analyse :</strong> <span id="explanationText">Complétez le formulaire pour voir l'analyse détaillée de votre prêt.</span>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="card" id="comparisonCard">
+                <div class="card-header"><span class="icon-dot"></span> Comparaison de scénarios</div>
+                <div style="overflow-x:auto;">
+                    <table class="comparison-table" id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th>Scénario</th>
+                                <th>Durée</th>
+                                <th>Taux</th>
+                                <th>Mensualité</th>
+                                <th>Coût total</th>
+                                <th>Évaluation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonBody">
+                            <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">Complétez les paramètres pour voir la comparaison</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="card" id="chartCard">
+                <div class="card-header"><span class="icon-dot"></span> Évolution du capital restant dû</div>
+                <div class="chart-wrap">
+                    <canvas id="amortChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="btn-group" style="flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="downloadPDF()">
+                    📄 Télécharger le rapport PDF
+                </button>
+                <button class="btn btn-secondary" onclick="generateShareCard()">
+                    📤 Créer une carte à partager
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="window.print()">
+                    🖨️ Imprimer
+                </button>
+            </div>
+
+            <!-- Share Card Container (hidden, used for generation) -->
+            <div id="shareCardContainer" style="position:absolute;left:-9999px;top:0;width:400px;">
+                <div class="share-card-preview" id="shareCardContent">
+                    <div class="sc-logo">Comparateur Crédit France</div>
+                    <div style="font-size:0.75rem;opacity:0.7;" id="scDate">—</div>
+                    <div class="sc-big-number" id="scBigNumber">—</div>
+                    <div style="font-weight:600;" id="scTitle">—</div>
+                    <div class="sc-detail" id="scDetail">—</div>
+                    <div style="font-size:0.7rem;opacity:0.5;margin-top:4px;">comparateur-credit.fr</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            // ──────────────────────────────────────
+            // DOM REFS
+            // ──────────────────────────────────────
+            const $montant = document.getElementById('montant');
+            const $duree = document.getElementById('duree');
+            const $taux = document.getElementById('taux');
+            const $assurance = document.getElementById('assurance');
+            const $frais = document.getElementById('frais');
+            const $loyerRef = document.getElementById('loyerRef');
+            const allInputs = [$montant, $duree, $taux, $assurance, $frais, $loyerRef];
+
+            // ──────────────────────────────────────
+            // UTILS
+            // ──────────────────────────────────────
+            function fmtEuro(n) {
+                if (isNaN(n) || n === null) return '—';
+                return new Intl.NumberFormat('fr-FR', {
+                    style: 'currency',
+                    currency: 'EUR',
+                    maximumFractionDigits: 0
+                }).format(Math.round(n));
+            }
+
+            function fmtEuroDec(n) {
+                if (isNaN(n) || n === null) return '—';
+                return new Intl.NumberFormat('fr-FR', {
+                    style: 'currency',
+                    currency: 'EUR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(n);
+            }
+
+            function fmtNum(n, decimals = 1) {
+                if (isNaN(n) || n === null) return '—';
+                return new Intl.NumberFormat('fr-FR', {
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals
+                }).format(n);
+            }
+
+            function fmtPct(n) {
+                if (isNaN(n) || n === null) return '—';
+                return n.toFixed(2).replace('.', ',') + ' %';
+            }
+
+            // ──────────────────────────────────────
+            // CALCULATION ENGINE
+            // ──────────────────────────────────────
+            function calculateLoan(montant, dureeAns, tauxAnnuel, assuranceAnnuelle, fraisDossier) {
+                const n = dureeAns * 12;
+                const r = tauxAnnuel / 100 / 12;
+                const mensualite = r > 0 ?
+                    montant * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) :
+                    montant / n;
+                const totalRembourse = mensualite * n;
+                const interetsTotaux = totalRembourse - montant;
+                const assuranceMensuelle = (montant * (assuranceAnnuelle / 100)) / 12;
+                const assuranceTotale = assuranceMensuelle * n;
+                const mensualiteTotale = mensualite + assuranceMensuelle;
+                const coutTotal = interetsTotaux + assuranceTotale + fraisDossier;
+                const totalDu = montant + coutTotal;
+
+                // TAEG simplifié (approximation)
+                const coutTotalAnnu = coutTotal;
+                const taegApprox = (Math.pow((totalDu / montant), (1 / dureeAns)) - 1) * 100;
+
+                return {
+                    montant,
+                    dureeAns,
+                    dureeMois: n,
+                    tauxAnnuel,
+                    assuranceAnnuelle,
+                    fraisDossier,
+                    mensualite,
+                    mensualiteTotale,
+                    assuranceMensuelle,
+                    interetsTotaux,
+                    assuranceTotale,
+                    coutTotal,
+                    totalDu,
+                    taegApprox,
+                    coutParJour: coutTotal / (dureeAns * 365),
+                    tauxEndettement35: mensualiteTotale / 0.35, // revenu min pour 35%
+                };
+            }
+
+            function generateAmortization(montant, dureeMois, tauxAnnuel) {
+                const r = tauxAnnuel / 100 / 12;
+                const mensualite = r > 0 ?
+                    montant * (r * Math.pow(1 + r, dureeMois)) / (Math.pow(1 + r, dureeMois) - 1) :
+                    montant / dureeMois;
+                const schedule = [];
+                let capitalRestant = montant;
+                for (let i = 0; i <= dureeMois; i++) {
+                    if (i === 0) {
+                        schedule.push({ mois: 0, capital: capitalRestant });
+                        continue;
+                    }
+                    const interetsMens = capitalRestant * r;
+                    const amortissement = mensualite - interetsMens;
+                    capitalRestant = Math.max(0, capitalRestant - amortissement);
+                    schedule.push({ mois: i, capital: Math.round(capitalRestant * 100) / 100 });
+                    if (capitalRestant < 0.5) {
+                        // fill remaining
+                        for (let j = i + 1; j <= dureeMois; j++) {
+                            schedule.push({ mois: j, capital: 0 });
+                        }
+                        break;
+                    }
+                }
+                return schedule;
+            }
+
+            // ──────────────────────────────────────
+            // UI UPDATE
+            // ──────────────────────────────────────
+            function getValues() {
+                return {
+                    montant: parseFloat($montant.value) || 250000,
+                    dureeAns: parseInt($duree.value) || 20,
+                    tauxAnnuel: parseFloat($taux.value) || 3.3,
+                    assuranceAnnuelle: parseFloat($assurance.value) || 0.34,
+                    fraisDossier: parseFloat($frais.value) || 1500,
+                    loyerRef: parseFloat($loyerRef.value) || 850,
+                };
+            }
+
+            function updateUI() {
+                const v = getValues();
+                const result = calculateLoan(v.montant, v.dureeAns, v.tauxAnnuel, v.assuranceAnnuelle, v
+                .fraisDossier);
+
+                // Hero
+                document.getElementById('heroCost').textContent = fmtEuro(result.coutTotal);
+                document.getElementById('heroSub').textContent =
+                    `Soit ${fmtEuroDec(result.mensualiteTotale)}/mois pendant ${v.dureeAns} ans`;
+                const eqLoyers = v.loyerRef > 0 ? Math.round(result.coutTotal / v.loyerRef) : 0;
+                const badge = document.getElementById('heroBadge');
+                if (eqLoyers > 0) {
+                    badge.style.display = 'inline-block';
+                    badge.textContent = `≈ ${eqLoyers} mois de loyer (${v.loyerRef}€/mois)`;
+                } else {
+                    badge.style.display = 'none';
+                }
+
+                // Quick metrics
+                document.getElementById('metMensualite').textContent = fmtEuroDec(result.mensualite);
+                document.getElementById('metMensualiteTot').textContent = fmtEuroDec(result.mensualiteTotale);
+                document.getElementById('metInterets').textContent = fmtEuro(result.interetsTotaux);
+                document.getElementById('metTAEG').textContent = fmtPct(result.taegApprox);
+                document.getElementById('metCoutJour').textContent = fmtEuroDec(result.coutParJour);
+                document.getElementById('metEquivalentLoyers').textContent =
+                    eqLoyers > 0 ? eqLoyers + ' mois' : '—';
+
+                // Score
+                updateScore(result, v);
+
+                // Explanation
+                updateExplanation(result, v, eqLoyers);
+
+                // Comparison table
+                updateComparison(v, result);
+
+                // Chart
+                updateChart(v.montant, result.dureeMois, v.tauxAnnuel);
+
+                return { result, v, eqLoyers };
+            }
+
+            function updateScore(result, v) {
+                // Score from 1-10 based on multiple factors
+                let score = 5;
+                // Rate vs market: 3.3% is baseline for 20y
+                const marketRate = v.dureeAns <= 15 ? 3.0 : v.dureeAns <= 20 ? 3.3 : 3.6;
+                if (result.tauxAnnuel <= marketRate - 0.3) score += 2;
+                else if (result.tauxAnnuel <= marketRate) score += 1;
+                else if (result.tauxAnnuel >= marketRate + 0.8) score -= 2;
+                else if (result.tauxAnnuel >= marketRate + 0.4) score -= 1;
+
+                // Duration reasonability
+                if (v.dureeAns <= 15) score += 1;
+                else if (v.dureeAns >= 30) score -= 1;
+
+                // Cost ratio
+                const costRatio = result.coutTotal / result.montant;
+                if (costRatio < 0.3) score += 1;
+                else if (costRatio > 1.0) score -= 2;
+                else if (costRatio > 0.7) score -= 1;
+
+                // Insurance
+                if (result.assuranceAnnuelle <= 0.25) score += 1;
+                else if (result.assuranceAnnuelle >= 0.5) score -= 1;
+
+                score = Math.max(1, Math.min(10, Math.round(score)));
+
+                const circle = document.getElementById('scoreCircle');
+                circle.textContent = score + '/10';
+                circle.className = 'score-circle';
+                if (score >= 7) circle.classList.add('score-good');
+                else if (score >= 4) circle.classList.add('score-medium');
+                else circle.classList.add('score-bad');
+
+                const labels = {
+                    1: 'Très défavorable',
+                    2: 'Très défavorable',
+                    3: 'Défavorable',
+                    4: 'Moyen',
+                    5: 'Moyen',
+                    6: 'Correct',
+                    7: 'Bon',
+                    8: 'Très bon',
+                    9: 'Excellent',
+                    10: 'Exceptionnel'
+                };
+                document.getElementById('scoreLabel').textContent = labels[score] || 'Moyen';
+                document.getElementById('scoreDesc').textContent =
+                    score >= 7 ?
+                    'Votre prêt présente de bonnes conditions par rapport au marché français actuel.' :
+                    score >= 4 ?
+                    'Conditions dans la moyenne. Vous pourriez potentiellement négocier certains aspects.' :
+                    'Attention : ce prêt est coûteux. Envisagez de renégocier ou de comparer d\'autres offres.';
+            }
+
+            function updateExplanation(result, v, eqLoyers) {
+                const parts = [];
+                parts.push(
+                    `Pour un emprunt de <strong>${fmtEuro(result.montant)}</strong> sur <strong>${v.dureeAns} ans</strong> au taux de <strong>${fmtPct(v.tauxAnnuel)}</strong>, vous rembourserez au total <strong>${fmtEuro(result.totalDu)}</strong>.`
+                );
+                parts.push(
+                    `Cela représente <strong>${fmtEuro(result.coutTotal)}</strong> de coût total, soit <strong>${fmtEuroDec(result.coutParJour)} par jour</strong> pendant toute la durée du prêt.`
+                );
+                if (eqLoyers > 0) {
+                    parts.push(
+                        `Ce coût total équivaut à <strong>${eqLoyers} mois de loyer</strong> à ${fmtEuro(v.loyerRef)}/mois — c'est comme si vous payiez <strong>${Math.round(eqLoyers/12)} années de loyers</strong> pour le droit d'emprunter.`
+                    );
+                }
+                if (result.assuranceTotale > 0) {
+                    const pctAssurance = Math.round((result.assuranceTotale / result.coutTotal) * 100);
+                    parts.push(
+                        `L'assurance emprunteur représente <strong>${fmtEuro(result.assuranceTotale)}</strong> (${pctAssurance}% du coût total). Pensez à la <strong>délégation d'assurance</strong> pour réduire ce poste.`
+                    );
+                }
+                if (v.dureeAns >= 25) {
+                    parts.push(
+                        `⚠️ Une durée de ${v.dureeAns} ans allonge le remboursement et augmente significativement le coût total. Si possible, visez 20 ans ou moins.`
+                    );
+                }
+                document.getElementById('explanationText').innerHTML = parts.join(' ');
+            }
+
+            function updateComparison(v, currentResult) {
+                const scenarios = [
+                    { label: 'Votre scénario', duree: v.dureeAns, taux: v.tauxAnnuel, assurance: v
+                            .assuranceAnnuelle, frais: v.fraisDossier, isUser: true },
+                    { label: 'Durée réduite (-5 ans)', duree: Math.max(5, v.dureeAns - 5), taux: Math.max(0.5,
+                            v.tauxAnnuel - 0.2), assurance: v.assuranceAnnuelle, frais: v.fraisDossier,
+                        isUser: false },
+                    { label: 'Taux négocié (-0.4%)', duree: v.dureeAns, taux: Math.max(0.1, v.tauxAnnuel - 0.4),
+                        assurance: v.assuranceAnnuelle, frais: v.fraisDossier, isUser: false },
+                    { label: 'Sans assurance (délégation)', duree: v.dureeAns, taux: v.tauxAnnuel, assurance: 0,
+                        frais: v.fraisDossier, isUser: false },
+                ];
+
+                const tbody = document.getElementById('comparisonBody');
+                let minCost = Infinity;
+                const resultsArr = scenarios.map(s => {
+                    const r = calculateLoan(v.montant, s.duree, s.taux, s.assurance, s.frais);
+                    if (r.coutTotal < minCost) minCost = r.coutTotal;
+                    return { ...s, result: r };
+                });
+
+                tbody.innerHTML = resultsArr.map((s, i) => {
+                    const isBest = s.result.coutTotal <= minCost + 0.01;
+                    const rowClass = s.isUser ? 'highlight-row' : '';
+                    const evalClass = isBest ? 'best-value' : '';
+                    const evalText = isBest ? '🥇 Meilleur' : (s.result.coutTotal <=
+                        currentResult.coutTotal + 100 ? '👍 Bon' : '');
+                    return `
+                    <tr class="${rowClass}">
+                      <td><strong>${s.label}</strong>${s.isUser ? ' ←' : ''}</td>
+                      <td>${s.duree} ans</td>
+                      <td>${fmtPct(s.taux)}</td>
+                      <td>${fmtEuroDec(s.result.mensualiteTotale)}</td>
+                      <td>${fmtEuro(s.result.coutTotal)}</td>
+                      <td class="${evalClass}">${evalText}</td>
+                    </tr>
+                  `;
+                }).join('');
+            }
+
+            // ──────────────────────────────────────
+            // CHART
+            // ──────────────────────────────────────
+            let chartInstance = null;
+
+            function updateChart(montant, dureeMois, tauxAnnuel) {
+                const schedule = generateAmortization(montant, dureeMois, tauxAnnuel);
+                // Sample yearly points
+                const labels = [];
+                const data = [];
+                const step = Math.max(1, Math.floor(dureeMois / 24)); // ~24 points
+                for (let i = 0; i < schedule.length; i += step) {
+                    labels.push('M' + schedule[i].mois);
+                    data.push(schedule[i].capital);
+                }
+                // Ensure last point
+                if (schedule[schedule.length - 1].mois > (labels.length > 0 ? parseInt(labels[labels.length -
+                        1].replace('M', '')) : 0)) {
+                    labels.push('M' + schedule[schedule.length - 1].mois);
+                    data.push(schedule[schedule.length - 1].capital);
+                }
+
+                const ctx = document.getElementById('amortChart');
+                if (chartInstance) chartInstance.destroy();
+
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Capital restant dû',
+                            data: data,
+                            borderColor: '#c4a35a',
+                            backgroundColor: 'rgba(196,163,90,0.08)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2.5,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: '#c4a35a',
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => 'Capital restant : ' + fmtEuro(ctx.parsed.y),
+                                },
+                            },
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                ticks: {
+                                    maxTicksLimit: 12,
+                                    color: '#8a8a8a',
+                                    font: { size: 10 },
+                                },
+                                grid: { color: '#f0ebe3' },
+                            },
+                            y: {
+                                display: true,
+                                ticks: {
+                                    callback: (v) => fmtEuro(v),
+                                    color: '#8a8a8a',
+                                    font: { size: 10 },
+                                },
+                                grid: { color: '#f0ebe3' },
+                            },
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                    },
+                });
+            }
+
+            // ──────────────────────────────────────
+            // PDF DOWNLOAD
+            // ──────────────────────────────────────
+            async function downloadPDF() {
+                const toast = showToast('Génération du PDF en cours...');
+                const { result, v, eqLoyers } = updateUI();
+
+                // Build a clean report element
+                const reportDiv = document.createElement('div');
+                reportDiv.style.cssText =
+                    'width:700px;padding:40px;background:#fff;font-family:Inter,sans-serif;color:#1a1a1a;line-height:1.6;';
+                reportDiv.innerHTML = `
+                <div style="text-align:center;margin-bottom:30px;border-bottom:3px solid #c4a35a;padding-bottom:20px;">
+                  <h1 style="color:#0f1c2e;font-size:24px;margin:0;letter-spacing:-0.5px;">Rapport de Simulation de Prêt</h1>
+                  <p style="color:#8a8a8a;margin:6px 0 0;">Comparateur Crédit France • ${new Date().toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'})}</p>
+                </div>
+                <div style="background:#f9f7f3;padding:20px;border-radius:12px;margin-bottom:20px;">
+                  <h2 style="color:#0f1c2e;font-size:16px;margin:0 0 12px;">📋 Synthèse de votre prêt</h2>
+                  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Montant emprunté</td><td style="text-align:right;font-weight:700;">${fmtEuro(result.montant)}</td></tr>
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Durée</td><td style="text-align:right;font-weight:700;">${v.dureeAns} ans (${result.dureeMois} mois)</td></tr>
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Taux d'intérêt nominal</td><td style="text-align:right;font-weight:700;">${fmtPct(v.tauxAnnuel)}</td></tr>
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Taux assurance</td><td style="text-align:right;font-weight:700;">${fmtPct(v.assuranceAnnuelle)}</td></tr>
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Mensualité (hors assurance)</td><td style="text-align:right;font-weight:700;">${fmtEuroDec(result.mensualite)}</td></tr>
+                    <tr><td style="padding:6px 0;color:#5c5c5c;">Mensualité totale</td><td style="text-align:right;font-weight:700;color:#c4a35a;font-size:16px;">${fmtEuroDec(result.mensualiteTotale)}</td></tr>
+                    <tr style="border-top:2px solid #e6e0d8;"><td style="padding:8px 0;font-weight:700;">Coût total du crédit</td><td style="text-align:right;font-weight:900;font-size:18px;color:#b8433d;">${fmtEuro(result.coutTotal)}</td></tr>
+                    <tr><td style="padding:4px 0;color:#5c5c5c;">Dont intérêts</td><td style="text-align:right;">${fmtEuro(result.interetsTotaux)}</td></tr>
+                    <tr><td style="padding:4px 0;color:#5c5c5c;">Dont assurance</td><td style="text-align:right;">${fmtEuro(result.assuranceTotale)}</td></tr>
+                    <tr><td style="padding:4px 0;color:#5c5c5c;">TAEG estimé</td><td style="text-align:right;font-weight:700;">${fmtPct(result.taegApprox)}</td></tr>
+                  </table>
+                </div>
+                <div style="background:#fef7e8;padding:16px;border-radius:8px;border-left:4px solid #c4a35a;margin-bottom:16px;">
+                  <strong>💡 Analyse :</strong> Ce coût total équivaut à <strong>${eqLoyers} mois de loyer</strong> à ${fmtEuro(v.loyerRef)}/mois, soit environ <strong>${Math.round(eqLoyers/12)} années</strong> de loyers.
+                </div>
+                <p style="font-size:11px;color:#aaa;text-align:center;margin-top:30px;">Document généré par comparateur-credit.fr — À titre informatif, non contractuel.</p>
+              `;
+
+                document.body.appendChild(reportDiv);
+                reportDiv.style.position = 'absolute';
+                reportDiv.style.left = '-9999px';
+                reportDiv.style.top = '0';
+
+                try {
+                    const canvas = await html2canvas(reportDiv, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                    });
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    // If content overflows, add pages
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+                    let remainingHeight = pdfHeight;
+                    let position = 0;
+                    while (remainingHeight > pageHeight) {
+                        position -= pageHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+                        remainingHeight -= pageHeight;
+                    }
+                    pdf.save('simulation-pret-' + new Date().toISOString().slice(0, 10) + '.pdf');
+                    showToast('✅ PDF téléchargé avec succès !');
+                } catch (err) {
+                    console.error(err);
+                    showToast('❌ Erreur lors de la génération du PDF. Essayez l\'impression (Ctrl+P).');
+                } finally {
+                    document.body.removeChild(reportDiv);
+                }
+            }
+
+            // ──────────────────────────────────────
+            // SHARE CARD
+            // ──────────────────────────────────────
+            async function generateShareCard() {
+                const { result, v, eqLoyers } = updateUI();
+                const sc = document.getElementById('shareCardContent');
+                document.getElementById('scDate').textContent = new Date().toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                document.getElementById('scBigNumber').textContent = fmtEuro(result.coutTotal);
+                document.getElementById('scTitle').textContent = 'Coût total de mon crédit immobilier';
+                document.getElementById('scDetail').innerHTML =
+                    `Pour ${fmtEuro(result.montant)} sur ${v.dureeAns} ans à ${fmtPct(v.tauxAnnuel)}<br>≈ ${eqLoyers} mois de loyer • TAEG estimé ${fmtPct(result.taegApprox)}`;
+
+                const container = document.getElementById('shareCardContainer');
+                container.style.left = '0';
+                container.style.position = 'fixed';
+                container.style.top = '50%';
+                container.style.left = '50%';
+                container.style.transform = 'translate(-50%, -50%)';
+                container.style.zIndex = '9999';
+
+                await new Promise(r => setTimeout(r, 300));
+
+                try {
+                    const canvas = await html2canvas(document.getElementById('shareCardContent'), {
+                        scale: 2,
+                        backgroundColor: null,
+                    });
+                    const imgData = canvas.toDataURL('image/png');
+
+                    // Try Web Share API
+                    if (navigator.share && navigator.canShare) {
+                        const blob = await (await fetch(imgData)).blob();
+                        const file = new File([blob], 'comparateur-credit-resultat.png', { type: 'image/png' });
+                        if (navigator.canShare({ files: [file] })) {
+                            await navigator.share({
+                                title: 'Ma simulation de prêt',
+                                text: `Coût total de mon crédit : ${fmtEuro(result.coutTotal)} — TAEG estimé ${fmtPct(result.taegApprox)}`,
+                                files: [file],
+                            });
+                            showToast('✅ Carte partagée !');
+                            container.style.position = 'absolute';
+                            container.style.left = '-9999px';
+                            container.style.top = '0';
+                            container.style.transform = 'none';
+                            return;
+                        }
+                    }
+
+                    // Fallback: download image
+                    const link = document.createElement('a');
+                    link.download = 'comparateur-credit-resultat.png';
+                    link.href = imgData;
+                    link.click();
+                    showToast('✅ Image téléchargée ! Vous pouvez la partager manuellement.');
+                } catch (err) {
+                    console.error(err);
+                    showToast('ℹ️ Téléchargement de l\'image en cours...');
+                }
+
+                container.style.position = 'absolute';
+                container.style.left = '-9999px';
+                container.style.top = '0';
+                container.style.transform = 'none';
+                container.style.zIndex = 'auto';
+            }
+
+            // ──────────────────────────────────────
+            // TOAST
+            // ──────────────────────────────────────
+            function showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.style.display = 'block';
+                toast.style.animation = 'none';
+                toast.offsetHeight;
+                toast.style.animation = 'slideUp 0.4s cubic-bezier(0.16,1,0.3,1)';
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
+                return toast;
+            }
+
+            // ──────────────────────────────────────
+            // ACTIONS
+            // ──────────────────────────────────────
+            function resetToMarketAverage() {
+                // French market averages as of early 2026
+                const duree = parseInt($duree.value) || 20;
+                let marketRate;
+                if (duree <= 10) marketRate = 2.8;
+                else if (duree <= 15) marketRate = 3.05;
+                else if (duree <= 20) marketRate = 3.3;
+                else if (duree <= 25) marketRate = 3.5;
+                else marketRate = 3.7;
+                $taux.value = marketRate;
+                $assurance.value = 0.34;
+                $frais.value = 1500;
+                updateUI();
+                showToast('📊 Taux moyens du marché français appliqués');
+            }
+
+            function optimizeScenario() {
+                const v = getValues();
+                // Suggest shorter duration with slightly better rate
+                const newDuree = Math.max(5, v.dureeAns - 3);
+                const newTaux = Math.max(0.1, v.tauxAnnuel - 0.3);
+                $duree.value = newDuree;
+                $taux.value = Math.round(newTaux * 100) / 100;
+                updateUI();
+                showToast(
+                    `✨ Scénario optimisé : ${newDuree} ans à ${fmtPct(newTaux)} — mensualité plus élevée mais coût total réduit`);
+            }
+
+            // ──────────────────────────────────────
+            // EVENT LISTENERS
+            // ──────────────────────────────────────
+            allInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    updateUI();
+                });
+                input.addEventListener('change', function() {
+                    updateUI();
+                });
+            });
+
+            // ──────────────────────────────────────
+            // INIT
+            // ──────────────────────────────────────
+            updateUI();
+
+            // Expose functions globally
+            window.downloadPDF = downloadPDF;
+            window.generateShareCard = generateShareCard;
+            window.resetToMarketAverage = resetToMarketAverage;
+            window.optimizeScenario = optimizeScenario;
+
+            console.log('🏦 Comparateur de Crédit France — Prêt à l\'emploi');
+            console.log('   Coût total • TAEG • Score santé • Rapport PDF • Carte partageable');
+            console.log('   Taux de référence marché français actualisés');
+        })();
+    </script>
+</body>
+</html>
