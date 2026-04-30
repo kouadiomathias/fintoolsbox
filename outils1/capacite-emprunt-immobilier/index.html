@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Capacité d'emprunt immobilier Côte d'Ivoire 2025 – Simulateur gratuit</title>
+    <meta name="description" content="Calculez combien vous pouvez emprunter à Abidjan selon votre salaire, votre apport et votre statut. Outil gratuit, sans inscription, adapté aux banques ivoiriennes.">
+    <meta name="keywords" content="capacité emprunt Côte d'Ivoire, crédit immobilier Abidjan, combien puis-je emprunter CI, simulation crédit immobilier CI, acheter maison sans apport Abidjan, mensualité crédit Afrique">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.simulbox.ci/capacite-emprunt">
+    <meta property="og:title" content="Simulateur capacité d'emprunt immobilier – Côte d'Ivoire">
+    <meta property="og:description" content="Découvrez combien votre banque peut vous prêter en 30 secondes. Sans inscription.">
+    <style>
+        :root {
+            --bg: #fafaf8;
+            --card: #fff;
+            --text: #1c1c1c;
+            --text2: #444;
+            --green: #0f5d46;
+            --green-light: #eaf5ef;
+            --gold: #b8871e;
+            --red: #c44a3b;
+            --amber: #d68e1a;
+            --border: #e2e2dc;
+            --radius: 10px;
+            --maxw: 960px;
+            --font: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+        .container { max-width: var(--maxw); margin: 0 auto; padding: 0 18px; }
+
+        header { background: var(--green); color: #fff; padding: 14px 0; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; font-size: 1.2rem; }
+        .logo span { color: #ffd966; }
+
+        /* ---------- CONTENU SEO ---------- */
+        .content { padding: 30px 0 0; }
+        h1 { font-size: 1.9rem; margin: 0 0 0.4rem; color: var(--green); line-height: 1.2; }
+        h2 { font-size: 1.3rem; margin: 2rem 0 0.8rem; color: #0f3d2e; }
+        p, li { font-size: 1rem; color: var(--text2); }
+        .example-box { background: #f4f7f4; border-radius: 8px; padding: 16px; margin: 20px 0; font-style: italic; border-left: 3px solid var(--gold); }
+        .fact-row { display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
+        .fact-card { flex: 1 1 180px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+        .fact-card .number { font-size: 1.4rem; font-weight: bold; color: var(--green); }
+        .faq { margin: 30px 0; }
+        details { margin-bottom: 12px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+        details summary { font-weight: bold; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+        details summary::after { content: '+'; font-size: 1.2rem; color: var(--green); }
+        details[open] summary::after { content: '−'; }
+
+        /* ---------- CALCULATEUR ---------- */
+        .calculator-section { margin: 40px 0; }
+        .calc-box { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+        .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        @media (max-width: 700px) { .calc-grid { grid-template-columns: 1fr; } }
+        label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: var(--font); background: #fdfdfd; }
+        .inline-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .dur-buttons { display: flex; gap: 6px; }
+        .dur-btn { padding: 8px 12px; border: 1px solid var(--border); border-radius: 20px; background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+        .dur-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+        .btn-primary { background: var(--green); color: #fff; border: none; padding: 14px 28px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn-secondary { background: #fff; color: var(--green); border: 1px solid var(--green); padding: 8px 18px; border-radius: 6px; font-size: 0.9rem; cursor: pointer; }
+
+        /* Results */
+        .result-area { margin-top: 28px; }
+        .big-number { font-size: 2.5rem; font-weight: bold; color: var(--green); }
+        .score-bar { background: #eee; height: 12px; border-radius: 10px; margin: 8px 0; overflow: hidden; }
+        .score-fill { height: 100%; border-radius: 10px; transition: width 0.3s; }
+        .kpi-grid { display: flex; gap: 16px; flex-wrap: wrap; margin: 20px 0; }
+        .kpi { background: #f9fbf9; border-radius: 8px; padding: 14px; flex: 1 1 140px; }
+        .kpi .label { font-size: 0.75rem; text-transform: uppercase; color: #666; }
+        .kpi .value { font-size: 1.4rem; font-weight: bold; }
+        .advice { background: #fff8e6; border-left: 3px solid var(--amber); padding: 12px; margin: 12px 0; border-radius: 4px; font-size: 0.9rem; }
+        .bank-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 16px; }
+        .bank-table th, .bank-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+        .print-btn { margin-top: 12px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <div class="logo">Simul<span>Box</span> CI</div>
+        <div style="font-size:0.85rem;">🇨🇮 Banques ivoiriennes</div>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- ========== CONTENU SEO (AU‑DESSUS DU CALCULATEUR) ========== -->
+    <div class="content">
+        <h1>Capacité d'emprunt en Côte d'Ivoire : ce que votre banquier ne vous dira pas (tout de suite)</h1>
+        <p>
+            Quand on veut acheter un terrain ou une maison à Abidjan, la première question qui vient est rarement « combien vaut ce bien » mais plutôt <strong>« combien la banque va me prêter ? »</strong>.
+            Pourtant, beaucoup d’acheteurs foncent vers une agence sans avoir fait ce calcul élémentaire – et se retrouvent déçus quand le banquier annonce un montant bien plus bas que prévu.
+        </p>
+        <p>
+            Ce simulateur 100% gratuit vous donne <strong>en 30 secondes</strong> une estimation réaliste de votre capacité d’emprunt, basée sur les vraies pratiques des banques ivoiriennes (SGCI, BNI, NSIA, Orabank…).
+            Aucune inscription, aucun email – les données restent dans votre navigateur.
+        </p>
+
+        <div class="example-box">
+            <strong>Exemple concret :</strong> Monsieur Koné gagne 700 000 FCFA par mois (salaire net) et n’a pas d’autres crédits.
+            Avec un apport de 15 millions FCFA, il peut espérer emprunter environ <strong>42 millions FCFA</strong> sur 20 ans.
+            Sa mensualité serait autour de 370 000 FCFA, soit un taux d’endettement de 33 % – juste dans la limite acceptée.
+        </div>
+
+        <h2>Comment les banques ivoiriennes calculent votre enveloppe ?</h2>
+        <div class="fact-row">
+            <div class="fact-card">
+                <div class="number">33 %</div>
+                <div>Taux d’endettement maximum. Votre mensualité ne doit pas dépasser <strong>un tiers de vos revenus nets</strong>.</div>
+            </div>
+            <div class="fact-card">
+                <div class="number">20–30 %</div>
+                <div>Apport personnel généralement exigé. Sans apport, le dossier est presque toujours refusé.</div>
+            </div>
+            <div class="fact-card">
+                <div class="number">7–12 %</div>
+                <div>Taux d’intérêt annuel, selon votre statut (fonctionnaire, salarié, entrepreneur…).</div>
+            </div>
+            <div class="fact-card">
+                <div class="number">15–20 ans</div>
+                <div>Durée maximale habituelle. Certaines banques montent à 25 ans pour les fonctionnaires.</div>
+            </div>
+        </div>
+
+        <h2>Pourquoi le statut professionnel change tout</h2>
+        <p>
+            Un fonctionnaire obtiendra presque toujours un meilleur taux qu’un entrepreneur, parce que la banque juge son emploi stable.
+            Les salariés du privé en CDI s’en sortent bien aussi, surtout dans les grandes entreprises.
+            En revanche, un indépendant ou un commerçant doit présenter <strong>2 à 3 bilans comptables</strong> et un apport plus conséquent.
+        </p>
+        <p>
+            Notre outil prend en compte votre statut pour ajuster le taux d’intérêt et évaluer la compatibilité avec les principales banques ivoiriennes.
+        </p>
+
+        <div class="faq">
+            <h2>Questions fréquentes</h2>
+            <details>
+                <summary>Peut-on acheter sans apport en Côte d’Ivoire ?</summary>
+                C’est techniquement possible mais très rare. La quasi-totalité des banques exigent au moins 20 % du prix du bien.
+                Quelques promoteurs proposent des facilités, et le Fonds de Garantie Hypothécaire (FGH) peut aider les fonctionnaires.
+                Mais préparez-vous à un taux plus élevé si vous tentez l’expérience sans apport.
+            </details>
+            <details>
+                <summary>Quel salaire pour emprunter 50 millions FCFA ?</summary>
+                Avec un taux de 8,5 % sur 20 ans, la mensualité tourne autour de 434 000 FCFA.
+                Il faut donc un revenu net d’au moins <strong>1,3 million FCFA par mois</strong> et peu de charges.
+                Le simulateur ci‑dessous fera le calcul exact avec vos chiffres.
+            </details>
+            <details>
+                <summary>Les banques ivoiriennes prêtent-elles aux Ivoiriens de la diaspora ?</summary>
+                Oui, plusieurs banques (NSIA, Orabank) ont des services dédiés à la diaspora.
+                Vous devrez fournir vos bulletins de salaire étrangers, une pièce d’identité et souvent un apport de 25 à 30 %.
+                Les revenus en euros ou dollars sont convertis en FCFA.
+            </details>
+        </div>
+    </div>
+
+    <!-- ========== CALCULATEUR ========== -->
+    <div class="calculator-section" id="simulateur">
+        <div class="calc-box">
+            <h2 style="margin-top:0; color:var(--green);">Simulez votre capacité d’emprunt</h2>
+            <div class="calc-grid">
+                <!-- Colonne gauche : revenus & profil -->
+                <div>
+                    <label>Revenu net mensuel (FCFA)</label>
+                    <input type="number" id="salaire" value="600000" step="10000">
+                    <label style="margin-top:10px;">Primes / revenus annexes (mensuel)</label>
+                    <input type="number" id="annexes" value="0" step="5000">
+                    <label style="margin-top:10px;">Statut professionnel</label>
+                    <select id="statut">
+                        <option value="cdi" selected>Salarié CDI (privé)</option>
+                        <option value="fonctionnaire">Fonctionnaire</option>
+                        <option value="entrepreneur">Entrepreneur / Indépendant</option>
+                        <option value="diaspora">Diaspora ivoirienne</option>
+                        <option value="liberal">Profession libérale</option>
+                    </select>
+                    <label style="margin-top:10px;">Crédits en cours (mensualité)</label>
+                    <input type="number" id="credits" value="0" step="5000">
+                    <label style="margin-top:10px;">Charges fixes (loyer, etc.)</label>
+                    <input type="number" id="charges" value="150000" step="10000">
+                </div>
+                <!-- Colonne droite : projet -->
+                <div>
+                    <label>Prix du bien visé (FCFA)</label>
+                    <input type="number" id="prixBien" value="80000000" step="1000000">
+                    <div class="inline-row">
+                        <input type="checkbox" id="sansApport" style="width:auto;">
+                        <label for="sansApport" style="margin:0;">Simuler sans apport</label>
+                    </div>
+                    <label>Apport personnel (FCFA)</label>
+                    <input type="number" id="apport" value="20000000" step="1000000">
+                    <label style="margin-top:10px;">Durée souhaitée</label>
+                    <div class="dur-buttons" id="durButtons">
+                        <button class="dur-btn" data-years="10">10 ans</button>
+                        <button class="dur-btn" data-years="15">15 ans</button>
+                        <button class="dur-btn active" data-years="20">20 ans</button>
+                        <button class="dur-btn" data-years="25">25 ans</button>
+                    </div>
+                    <button class="btn-primary" id="calculBtn">Calculer ma capacité</button>
+                </div>
+            </div>
+
+            <!-- Zone résultats -->
+            <div class="result-area" id="resultArea" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                    <div class="big-number" id="capaciteMax">—</div>
+                    <div style="font-size:0.9rem; color:#555;">FCFA empruntables</div>
+                </div>
+                <div id="scoreContainer" style="margin:6px 0;"></div>
+                <div class="kpi-grid">
+                    <div class="kpi"><div class="label">Mensualité</div><div class="value" id="mensualite">—</div></div>
+                    <div class="kpi"><div class="label">Taux endettement</div><div class="value" id="txEndett">—</div></div>
+                    <div class="kpi"><div class="label">Reste à vivre</div><div class="value" id="resteAVivre">—</div></div>
+                    <div class="kpi"><div class="label">Coût total crédit</div><div class="value" id="coutTotal">—</div></div>
+                </div>
+                <div id="conseilsContainer"></div>
+                <div style="margin-top:16px;">
+                    <strong>Durées alternatives :</strong>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;" id="scenarii"></div>
+                </div>
+                <div style="margin-top:20px;">
+                    <h3 style="color:var(--green);">Compatibilité banques</h3>
+                    <table class="bank-table" id="bankTable"><tbody></tbody></table>
+                </div>
+                <button class="btn-secondary print-btn" onclick="window.print()">🖨️ Imprimer ce rapport</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer style="text-align:center; padding:30px 0; color:#777;">© SimulBox CI — Outil gratuit, sans inscription. Les résultats sont des estimations.</footer>
+
+<script>
+    (function() {
+        // État
+        const state = {
+            salaire: 600000,
+            annexes: 0,
+            statut: 'cdi',
+            credits: 0,
+            charges: 150000,
+            prixBien: 80000000,
+            sansApport: false,
+            apport: 20000000,
+            duree: 20
+        };
+
+        // Liens DOM
+        const $ = id => document.getElementById(id);
+
+        // Initialisation des events
+        $('calculBtn').addEventListener('click', () => {
+            lireValeurs();
+            afficherResultats();
+        });
+
+        // Boutons durée
+        $('durButtons').addEventListener('click', (e) => {
+            if (e.target.classList.contains('dur-btn')) {
+                $('durButtons').querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                state.duree = parseInt(e.target.dataset.years, 10);
+            }
+        });
+
+        $('sansApport').addEventListener('change', (e) => {
+            state.sansApport = e.target.checked;
+            $('apport').disabled = state.sansApport;
+            if (state.sansApport) $('apport').value = 0;
+        });
+
+        function lireValeurs() {
+            state.salaire = Number($('salaire').value) || 0;
+            state.annexes = Number($('annexes').value) || 0;
+            state.statut = $('statut').value;
+            state.credits = Number($('credits').value) || 0;
+            state.charges = Number($('charges').value) || 0;
+            state.prixBien = Number($('prixBien').value) || 0;
+            state.sansApport = $('sansApport').checked;
+            state.apport = state.sansApport ? 0 : (Number($('apport').value) || 0);
+            state.duree = parseInt($('durButtons').querySelector('.active').dataset.years, 10);
+        }
+
+        // Taux par statut
+        function getTauxBase(statut) {
+            const tauxMap = {
+                fonctionnaire: 7.5,
+                cdi: 8.5,
+                entrepreneur: 10.5,
+                diaspora: 9.5,
+                liberal: 10.0
+            };
+            return tauxMap[statut] || 8.5;
+        }
+
+        function calculer() {
+            const revenu = state.salaire + state.annexes;
+            const tauxNominal = getTauxBase(state.statut) + (state.duree > 20 ? 0.5 : 0) + (state.sansApport ? 1.5 : 0);
+            const tauxMensuel = tauxNominal / 100 / 12;
+            const nbMois = state.duree * 12;
+            const capitalVise = Math.max(0, state.prixBien - state.apport);
+
+            // Mensualité disponible max (33% du revenu net, moins les crédits existants)
+            const mensMaxDispo = Math.max(0, revenu * 0.33 - state.credits);
+
+            // Capacité d'emprunt max (principe de l'annuité constante)
+            let capMax = 0;
+            if (tauxMensuel > 0) {
+                capMax = mensMaxDispo * (1 - Math.pow(1 + tauxMensuel, -nbMois)) / tauxMensuel;
+            } else {
+                capMax = mensMaxDispo * nbMois;
+            }
+
+            // Mensualité pour le bien visé
+            let mensualiteVise = 0;
+            if (tauxMensuel > 0 && capitalVise > 0) {
+                mensualiteVise = capitalVise * tauxMensuel / (1 - Math.pow(1 + tauxMensuel, -nbMois));
+            } else if (capitalVise > 0) {
+                mensualiteVise = capitalVise / nbMois;
+            }
+
+            const tauxEndettement = revenu > 0 ? ((mensualiteVise + state.credits) / revenu) * 100 : 0;
+            const resteAVivre = revenu - mensualiteVise - state.credits - state.charges;
+            const coutTotal = mensualiteVise * nbMois;
+            const interets = coutTotal - capitalVise;
+
+            // Score simple (0-100)
+            let score = 50;
+            if (tauxEndettement <= 30) score += 20;
+            else if (tauxEndettement <= 35) score += 10;
+            else score -= 30;
+            if (!state.sansApport && (state.apport / state.prixBien) >= 0.20) score += 20;
+            else if (!state.sansApport) score += 5;
+            else score -= 20;
+            if (resteAVivre >= 300000) score += 10;
+            else if (resteAVivre >= 200000) score += 0;
+            else score -= 15;
+            score = Math.max(0, Math.min(100, score));
+
+            return {
+                revenu, tauxNominal, capMax, capitalVise, mensualiteVise,
+                tauxEndettement, resteAVivre, coutTotal, interets, score,
+                mensMaxDispo, duree: state.duree
+            };
+        }
+
+        function afficherResultats() {
+            const r = calculer();
+            $('resultArea').style.display = 'block';
+
+            // Capacité max
+            $('capaciteMax').textContent = formaterFCFA(r.capMax);
+
+            // Score
+            let scoreColor = '#c44a3b', scoreLabel = 'Risqué';
+            if (r.score >= 70) { scoreColor = '#0f5d46'; scoreLabel = 'Solide'; }
+            else if (r.score >= 45) { scoreColor = '#d68e1a'; scoreLabel = 'Moyen'; }
+            $('scoreContainer').innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-weight:bold;">Score bancaire</span>
+                    <div class="score-bar" style="flex:1;"><div class="score-fill" style="width:${r.score}%;background:${scoreColor};"></div></div>
+                    <span>${r.score}/100 (${scoreLabel})</span>
+                </div>`;
+
+            // KPIs
+            $('mensualite').textContent = formaterFCFA(r.mensualiteVise) + ' /mois';
+            $('txEndett').textContent = r.tauxEndettement.toFixed(1) + ' %';
+            $('resteAVivre').textContent = formaterFCFA(r.resteAVivre);
+            $('coutTotal').textContent = formaterFCFA(r.coutTotal);
+
+            // Conseils
+            let conseilsHTML = '';
+            if (r.tauxEndettement > 33) {
+                conseilsHTML += '<div class="advice">⚠️ Votre taux d’endettement dépasse la limite bancaire (33%). Réduisez vos charges ou augmentez votre apport.</div>';
+            } else {
+                conseilsHTML += '<div class="advice" style="border-left-color:#0f5d46;">✅ Taux d’endettement dans les clous.</div>';
+            }
+            if (state.sansApport) {
+                conseilsHTML += '<div class="advice">⚠️ Sans apport, très peu de banques accepteront. Un apport de 20% améliorerait votre dossier.</div>';
+            } else if ((state.apport / state.prixBien) < 0.20) {
+                conseilsHTML += '<div class="advice">🟡 Apport inférieur à 20%. Essayez de constituer une épargne supplémentaire pour obtenir un meilleur taux.</div>';
+            }
+            if (r.resteAVivre < 250000) {
+                conseilsHTML += '<div class="advice">🔴 Reste à vivre trop faible. Les banques risquent de refuser ou de diminuer le capital.</div>';
+            }
+            $('conseilsContainer').innerHTML = conseilsHTML;
+
+            // Scénarios
+            let scHTML = '';
+            [15, 20, 25].forEach(dur => {
+                const tauxD = getTauxBase(state.statut) + (dur > 20 ? 0.5 : 0) + (state.sansApport ? 1.5 : 0);
+                const tm = tauxD / 100 / 12;
+                const nm = dur * 12;
+                const cap = tm > 0 ? r.mensMaxDispo * (1 - Math.pow(1 + tm, -nm)) / tm : r.mensMaxDispo * nm;
+                scHTML += `<div style="background:#f0f4f0; padding:8px 12px; border-radius:6px; text-align:center;">
+                    <strong>${dur} ans</strong><br>${formaterFCFA(cap)}
+                </div>`;
+            });
+            $('scenarii').innerHTML = scHTML;
+
+            // Banques
+            const banques = [
+                { nom:'SGCI', taux:'7,5–9,5%', duree:'20 ans', apport:'20%', compat: r.score >= 70 ? 'Forte' : r.score >= 50 ? 'Bonne' : 'Faible' },
+                { nom:'BNI', taux:'7,0–9,0%', duree:'20 ans (25 fonct.)', apport:'15%', compat: r.score >= 70 ? 'Forte' : 'Moyenne' },
+                { nom:'NSIA Banque', taux:'8,0–10,0%', duree:'20 ans', apport:'25%', compat: r.score >= 60 ? 'Bonne' : 'Moyenne' },
+                { nom:'Orabank CI', taux:'9,5–11,5%', duree:'15 ans', apport:'25%', compat: r.score >= 55 ? 'Moyenne' : 'Faible' }
+            ];
+            let rows = '';
+            banques.forEach(b => {
+                const badge = b.compat === 'Forte' ? '🟢' : b.compat === 'Bonne' ? '🟡' : '🔴';
+                rows += `<tr><td>${b.nom}</td><td>${b.taux}</td><td>${b.duree}</td><td>${b.apport}</td><td>${badge} ${b.compat}</td></tr>`;
+            });
+            $('bankTable').innerHTML = rows;
+        }
+
+        function formaterFCFA(v) {
+            return Math.round(v).toLocaleString('fr-FR') + ' FCFA';
+        }
+
+        // Lancer un premier calcul automatique
+        setTimeout(() => { lireValeurs(); afficherResultats(); }, 100);
+    })();
+</script>
+
+</body>
+</html>
