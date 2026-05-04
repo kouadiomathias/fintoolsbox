@@ -1,839 +1,1400 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Louer ou Acheter — Côte d'Ivoire</title>
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.fintoolsbox.com/comparateur-immoblilier/">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  :root {
-    --ink:    #1C1A16;
-    --paper:  #F7F3EC;
-    --green:  #1E3D2F;
-    --gold:   #C8922A;
-    --gold-l: #F0D080;
-    --sand:   #E8DFC8;
-    --muted:  #6B6455;
-    --line:   rgba(28,26,22,.12);
-    --radius: 16px;
-    --f-head: 'Fraunces', Georgia, serif;
-    --f-body: 'DM Sans', sans-serif;
-  }
+  <!-- ═══ SEO PRIMARY ═══ -->
+  <title>Louer ou Acheter à Abidjan ? Simulateur Immobilier Côte d'Ivoire 2026</title>
+  <meta name="description" content="Comparez le coût réel de louer ou acheter un bien immobilier à Abidjan sur 10, 15 ou 20 ans. Simulation gratuite avec les taux bancaires ivoiriens (BICICI, SIB, SGBCI) et les prix par quartier.">
+  <meta name="keywords" content="louer ou acheter Abidjan, simulateur immobilier Côte d'Ivoire, crédit immobilier CI, prix immobilier Cocody, taux immobilier FCFA, achat appartement Abidjan">
+  <meta name="author" content="FinToolsBox">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://www.fintoolsbox.com/comparateur-immoblier-ci/">
 
-  html { font-size: 16px; scroll-behavior: smooth }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--f-body);
-    min-height: 100vh;
-  }
+  <!-- ═══ OPEN GRAPH ═══ -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.fintoolsbox.com/comparateur-immoblier-ci/">
+  <meta property="og:title" content="Louer ou Acheter à Abidjan ? Simulateur Immobilier Côte d'Ivoire 2026">
+  <meta property="og:description" content="Outil gratuit : comparez le coût réel de louer ou acheter à Abidjan sur 10 à 25 ans avec taux bancaires ivoiriens et prix par quartier en FCFA.">
+  <meta property="og:image" content="https://www.fintoolsbox.com/assets/og-comparateur-immobilier.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Simulateur Louer ou Acheter à Abidjan - FinToolsBox">
+  <meta property="og:locale" content="fr_CI">
+  <meta property="og:site_name" content="FinToolsBox">
 
-  /* ── HEADER ── */
-  header {
-    background: var(--green);
-    color: #fff;
-    padding: 2.5rem 2rem 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent, transparent 28px,
-      rgba(255,255,255,.025) 28px, rgba(255,255,255,.025) 29px
-    );
-    pointer-events: none;
-  }
-  .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-  }
-  .eyebrow {
-    font-family: var(--f-body);
-    font-size: .7rem;
-    font-weight: 500;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--gold-l);
-    margin-bottom: .75rem;
-  }
-  header h1 {
-    font-family: var(--f-head);
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 600;
-    line-height: 1.1;
-    color: #fff;
-    max-width: 680px;
-  }
-  header h1 em {
-    font-style: italic;
-    color: var(--gold-l);
-  }
-  .header-sub {
-    margin-top: .9rem;
-    font-size: .9rem;
-    color: rgba(255,255,255,.65);
-    max-width: 520px;
-    line-height: 1.6;
-  }
-  .badge-ci {
-    display: inline-flex;
-    align-items: center;
-    gap: .4rem;
-    margin-top: 1.2rem;
-    background: rgba(200,146,42,.18);
-    border: 1px solid rgba(200,146,42,.4);
-    border-radius: 100px;
-    padding: .35rem .85rem;
-    font-size: .75rem;
-    font-weight: 500;
-    color: var(--gold-l);
-  }
-  .flag { font-size: 1rem }
+  <!-- ═══ TWITTER / X CARD ═══ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@fintoolsbox">
+  <meta name="twitter:creator" content="@fintoolsbox">
+  <meta name="twitter:title" content="Louer ou Acheter à Abidjan ? Simulateur gratuit 2026">
+  <meta name="twitter:description" content="Comparez louer vs acheter en Côte d'Ivoire avec les vrais taux bancaires et prix quartier. Résultat en FCFA sur 10–25 ans.">
+  <meta name="twitter:image" content="https://www.fintoolsbox.com/assets/comparateur-credit-ci.webp">
 
-  /* ── LAYOUT ── */
-  .layout {
-    max-width: 1100px;
-    margin: 2.5rem auto;
-    padding: 0 1.25rem;
-    display: grid;
-    grid-template-columns: 420px 1fr;
-    gap: 1.5rem;
-    align-items: start;
+  <!-- ═══ STRUCTURED DATA — WebApplication ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Simulateur Louer ou Acheter — Côte d'Ivoire",
+    "alternateName": "Comparateur immobilier Abidjan",
+    "url": "https://www.fintoolsbox.com/comparateur-immoblier-ci/",
+    "description": "Outil de simulation gratuit comparant le coût total de louer ou acheter un bien immobilier à Abidjan sur 10 à 25 ans, avec les taux bancaires ivoiriens et les prix par quartier.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "XOF"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "FinToolsBox",
+      "url": "https://www.fintoolsbox.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.fintoolsbox.com/images/comparateur-credit-ci.webp"
+      }
+    },
+    "inLanguage": "fr-CI",
+    "datePublished": "2024-01-01",
+    "dateModified": "2026-05-01",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Côte d'Ivoire"
+    }
   }
+  </script>
 
-  /* ── PANEL ── */
-  .panel {
-    background: #fff;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    overflow: hidden;
+  <!-- ═══ STRUCTURED DATA — FAQPage ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Vaut-il mieux louer ou acheter un bien immobilier à Abidjan ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La réponse dépend de plusieurs facteurs : votre horizon de temps, votre apport disponible, la stabilité de votre emploi et le quartier visé. En général, l'achat devient plus avantageux après 7 à 10 ans dans des quartiers comme Cocody ou Riviera, où la valorisation moyenne atteint 4 à 7 % par an. Si vous comptez rester moins de 5 ans, la location reste souvent plus flexible et économique. Notre simulateur vous permet de comparer les deux scénarios en fonction de votre situation précise."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quel apport personnel faut-il pour obtenir un crédit immobilier en Côte d'Ivoire ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les banques ivoiriennes (BICICI, SIB, SGBCI, BNI) exigent généralement un apport personnel minimum de 20 % à 30 % du prix du bien. Un apport plus élevé améliore les conditions du prêt, réduit les intérêts totaux et augmente vos chances d'acceptation. Pour un bien à 85 millions FCFA, il faut prévoir entre 17 et 25 millions FCFA d'apport minimum."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quels sont les taux des crédits immobiliers en Côte d'Ivoire en 2026 ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les taux d'intérêt des crédits immobiliers en Côte d'Ivoire varient selon les établissements : BICICI propose des taux autour de 7 %, la SIB autour de 8,5 %, la SGBCI aux environs de 9,5 % et la BNI autour de 11 %. Ces taux sont fixes et s'appliquent sur des durées allant de 10 à 25 ans. Il est conseillé de comparer plusieurs offres avant de s'engager."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quels sont les frais de notaire et de mutation en Côte d'Ivoire ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les frais d'acte notarié et de mutation immobilière en Côte d'Ivoire représentent généralement entre 10 % et 15 % du prix d'achat du bien. Ils comprennent les droits d'enregistrement, les frais de transcription, les honoraires du notaire et diverses taxes. Ces frais sont à prévoir en plus de l'apport personnel et ne sont pas inclus dans les mensualités du prêt. Pour un bien à 100 millions FCFA, comptez entre 10 et 15 millions FCFA de frais supplémentaires."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelle est la valorisation moyenne de l'immobilier à Abidjan ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Entre 2015 et 2024, l'immobilier résidentiel à Abidjan a connu une valorisation annuelle moyenne de 4 % à 7 % selon les quartiers. Les zones prisées comme Cocody, les 2 Plateaux et Riviera affichent les meilleures performances. Les quartiers populaires comme Yopougon et Marcory présentent des valorisations plus modérées mais offrent des prix d'entrée plus accessibles. Cette croissance fait de l'immobilier abidjanais un placement attractif sur le long terme."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien coûte la location mensuelle à Abidjan par quartier ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les loyers mensuels à Abidjan varient fortement selon le quartier. En 2026, les estimations moyennes pour un appartement de type 3 pièces sont : Cocody 400 000 – 600 000 FCFA, Plateau 700 000 – 1 200 000 FCFA, Riviera 350 000 – 550 000 FCFA, Marcory 220 000 – 350 000 FCFA, Yopougon 120 000 – 200 000 FCFA, 2 Plateaux 500 000 – 800 000 FCFA. Ces prix augmentent en moyenne de 3 % à 5 % par an."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment fonctionne ce simulateur louer ou acheter ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le simulateur calcule le coût net cumulé sur la durée choisie pour chaque scénario. Pour l'achat, il additionne l'apport, toutes les mensualités et les charges annuelles, puis soustrait la valeur estimée du bien à terme. Pour la location, il cumule tous les loyers et soustrait le gain généré par le placement de l'apport. La différence entre les deux coûts nets détermine quelle option est la plus avantageuse sur votre horizon de temps."
+        }
+      }
+    ]
   }
-  .panel-head {
-    padding: 1.1rem 1.5rem;
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-  }
-  .panel-icon {
-    width: 28px; height: 28px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-  .icon-green { background: #E8F2EC; }
-  .icon-gold  { background: #FBF2E0; }
-  .panel-head h2 {
-    font-family: var(--f-head);
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .panel-body { padding: 1.4rem 1.5rem }
+  </script>
 
-  /* ── NEIGHBORHOOD PICKER ── */
-  .quartier-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: .5rem;
-    margin-bottom: 1.4rem;
+  <!-- ═══ STRUCTURED DATA — BreadcrumbList ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Accueil",
+        "item": "https://www.fintoolsbox.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Simulateur Louer ou Acheter — Abidjan",
+        "item": "https://www.fintoolsbox.com/comparateur-immoblier-ci/"
+      }
+    ]
   }
-  .q-btn {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: .55rem .4rem;
-    cursor: pointer;
-    text-align: center;
-    transition: all .18s;
-    font-family: var(--f-body);
-  }
-  .q-btn:hover { border-color: var(--gold); background: #fffbf3 }
-  .q-btn.active {
-    background: var(--green);
-    border-color: var(--green);
-    color: #fff;
-  }
-  .q-name { font-size: .78rem; font-weight: 500; display: block }
-  .q-price { font-size: .65rem; color: var(--muted); display: block; margin-top: 2px }
-  .q-btn.active .q-price { color: rgba(255,255,255,.65) }
+  </script>
 
-  /* ── FORM FIELDS ── */
-  .field-group {
-    margin-bottom: 1.2rem;
+  <!-- ═══ STRUCTURED DATA — Organization ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FinToolsBox",
+    "url": "https://www.fintoolsbox.com",
+    "logo": "https://www.fintoolsbox.com/images/comparateur-credit-ci.webp",
+    "description": "Outils financiers gratuits adaptés à l'Afrique de l'Ouest et à la Côte d'Ivoire",
+    "areaServed": ["Côte d'Ivoire", "Sénégal", "Mali", "Burkina Faso"],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "support",
+      "email": "contact@fintoolsbox.com"
+    },
+    "sameAs": [
+      "https://twitter.com/fintoolsbox",
+      "https://www.linkedin.com/company/fintoolsbox"
+    ]
   }
-  .field-sep {
-    font-family: var(--f-head);
-    font-size: .72rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border-top: 1px solid var(--line);
-    padding-top: 1.1rem;
-    margin: 1.1rem 0 .9rem;
-  }
-  label {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-size: .8rem;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: .4rem;
-  }
-  label span.hint {
-    font-size: .72rem;
-    color: var(--muted);
-    font-weight: 400;
-  }
-  .input-wrap {
-    position: relative;
-  }
-  .input-unit {
-    position: absolute;
-    right: .9rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: .78rem;
-    color: var(--muted);
-    pointer-events: none;
-  }
-  input[type="number"], input[type="text"], select {
-    width: 100%;
-    padding: .65rem .9rem;
-    border: 1.5px solid var(--line);
-    border-radius: 10px;
-    font-family: var(--f-body);
-    font-size: .9rem;
-    color: var(--ink);
-    background: var(--paper);
-    transition: border-color .15s;
-    appearance: none;
-  }
-  input[type="number"]:focus, input[type="text"]:focus, select:focus {
-    outline: none;
-    border-color: var(--green);
-    background: #fff;
-  }
-  input[type="number"] { padding-right: 3.5rem }
+  </script>
 
-  .taux-presets {
-    display: flex;
-    gap: .4rem;
-    margin-top: .5rem;
-    flex-wrap: wrap;
+  <!-- ═══ STRUCTURED DATA — SiteNavigationElement ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    "name": ["Accueil", "Simulateurs", "Immobilier CI", "FAQ"],
+    "url": [
+      "https://www.fintoolsbox.com/",,
+      "https://www.fintoolsbox.com/comparateur-immoblier-ci/",
+      "https://www.fintoolsbox.com/faq/"
+    ]
   }
-  .taux-btn {
-    font-size: .7rem;
-    padding: .25rem .6rem;
-    border-radius: 6px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    cursor: pointer;
-    font-family: var(--f-body);
-    transition: all .15s;
-  }
-  .taux-btn:hover, .taux-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
+  </script>
 
-  .duration-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: .4rem;
-  }
-  .dur-btn {
-    padding: .5rem;
-    text-align: center;
-    border: 1.5px solid var(--line);
-    border-radius: 8px;
-    font-size: .82rem;
-    font-weight: 500;
-    cursor: pointer;
-    background: var(--paper);
-    font-family: var(--f-body);
-    transition: all .15s;
-  }
-  .dur-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
+  <!-- ═══ FONTS & CHART.JS ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
 
-  .calc-btn {
-    width: 100%;
-    padding: .9rem;
-    background: var(--green);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: var(--f-head);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1.4rem;
-    letter-spacing: .01em;
-    transition: background .2s, transform .1s;
-  }
-  .calc-btn:hover { background: #152d22 }
-  .calc-btn:active { transform: scale(.98) }
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
 
-  /* ── RESULTS ── */
-  .results-col { display: flex; flex-direction: column; gap: 1.2rem }
+    :root {
+      --ink:    #1C1A16;
+      --paper:  #F7F3EC;
+      --green:  #1E3D2F;
+      --green2: #2A5240;
+      --gold:   #C8922A;
+      --gold-l: #F0D080;
+      --sand:   #E8DFC8;
+      --muted:  #6B6455;
+      --line:   rgba(28,26,22,.12);
+      --radius: 16px;
+      --f-head: 'Fraunces', Georgia, serif;
+      --f-body: 'DM Sans', sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+    }
 
-  /* verdict card */
-  .verdict {
-    border-radius: var(--radius);
-    padding: 1.6rem 1.8rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .verdict.buy  { background: var(--green); color: #fff }
-  .verdict.rent { background: var(--ink);   color: #fff }
-  .verdict.draw { background: var(--gold);  color: var(--ink) }
-  .verdict::after {
-    content: attr(data-icon);
-    position: absolute;
-    right: 1.5rem; top: 50%;
-    transform: translateY(-50%);
-    font-size: 5rem;
-    opacity: .08;
-    pointer-events: none;
-  }
-  .verdict-label {
-    font-size: .72rem;
-    font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    opacity: .7;
-    margin-bottom: .4rem;
-  }
-  .verdict h3 {
-    font-family: var(--f-head);
-    font-size: 1.55rem;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: .5rem;
-  }
-  .verdict p { font-size: .85rem; opacity: .8; line-height: 1.55; max-width: 480px }
+    html { font-size: 16px; scroll-behavior: smooth }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--f-body);
+      min-height: 100vh;
+    }
 
-  /* KPI cards */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  .kpi-card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.2rem 1.4rem;
-  }
-  .kpi-card.buy-card { border-top: 3px solid var(--green) }
-  .kpi-card.rent-card { border-top: 3px solid var(--gold) }
-  .kpi-top {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-bottom: .8rem;
-  }
-  .kpi-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-green { background: var(--green) }
-  .dot-gold  { background: var(--gold) }
-  .kpi-title { font-size: .75rem; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--muted) }
-  .kpi-amount {
-    font-family: var(--f-head);
-    font-size: 1.55rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: .3rem;
-  }
-  .kpi-sub { font-size: .75rem; color: var(--muted) }
-  .kpi-details {
-    margin-top: .9rem;
-    padding-top: .9rem;
-    border-top: 1px solid var(--line);
-  }
-  .kpi-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: .78rem;
-    color: var(--muted);
-    padding: .2rem 0;
-  }
-  .kpi-row strong { color: var(--ink); font-weight: 500 }
+    /* ── SKIP NAV (accessibilité) ── */
+    .skip-nav {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-nav:focus {
+      left: 1rem;
+      top: 1rem;
+      width: auto;
+      height: auto;
+      background: var(--green);
+      color: #fff;
+      padding: .5rem 1rem;
+      border-radius: 8px;
+      z-index: 9999;
+    }
 
-  /* chart */
-  .chart-wrap {
-    background: #fff;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    padding: 1.4rem 1.5rem;
-  }
-  .chart-head {
-    display: flex;
-    align-items: baseline;
-    gap: .75rem;
-    margin-bottom: 1rem;
-  }
-  .chart-head h3 {
-    font-family: var(--f-head);
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .chart-sub { font-size: .78rem; color: var(--muted) }
-  .chart-container { position: relative; height: 220px }
-  .legend {
-    display: flex;
-    gap: 1.2rem;
-    margin-top: .9rem;
-  }
-  .leg-item {
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-    font-size: .75rem;
-    color: var(--muted);
-  }
-  .leg-dot { width: 10px; height: 10px; border-radius: 50% }
+    /* ── BREADCRUMB ── */
+    .breadcrumb-bar {
+      background: var(--green);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: .5rem 2rem;
+    }
+    .breadcrumb-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .72rem;
+      color: rgba(255,255,255,.55);
+    }
+    .breadcrumb-inner a {
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    .breadcrumb-inner a:hover { color: var(--gold-l) }
+    .breadcrumb-sep { opacity: .4 }
+    .breadcrumb-inner span[aria-current] { color: var(--gold-l) }
 
-  /* breakeven banner */
-  .breakeven {
-    background: var(--sand);
-    border-radius: 12px;
-    padding: .9rem 1.2rem;
-    font-size: .82rem;
-    color: var(--ink);
-    line-height: 1.5;
-    border-left: 3px solid var(--gold);
-    margin-top: .4rem;
-  }
-  .breakeven strong { font-weight: 600 }
+    /* ── HEADER ── */
+    header {
+      background: var(--green);
+      color: #fff;
+      padding: 2.5rem 2rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 28px,
+        rgba(255,255,255,.022) 28px, rgba(255,255,255,.022) 29px
+      );
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: .5;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .eyebrow {
+      font-family: var(--f-body);
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold-l);
+      margin-bottom: .8rem;
+    }
+    header h1 {
+      font-family: var(--f-head);
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: #fff;
+      max-width: 680px;
+    }
+    header h1 em {
+      font-style: italic;
+      color: var(--gold-l);
+    }
+    .header-sub {
+      margin-top: .9rem;
+      font-size: .88rem;
+      color: rgba(255,255,255,.62);
+      max-width: 540px;
+      line-height: 1.65;
+    }
+    .header-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: 1.3rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: rgba(200,146,42,.15);
+      border: 1px solid rgba(200,146,42,.38);
+      border-radius: 100px;
+      padding: .3rem .8rem;
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--gold-l);
+    }
 
-  /* tip rows */
-  .tips {
-    background: #fff;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
-    padding: 1.3rem 1.5rem;
-  }
-  .tips h3 {
-    font-family: var(--f-head);
-    font-size: .95rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  .tip {
-    display: flex;
-    gap: .75rem;
-    padding: .6rem 0;
-    border-bottom: 1px solid var(--line);
-    font-size: .82rem;
-    line-height: 1.5;
-    color: var(--muted);
-  }
-  .tip:last-child { border-bottom: none }
-  .tip-icon {
-    font-size: .9rem;
-    flex-shrink: 0;
-    margin-top: .05rem;
-  }
+    /* ── LAYOUT ── */
+    .layout {
+      max-width: 1100px;
+      margin: 2.5rem auto;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
 
-  /* empty state */
-  .empty {
-    text-align: center;
-    padding: 3.5rem 2rem;
-    color: var(--muted);
-  }
-  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4 }
-  .empty h3 {
-    font-family: var(--f-head);
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: .5rem;
-  }
-  .empty p { font-size: .85rem; line-height: 1.6 }
+    /* ── PANEL ── */
+    .panel {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .panel-head {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--paper);
+    }
+    .panel-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .icon-green { background: #E8F2EC; }
+    .panel-head h2 {
+      font-family: var(--f-head);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .panel-body { padding: 1.4rem 1.5rem }
 
-  /* export btn */
-  .export-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
-    padding: .55rem 1.1rem;
-    border: 1.5px solid var(--green);
-    border-radius: 9px;
-    font-size: .8rem;
-    font-weight: 500;
-    color: var(--green);
-    background: transparent;
-    cursor: pointer;
-    font-family: var(--f-body);
-    transition: all .15s;
-    margin-top: .75rem;
-  }
-  .export-btn:hover { background: var(--green); color: #fff }
+    /* ── QUARTIER PICKER ── */
+    .quartier-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .45rem;
+      margin-bottom: 1.4rem;
+    }
+    .q-btn {
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: .55rem .35rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all .18s;
+      font-family: var(--f-body);
+    }
+    .q-btn:hover { border-color: var(--gold); background: #fffbf4 }
+    .q-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .q-name { font-size: .78rem; font-weight: 500; display: block }
+    .q-price { font-size: .63rem; color: var(--muted); display: block; margin-top: 2px }
+    .q-btn.active .q-price { color: rgba(255,255,255,.6) }
 
-  /* responsive */
-  @media (max-width: 820px) {
-    .layout { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: 1fr 1fr }
-    .quartier-grid { grid-template-columns: repeat(3,1fr) }
-  }
-  @media (max-width: 500px) {
-    .kpi-grid { grid-template-columns: 1fr }
-    .quartier-grid { grid-template-columns: repeat(2,1fr) }
-  }
+    /* ── FORM ── */
+    .field-group { margin-bottom: 1.15rem }
+    .field-sep {
+      font-family: var(--f-head);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 1.1rem;
+      margin: 1.1rem 0 .9rem;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: .4rem;
+    }
+    label .hint {
+      font-size: .7rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .input-wrap { position: relative }
+    .input-unit {
+      position: absolute;
+      right: .9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .75rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: .68rem .9rem;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font-family: var(--f-body);
+      font-size: .88rem;
+      color: var(--ink);
+      background: var(--paper);
+      transition: border-color .15s, background .15s;
+      appearance: none;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none }
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: var(--green);
+      background: #fff;
+    }
+    input[type="number"] { padding-right: 3.8rem }
 
-  /* animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px) }
-    to   { opacity: 1; transform: translateY(0) }
-  }
-  .anim { animation: fadeUp .35s ease both }
-  .anim-d1 { animation-delay: .05s }
-  .anim-d2 { animation-delay: .12s }
-  .anim-d3 { animation-delay: .19s }
-  .anim-d4 { animation-delay: .26s }
+    .taux-presets {
+      display: flex;
+      gap: .4rem;
+      margin-top: .5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .taux-preset-label { font-size: .68rem; color: var(--muted) }
+    .taux-btn {
+      font-size: .68rem;
+      padding: .25rem .6rem;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      cursor: pointer;
+      font-family: var(--f-body);
+      transition: all .15s;
+      font-weight: 500;
+    }
+    .taux-btn:hover { background: var(--green); color: #fff; border-color: var(--green) }
+    .taux-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
 
-  footer {
-    text-align: center;
-    padding: 2rem;
-    font-size: .75rem;
-    color: var(--muted);
-    border-top: 1px solid var(--line);
-    margin-top: 3rem;
-  }
-</style>
+    .duration-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: .4rem;
+    }
+    .dur-btn {
+      padding: .52rem;
+      text-align: center;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--paper);
+      font-family: var(--f-body);
+      transition: all .15s;
+      color: var(--ink);
+    }
+    .dur-btn:hover { border-color: var(--green) }
+    .dur-btn.active { background: var(--green); color: #fff; border-color: var(--green) }
+
+    .calc-btn {
+      width: 100%;
+      padding: .95rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--f-head);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      letter-spacing: .01em;
+      transition: background .2s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(30,61,47,.25);
+    }
+    .calc-btn:hover { background: #152d22; box-shadow: 0 6px 20px rgba(30,61,47,.35) }
+    .calc-btn:active { transform: scale(.98) }
+
+    /* ── RESULTS ── */
+    .results-col { display: flex; flex-direction: column; gap: 1.2rem }
+
+    /* verdict */
+    .verdict {
+      border-radius: var(--radius);
+      padding: 1.7rem 1.9rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .verdict.buy  { background: var(--green); color: #fff }
+    .verdict.rent { background: var(--ink);   color: #fff }
+    .verdict.draw { background: #7A6435;      color: #fff }
+    .verdict-bg-icon {
+      position: absolute;
+      right: 1.5rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 5.5rem;
+      opacity: .07;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .verdict-label {
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .65;
+      margin-bottom: .45rem;
+    }
+    .verdict h2 {
+      font-family: var(--f-head);
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: .55rem;
+    }
+    .verdict p { font-size: .85rem; opacity: .82; line-height: 1.6; max-width: 500px }
+    .verdict-actions {
+      display: flex;
+      gap: .7rem;
+      margin-top: 1.1rem;
+      flex-wrap: wrap;
+    }
+    .export-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .5rem 1rem;
+      border: 1.5px solid rgba(255,255,255,.35);
+      border-radius: 8px;
+      font-size: .78rem;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(255,255,255,.1);
+      cursor: pointer;
+      font-family: var(--f-body);
+      transition: all .15s;
+      text-decoration: none;
+    }
+    .export-btn:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.6) }
+
+    /* KPI */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .kpi-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow);
+    }
+    .kpi-card.buy-card  { border-top: 3px solid var(--green) }
+    .kpi-card.rent-card { border-top: 3px solid var(--gold) }
+    .kpi-top {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .85rem;
+    }
+    .kpi-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0 }
+    .dot-green { background: var(--green) }
+    .dot-gold  { background: var(--gold) }
+    .kpi-title { font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--muted) }
+    .kpi-amount {
+      font-family: var(--f-head);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: .3rem;
+    }
+    .kpi-sub { font-size: .72rem; color: var(--muted); line-height: 1.4 }
+    .kpi-details { margin-top: .95rem; padding-top: .95rem; border-top: 1px solid var(--line) }
+    .kpi-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .76rem;
+      color: var(--muted);
+      padding: .22rem 0;
+    }
+    .kpi-row strong { color: var(--ink); font-weight: 500 }
+
+    /* breakeven */
+    .breakeven {
+      background: var(--sand);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: .82rem;
+      color: var(--ink);
+      line-height: 1.55;
+      border-left: 3px solid var(--gold);
+    }
+    .breakeven strong { font-weight: 600 }
+
+    /* chart */
+    .chart-wrap {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      padding: 1.4rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .chart-head {
+      display: flex;
+      align-items: baseline;
+      gap: .75rem;
+      margin-bottom: 1.1rem;
+    }
+    .chart-head h3 {
+      font-family: var(--f-head);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .chart-sub { font-size: .76rem; color: var(--muted) }
+    .chart-container { position: relative; height: 230px }
+    .legend {
+      display: flex;
+      gap: 1.4rem;
+      margin-top: .95rem;
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .74rem;
+      color: var(--muted);
+    }
+    .leg-dot { width: 10px; height: 10px; border-radius: 50% }
+
+    /* tips */
+    .tips {
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      padding: 1.3rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .tips h3 {
+      font-family: var(--f-head);
+      font-size: .95rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .tip {
+      display: flex;
+      gap: .75rem;
+      padding: .65rem 0;
+      border-bottom: 1px solid var(--line);
+      font-size: .82rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+    .tip:last-child { border-bottom: none }
+    .tip-icon { font-size: .9rem; flex-shrink: 0; margin-top: .05rem }
+    .tip b { color: var(--ink) }
+
+    /* empty state */
+    .empty {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      color: var(--muted);
+    }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4 }
+    .empty h3 {
+      font-family: var(--f-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: .55rem;
+    }
+    .empty p { font-size: .85rem; line-height: 1.65 }
+
+    /* ── FAQ SECTION ── */
+    .faq-section {
+      max-width: 1100px;
+      margin: 1rem auto 3rem;
+      padding: 0 1.25rem;
+    }
+    .faq-section h2 {
+      font-family: var(--f-head);
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1.4rem;
+      color: var(--ink);
+    }
+    .faq-section h2 span {
+      display: block;
+      font-size: .72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      font-family: var(--f-body);
+      margin-bottom: .4rem;
+      font-style: normal;
+    }
+    .faq-list { display: flex; flex-direction: column; gap: .6rem }
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.05rem 1.4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--f-body);
+      font-size: .88rem;
+      font-weight: 500;
+      color: var(--ink);
+      text-align: left;
+      transition: background .15s;
+    }
+    .faq-q:hover { background: var(--paper) }
+    .faq-q[aria-expanded="true"] { background: var(--paper) }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem;
+      transition: transform .25s, background .15s;
+      color: var(--muted);
+    }
+    .faq-q[aria-expanded="true"] .faq-chevron {
+      transform: rotate(180deg);
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+    .faq-a {
+      display: none;
+      padding: 0 1.4rem 1.1rem;
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.7;
+      border-top: 1px solid var(--line);
+      padding-top: .9rem;
+    }
+    .faq-a.open { display: block }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green);
+      color: rgba(255,255,255,.55);
+      text-align: center;
+      padding: 1.8rem 2rem;
+      font-size: .74rem;
+      line-height: 1.7;
+    }
+    footer a { color: var(--gold-l); text-decoration: none }
+    footer a:hover { text-decoration: underline }
+    footer strong { color: rgba(255,255,255,.8) }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px) }
+      to   { opacity: 1; transform: translateY(0) }
+    }
+    .anim { animation: fadeUp .38s cubic-bezier(.22,.68,0,1.2) both }
+    .anim-d1 { animation-delay: .06s }
+    .anim-d2 { animation-delay: .13s }
+    .anim-d3 { animation-delay: .20s }
+    .anim-d4 { animation-delay: .27s }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr }
+      .kpi-grid { grid-template-columns: 1fr 1fr }
+      .quartier-grid { grid-template-columns: repeat(3,1fr) }
+    }
+    @media (max-width: 500px) {
+      .kpi-grid { grid-template-columns: 1fr }
+      .quartier-grid { grid-template-columns: repeat(2,1fr) }
+      .duration-grid { grid-template-columns: repeat(2,1fr) }
+      header { padding: 2rem 1.25rem }
+      .panel-body { padding: 1.1rem 1.1rem }
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      header, .breadcrumb-bar { background: #1E3D2F !important; -webkit-print-color-adjust: exact }
+      .calc-btn, .export-btn, .faq-section, footer { display: none }
+      .layout { grid-template-columns: 1fr }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <p class="eyebrow">Outil de simulation immobilière</p>
-    <h1>Vaut-il mieux <em>louer ou acheter</em> à Abidjan ?</h1>
-    <p class="header-sub">Comparez le coût réel sur 10, 15 ou 20 ans avec les taux bancaires ivoiriens, adaptés à votre quartier.</p>
-    <span class="badge-ci"><span class="flag">🇨🇮</span> Données adaptées à la Côte d'Ivoire — FCFA</span>
-  </div>
-</header>
+  <!-- Accessibility skip link -->
+  <a class="skip-nav" href="#simulateur">Aller au contenu principal</a>
 
-<div class="layout">
+  <!-- ── BREADCRUMB ── -->
+  <nav class="breadcrumb-bar" aria-label="Fil d'Ariane">
+    <div class="breadcrumb-inner">
+      <a href="https://www.fintoolsbox.com/">Accueil</a>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <a href="https://www.fintoolsbox.com/comparateur-immoblier-ci/">Outils Immobilier</a>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <span aria-current="page">Louer ou Acheter — Abidjan</span>
+    </div>
+  </nav>
 
-  <!-- ═══ LEFT PANEL : INPUTS ═══ -->
-  <div>
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-icon icon-green">🏠</div>
-        <h2>Paramètres de votre projet</h2>
-      </div>
-      <div class="panel-body">
-
-        <!-- Quartier -->
-        <div class="field-group">
-          <label>Choisissez votre quartier <span class="hint">prix moyens du marché</span></label>
-          <div class="quartier-grid" id="quartierGrid"></div>
-        </div>
-
-        <!-- Achat -->
-        <div class="field-sep">Scénario Achat</div>
-
-        <div class="field-group">
-          <label>Prix du bien <span class="hint">FCFA</span></label>
-          <div class="input-wrap">
-            <input type="number" id="prixBien" value="85000000" step="1000000">
-            <span class="input-unit">FCFA</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Apport personnel <span class="hint">min. 20% recommandé</span></label>
-          <div class="input-wrap">
-            <input type="number" id="apport" value="17000000" step="500000">
-            <span class="input-unit">FCFA</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Taux d'intérêt annuel <span class="hint">banques CI</span></label>
-          <div class="input-wrap">
-            <input type="number" id="taux" value="8.5" step="0.1" min="1" max="25">
-            <span class="input-unit">%</span>
-          </div>
-          <div class="taux-presets">
-            <span style="font-size:.7rem;color:var(--muted);align-self:center;">Présets :</span>
-            <button class="taux-btn" onclick="setTaux(7)">BICICI 7%</button>
-            <button class="taux-btn active" onclick="setTaux(8.5)">SIB 8.5%</button>
-            <button class="taux-btn" onclick="setTaux(9.5)">SGBCI 9.5%</button>
-            <button class="taux-btn" onclick="setTaux(11)">BNI 11%</button>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Durée du prêt</label>
-          <div class="duration-grid" id="durGrid">
-            <button class="dur-btn" onclick="setDur(10, this)">10 ans</button>
-            <button class="dur-btn" onclick="setDur(15, this)">15 ans</button>
-            <button class="dur-btn active" onclick="setDur(20, this)">20 ans</button>
-            <button class="dur-btn" onclick="setDur(25, this)">25 ans</button>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Charges annuelles estimées <span class="hint">entretien, assurance…</span></label>
-          <div class="input-wrap">
-            <input type="number" id="charges" value="1" step="0.1" min="0" max="5">
-            <span class="input-unit">% du bien</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Valorisation annuelle du bien <span class="hint">Abidjan ~4–6%/an</span></label>
-          <div class="input-wrap">
-            <input type="number" id="valorisation" value="5" step="0.5" min="0" max="15">
-            <span class="input-unit">%/an</span>
-          </div>
-        </div>
-
-        <!-- Location -->
-        <div class="field-sep">Scénario Location</div>
-
-        <div class="field-group">
-          <label>Loyer mensuel actuel <span class="hint">FCFA</span></label>
-          <div class="input-wrap">
-            <input type="number" id="loyer" value="350000" step="10000">
-            <span class="input-unit">FCFA</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Hausse annuelle du loyer <span class="hint">typ. 3–5% CI</span></label>
-          <div class="input-wrap">
-            <input type="number" id="hausseLoyer" value="4" step="0.5" min="0" max="15">
-            <span class="input-unit">%/an</span>
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Rendement si apport placé <span class="hint">BRVM, tontine, OPCVM</span></label>
-          <div class="input-wrap">
-            <input type="number" id="rendPlacement" value="6" step="0.5" min="0" max="20">
-            <span class="input-unit">%/an</span>
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="calculer()">Calculer ma simulation →</button>
+  <!-- ── HEADER ── -->
+  <header role="banner">
+    <div class="header-inner">
+      <p class="eyebrow">Outil de simulation immobilière gratuit</p>
+      <h1>Vaut-il mieux <em>louer ou acheter</em><br>à Abidjan ?</h1>
+      <p class="header-sub">Comparez le coût réel sur 10 à 25 ans avec les taux bancaires ivoiriens et les prix du marché par quartier — résultats en FCFA.</p>
+      <div class="header-badges">
+        <span class="badge"><span aria-hidden="true">🇨🇮</span> Adapté à la Côte d'Ivoire</span>
+        <span class="badge"><span aria-hidden="true">🏦</span> BICICI · SIB · SGBCI · BNI</span>
+        <span class="badge"><span aria-hidden="true">✅</span> 100% gratuit</span>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- ═══ RIGHT : RESULTS ═══ -->
-  <div class="results-col" id="resultsCol">
-    <div class="panel">
-      <div class="empty">
-        <div class="empty-icon">📊</div>
-        <h3>Votre analyse apparaîtra ici</h3>
-        <p>Renseignez vos paramètres à gauche et cliquez sur <strong>Calculer</strong> pour obtenir une comparaison complète adaptée à votre situation.</p>
-      </div>
+  <!-- ── SIMULATEUR ── -->
+  <main id="simulateur">
+    <div class="layout">
+
+      <!-- ═══ INPUTS ═══ -->
+      <section aria-label="Paramètres de simulation">
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-icon icon-green" aria-hidden="true">🏠</div>
+            <h2>Paramètres de votre projet</h2>
+          </div>
+          <div class="panel-body">
+
+            <!-- Quartier -->
+            <div class="field-group">
+              <label id="quartier-label">Choisissez votre quartier <span class="hint">prix moyens du marché</span></label>
+              <div class="quartier-grid" id="quartierGrid" role="group" aria-labelledby="quartier-label"></div>
+            </div>
+
+            <!-- Achat -->
+            <div class="field-sep">Scénario Achat</div>
+
+            <div class="field-group">
+              <label for="prixBien">Prix du bien <span class="hint">FCFA</span></label>
+              <div class="input-wrap">
+                <input type="number" id="prixBien" value="120000000" step="1000000" min="1000000" max="2000000000" aria-describedby="prixBien-desc">
+                <span class="input-unit" aria-hidden="true">FCFA</span>
+              </div>
+              <span id="prixBien-desc" style="font-size:.68rem;color:var(--muted);margin-top:.3rem;display:block">Hors frais de notaire (à ajouter : 10–15% du prix)</span>
+            </div>
+
+            <div class="field-group">
+              <label for="apport">Apport personnel <span class="hint">min. 20 % recommandé</span></label>
+              <div class="input-wrap">
+                <input type="number" id="apport" value="24000000" step="500000" min="0" aria-describedby="apport-pct">
+                <span class="input-unit" aria-hidden="true">FCFA</span>
+              </div>
+              <span id="apport-pct" style="font-size:.68rem;color:var(--muted);margin-top:.3rem;display:block" aria-live="polite"></span>
+            </div>
+
+            <div class="field-group">
+              <label for="taux">Taux d'intérêt annuel <span class="hint">banques CI</span></label>
+              <div class="input-wrap">
+                <input type="number" id="taux" value="8.5" step="0.1" min="1" max="25">
+                <span class="input-unit" aria-hidden="true">%</span>
+              </div>
+              <div class="taux-presets" role="group" aria-label="Présets de taux bancaires">
+                <span class="taux-preset-label">Présets :</span>
+                <button class="taux-btn" type="button" onclick="setTaux(7, this)" aria-pressed="false">BICICI 7%</button>
+                <button class="taux-btn active" type="button" onclick="setTaux(8.5, this)" aria-pressed="true">SIB 8,5%</button>
+                <button class="taux-btn" type="button" onclick="setTaux(9.5, this)" aria-pressed="false">SGBCI 9,5%</button>
+                <button class="taux-btn" type="button" onclick="setTaux(11, this)" aria-pressed="false">BNI 11%</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label id="dur-label">Durée du prêt</label>
+              <div class="duration-grid" id="durGrid" role="group" aria-labelledby="dur-label">
+                <button class="dur-btn" type="button" onclick="setDur(10, this)" aria-pressed="false">10 ans</button>
+                <button class="dur-btn" type="button" onclick="setDur(15, this)" aria-pressed="false">15 ans</button>
+                <button class="dur-btn active" type="button" onclick="setDur(20, this)" aria-pressed="true">20 ans</button>
+                <button class="dur-btn" type="button" onclick="setDur(25, this)" aria-pressed="false">25 ans</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="charges">Charges annuelles <span class="hint">entretien, assurance, taxe foncière…</span></label>
+              <div class="input-wrap">
+                <input type="number" id="charges" value="1" step="0.1" min="0" max="10">
+                <span class="input-unit" aria-hidden="true">% du bien</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="valorisation">Valorisation annuelle du bien <span class="hint">Abidjan : 4–7 %/an</span></label>
+              <div class="input-wrap">
+                <input type="number" id="valorisation" value="5" step="0.5" min="0" max="20">
+                <span class="input-unit" aria-hidden="true">%/an</span>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="field-sep">Scénario Location</div>
+
+            <div class="field-group">
+              <label for="loyer">Loyer mensuel actuel <span class="hint">FCFA</span></label>
+              <div class="input-wrap">
+                <input type="number" id="loyer" value="480000" step="10000" min="0">
+                <span class="input-unit" aria-hidden="true">FCFA</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="hausseLoyer">Hausse annuelle du loyer <span class="hint">typ. 3–5 % en CI</span></label>
+              <div class="input-wrap">
+                <input type="number" id="hausseLoyer" value="4" step="0.5" min="0" max="20">
+                <span class="input-unit" aria-hidden="true">%/an</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="rendPlacement">Rendement si apport placé <span class="hint">BRVM, OPCVM, tontine</span></label>
+              <div class="input-wrap">
+                <input type="number" id="rendPlacement" value="6" step="0.5" min="0" max="30">
+                <span class="input-unit" aria-hidden="true">%/an</span>
+              </div>
+            </div>
+
+            <button class="calc-btn" type="button" onclick="calculer()">
+              Calculer ma simulation →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ RESULTS ═══ -->
+      <section aria-label="Résultats de la simulation" aria-live="polite">
+        <div class="results-col" id="resultsCol">
+          <div class="panel">
+            <div class="empty">
+              <div class="empty-icon" aria-hidden="true">📊</div>
+              <h3>Votre analyse apparaîtra ici</h3>
+              <p>Renseignez vos paramètres à gauche et cliquez sur <strong>Calculer</strong> pour obtenir une comparaison complète adaptée à votre situation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
-  </div>
-</div>
+  </main>
 
-<footer>
-  Simulation indicative — Côte d'Ivoire — Résultats basés sur vos hypothèses, ne constituent pas un conseil financier.
-</footer>
+  <!-- ── FAQ ── -->
+  <section class="faq-section" aria-label="Questions fréquentes">
+    <h2>
+      <span>Questions fréquentes</span>
+      Louer ou acheter en Côte d'Ivoire
+    </h2>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
+    <p><strong>FinToolsBox</strong> — Simulation indicative, Côte d'Ivoire, mise à jour 2026.</p>
+    <p>Les résultats sont basés sur vos hypothèses et ne constituent pas un conseil financier ou juridique.</p>
+    <p style="margin-top:.5rem">
+      <a href="https://www.fintoolsbox.com/">Accueil</a> ·
+      <a href="https://www.fintoolsbox.com/confidentialite/">Mentions légales</a> ·
+      <a href="https://www.fintoolsbox.com/contact/">Contact</a>
+    </p>
+  </footer>
 
 <script>
-// ── DATA QUARTIERS ──
-const quartiers = [
-  { nom:'Cocody',     prixMoy:120000000, loyerMoy:480000  },
-  { nom:'Plateau',    prixMoy:200000000, loyerMoy:900000  },
-  { nom:'Riviera',    prixMoy:110000000, loyerMoy:420000  },
-  { nom:'Marcory',    prixMoy:75000000,  loyerMoy:280000  },
-  { nom:'Yopougon',   prixMoy:45000000,  loyerMoy:160000  },
-  { nom:'2 Plateaux', prixMoy:160000000, loyerMoy:650000  },
+/* ══════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════ */
+const QUARTIERS = [
+  { nom:'Cocody',     prixMoy:120_000_000, loyerMoy:480_000 },
+  { nom:'Plateau',    prixMoy:200_000_000, loyerMoy:900_000 },
+  { nom:'Riviera',    prixMoy:110_000_000, loyerMoy:420_000 },
+  { nom:'Marcory',    prixMoy:75_000_000,  loyerMoy:280_000 },
+  { nom:'Yopougon',   prixMoy:45_000_000,  loyerMoy:160_000 },
+  { nom:'2 Plateaux', prixMoy:160_000_000, loyerMoy:650_000 },
 ];
 
+const FAQ_DATA = [
+  {
+    q: 'Vaut-il mieux louer ou acheter un bien immobilier à Abidjan ?',
+    a: 'La réponse dépend de votre horizon de temps, votre apport disponible et la stabilité de votre emploi. En général, l\'achat devient plus avantageux après 7 à 10 ans dans des quartiers comme Cocody ou Riviera, où la valorisation moyenne atteint 4 à 7 % par an. Si vous prévoyez de rester moins de 5 ans, la location reste souvent plus flexible et économique. Notre simulateur vous aide à comparer les deux scénarios selon votre situation.'
+  },
+  {
+    q: 'Quel apport personnel faut-il pour obtenir un crédit immobilier en Côte d\'Ivoire ?',
+    a: 'Les banques ivoiriennes (BICICI, SIB, SGBCI, BNI) exigent généralement un apport minimum de 20 % à 30 % du prix du bien. Un apport plus élevé améliore les conditions du prêt et augmente vos chances d\'acceptation. Pour un bien à 85 millions FCFA, comptez entre 17 et 25 millions FCFA d\'apport minimum.'
+  },
+  {
+    q: 'Quels sont les taux des crédits immobiliers en Côte d\'Ivoire en 2026 ?',
+    a: 'Les taux varient selon les établissements : BICICI propose des taux autour de 7 %, la SIB autour de 8,5 %, la SGBCI aux environs de 9,5 % et la BNI autour de 11 %. Ces taux sont généralement fixes, sur des durées allant de 10 à 25 ans. Il est conseillé de comparer plusieurs offres avant de s\'engager.'
+  },
+  {
+    q: 'Quels sont les frais de notaire et de mutation en Côte d\'Ivoire ?',
+    a: 'Les frais d\'acte notarié et de mutation immobilière représentent généralement entre 10 % et 15 % du prix d\'achat. Ils comprennent les droits d\'enregistrement, la transcription, les honoraires du notaire et diverses taxes. Pour un bien à 100 millions FCFA, prévoyez 10 à 15 millions FCFA supplémentaires — non inclus dans cette simulation.'
+  },
+  {
+    q: 'Quelle est la valorisation moyenne de l\'immobilier à Abidjan ?',
+    a: 'Entre 2015 et 2024, l\'immobilier résidentiel à Abidjan a connu une valorisation annuelle de 4 % à 7 % selon les quartiers. Cocody, les 2 Plateaux et Riviera affichent les meilleures performances. Les quartiers populaires comme Yopougon présentent une valorisation plus modérée mais un ticket d\'entrée plus accessible.'
+  },
+  {
+    q: 'Combien coûte la location mensuelle à Abidjan par quartier ?',
+    a: 'Les loyers mensuels pour un appartement 3 pièces en 2026 sont estimés à : Cocody 400 000–600 000 FCFA, Plateau 700 000–1 200 000 FCFA, Riviera 350 000–550 000 FCFA, Marcory 220 000–350 000 FCFA, Yopougon 120 000–200 000 FCFA, 2 Plateaux 500 000–800 000 FCFA. Ces prix augmentent en moyenne de 3 % à 5 % par an.'
+  },
+  {
+    q: 'Comment fonctionne ce simulateur louer ou acheter ?',
+    a: 'Le simulateur calcule le coût net cumulé pour chaque scénario. Pour l\'achat : apport + toutes les mensualités + charges annuelles − valeur estimée du bien à terme. Pour la location : total des loyers − gain généré par le placement de l\'apport. La différence entre les deux coûts nets détermine l\'option la plus avantageuse sur votre horizon de temps.'
+  },
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
 let selectedDur = 20;
-let chart = null;
+let chartInstance = null;
 
-// ── BUILD QUARTIER GRID ──
-const qGrid = document.getElementById('quartierGrid');
-quartiers.forEach((q, i) => {
-  const btn = document.createElement('button');
-  btn.className = 'q-btn' + (i === 0 ? ' active' : '');
-  btn.innerHTML = `<span class="q-name">${q.nom}</span><span class="q-price">${fmt(q.prixMoy)} FCFA</span>`;
-  btn.onclick = () => {
-    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('prixBien').value   = q.prixMoy;
-    document.getElementById('apport').value     = Math.round(q.prixMoy * 0.2);
-    document.getElementById('loyer').value      = q.loyerMoy;
-  };
-  qGrid.appendChild(btn);
-});
-
-// Init with Cocody
-document.getElementById('prixBien').value  = 120000000;
-document.getElementById('apport').value   = 24000000;
-document.getElementById('loyer').value    = 480000;
-
-function setTaux(v) {
-  document.getElementById('taux').value = v;
-  document.querySelectorAll('.taux-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-function setDur(v, el) {
-  selectedDur = v;
-  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
-
+/* ══════════════════════════════════════════════
+   FORMAT HELPERS
+══════════════════════════════════════════════ */
 function fmt(n) {
   return Math.round(n).toLocaleString('fr-FR');
 }
 function fmtM(n) {
-  if (Math.abs(n) >= 1e9) return (n/1e9).toFixed(1) + ' Md';
-  if (Math.abs(n) >= 1e6) return (n/1e6).toFixed(1) + ' M';
+  const abs = Math.abs(n);
+  if (abs >= 1e9) return (n / 1e9).toFixed(2) + ' Md';
+  if (abs >= 1e6) return (n / 1e6).toFixed(1) + ' M';
   return fmt(n);
 }
 
-// ── CORE CALCULATION ──
+/* ══════════════════════════════════════════════
+   BUILD QUARTIER GRID
+══════════════════════════════════════════════ */
+(function buildQuartiers() {
+  const grid = document.getElementById('quartierGrid');
+  QUARTIERS.forEach((q, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'q-btn' + (i === 0 ? ' active' : '');
+    btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    btn.innerHTML = `<span class="q-name">${q.nom}</span><span class="q-price">${fmt(q.prixMoy)} FCFA</span>`;
+    btn.addEventListener('click', () => {
+      grid.querySelectorAll('.q-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      document.getElementById('prixBien').value = q.prixMoy;
+      document.getElementById('apport').value   = Math.round(q.prixMoy * 0.2);
+      document.getElementById('loyer').value    = q.loyerMoy;
+      updateApportPct();
+    });
+    grid.appendChild(btn);
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   BUILD FAQ
+══════════════════════════════════════════════ */
+(function buildFaq() {
+  const list = document.getElementById('faqList');
+  FAQ_DATA.forEach((item, i) => {
+    const id = `faq-a-${i}`;
+    const div = document.createElement('div');
+    div.className = 'faq-item';
+    div.innerHTML = `
+      <button class="faq-q" type="button" aria-expanded="false" aria-controls="${id}">
+        ${item.q}
+        <span class="faq-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="faq-a" id="${id}" role="region">
+        ${item.a}
+      </div>`;
+    const btn = div.querySelector('.faq-q');
+    const ans = div.querySelector('.faq-a');
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      // Close all others
+      list.querySelectorAll('.faq-q').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.nextElementSibling.classList.remove('open');
+      });
+      if (!open) {
+        btn.setAttribute('aria-expanded', 'true');
+        ans.classList.add('open');
+      }
+    });
+    list.appendChild(div);
+  });
+})();
+
+/* ══════════════════════════════════════════════
+   CONTROLS
+══════════════════════════════════════════════ */
+function setTaux(v, el) {
+  document.getElementById('taux').value = v;
+  document.querySelectorAll('.taux-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  el.classList.add('active');
+  el.setAttribute('aria-pressed', 'true');
+}
+
+function setDur(v, el) {
+  selectedDur = v;
+  document.querySelectorAll('.dur-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  el.classList.add('active');
+  el.setAttribute('aria-pressed', 'true');
+}
+
+function updateApportPct() {
+  const prix   = parseFloat(document.getElementById('prixBien').value) || 0;
+  const apport = parseFloat(document.getElementById('apport').value)   || 0;
+  const pct    = prix > 0 ? ((apport / prix) * 100).toFixed(1) : '—';
+  const el     = document.getElementById('apport-pct');
+  const color  = apport / prix < 0.2 ? '#C0392B' : 'var(--muted)';
+  el.style.color = color;
+  el.textContent = prix > 0
+    ? `Soit ${pct} % du prix du bien${apport / prix < 0.2 ? ' — ⚠️ inférieur au minimum recommandé (20 %)' : ''}`
+    : '';
+}
+
+document.getElementById('prixBien').addEventListener('input', updateApportPct);
+document.getElementById('apport').addEventListener('input', updateApportPct);
+
+/* ══════════════════════════════════════════════
+   CORE CALCULATION — CORRECTED
+══════════════════════════════════════════════ */
 function calculer() {
-  const prix     = +document.getElementById('prixBien').value;
-  const apport   = +document.getElementById('apport').value;
-  const tauxAn   = +document.getElementById('taux').value / 100;
-  const duree    = selectedDur;
-  const chargesPct = +document.getElementById('charges').value / 100;
-  const valoPct  = +document.getElementById('valorisation').value / 100;
-  const loyerM   = +document.getElementById('loyer').value;
-  const haussePct = +document.getElementById('hausseLoyer').value / 100;
-  const rendPct  = +document.getElementById('rendPlacement').value / 100;
+  // ── Inputs ──
+  const prix        = parseFloat(document.getElementById('prixBien').value)    || 0;
+  const apport      = parseFloat(document.getElementById('apport').value)      || 0;
+  const tauxAn      = (parseFloat(document.getElementById('taux').value)       || 0) / 100;
+  const duree       = selectedDur;
+  const chargesPct  = (parseFloat(document.getElementById('charges').value)    || 0) / 100;
+  const valoPct     = (parseFloat(document.getElementById('valorisation').value) || 0) / 100;
+  const loyerM0     = parseFloat(document.getElementById('loyer').value)       || 0;
+  const haussePct   = (parseFloat(document.getElementById('hausseLoyer').value) || 0) / 100;
+  const rendPct     = (parseFloat(document.getElementById('rendPlacement').value) || 0) / 100;
 
-  const capital  = prix - apport;
-  const tauxM    = tauxAn / 12;
-  const n        = duree * 12;
+  // ── Validation ──
+  if (prix <= 0 || apport < 0 || tauxAn <= 0 || loyerM0 <= 0) {
+    alert('Veuillez renseigner des valeurs valides (prix, apport, taux et loyer requis).');
+    return;
+  }
+  if (apport >= prix) {
+    alert('L\'apport ne peut pas être supérieur ou égal au prix du bien.');
+    return;
+  }
 
-  // Mensualité
-  const mensualite = capital * tauxM * Math.pow(1 + tauxM, n) / (Math.pow(1 + tauxM, n) - 1);
+  const capital = prix - apport;
+  const tauxM   = tauxAn / 12;
+  const nMois   = duree * 12;
 
-  // Calcul année par année
-  let coutAchat  = apport; // coût total achat (tout sorti)
-  let coutLoyer  = 0;
-  let valeurBien = prix;
-  let loyerCourant = loyerM;
-  let placementLoyer = apport; // apport investi si on loue
+  // ── Mensualité (formule exacte) ──
+  let mensualite;
+  if (tauxM === 0) {
+    mensualite = capital / nMois;
+  } else {
+    const facteur = Math.pow(1 + tauxM, nMois);
+    mensualite = capital * (tauxM * facteur) / (facteur - 1);
+  }
+
+  // ── Simulation année par année ──
+  /*
+    BUY net cost  = total cash out (apport + mensualités + charges) − valeur du bien à date
+    RENT net cost = total loyers payés − gain du placement (placementFinal − apport)
+
+    On interprète cela comme : "Combien est-on dans le négatif (ou positif) par rapport
+    à n'avoir rien dépensé ?" — une valeur positive = on a dépensé plus que ce qu'on a.
+  */
+
+  let totalCashOutAchat = apport;   // Apport sorti dès le départ
+  let valeurBien        = prix;     // Valeur du bien, croît chaque année
+  let totalLoyersCum    = 0;        // Loyers cumulés
+  let loyerCourant      = loyerM0;  // Loyer de l'année en cours
+  let placementCum      = apport;   // Apport placé (si location), croît chaque année
 
   const yearsData = [];
-  let breakeven = null;
+  let breakeven   = null;           // Première année où achat < location
 
   for (let y = 1; y <= duree; y++) {
-    // Achat : mensualités + charges - valeur bien
-    const mensAnnee = mensualite * 12;
+    // — Achat —
+    const mensAnnee   = mensualite * 12;
     const chargesAnnee = prix * chargesPct;
-    coutAchat += mensAnnee + chargesAnnee;
-    valeurBien *= (1 + valoPct);
-    const patrimoineAchat = valeurBien - (capital * Math.pow(1 + tauxM, y * 12) - capital); // simplifié
-    const coutNetAchat = coutAchat - valeurBien;
+    totalCashOutAchat += mensAnnee + chargesAnnee;
+    valeurBien        *= (1 + valoPct);
+    const coutNetAchat = totalCashOutAchat - valeurBien;
+    // négatif = l'actif vaut plus que ce qu'on a sorti => gain net
 
-    // Location : loyers + placement de l'apport
-    const loyerAnnee = loyerCourant * 12;
-    coutLoyer += loyerAnnee;
-    loyerCourant *= (1 + haussePct);
-    placementLoyer *= (1 + rendPct);
-    const coutNetLoyer = coutLoyer - (placementLoyer - apport);
+    // — Location —
+    const loyerAnnee  = loyerCourant * 12;     // loyer de cette année (avant hausse)
+    totalLoyersCum   += loyerAnnee;
+    loyerCourant     *= (1 + haussePct);        // hausse pour l'année suivante
+    placementCum     *= (1 + rendPct);          // rendement du placement
+    const gainPlacement   = placementCum - apport;
+    const coutNetLoyer    = totalLoyersCum - gainPlacement;
 
     yearsData.push({
       year: y,
       achat: Math.round(coutNetAchat),
       louer: Math.round(coutNetLoyer),
-      mensualite: Math.round(mensualite),
-      loyerY: Math.round(loyerCourant),
+      loyerAnnuel: Math.round(loyerAnnee),
     });
 
-    if (!breakeven && coutNetAchat < coutNetLoyer) {
+    // Breakeven : première année où achat devient moins coûteux que location
+    if (breakeven === null && coutNetAchat < coutNetLoyer) {
       breakeven = y;
     }
   }
 
-  const final = yearsData[yearsData.length - 1];
-  const diff = final.louer - final.achat;
-  const avantageux = diff > 0 ? 'buy' : diff < -500000 ? 'rent' : 'draw';
+  const last = yearsData[yearsData.length - 1];
+  const diff = last.louer - last.achat;
+  // diff > 0  → achat avantageux (louer coûte plus)
+  // diff < 0  → location avantageuse
+
+  const SEUIL = 1_000_000; // 1 M FCFA seuil pour "égalité"
+  const verdict = diff > SEUIL ? 'buy' : diff < -SEUIL ? 'rent' : 'draw';
+
+  // ── Totaux pour KPI ──
+  const totalMensualites = Math.round(mensualite * 12 * duree);
+  const totalCharges     = Math.round(prix * chargesPct * duree);
+  const valeurFinaleBien = Math.round(prix * Math.pow(1 + valoPct, duree));
+  const totalLoyers      = yearsData.reduce((s, y) => s + y.loyerAnnuel, 0);
+  const placementFinal   = Math.round(apport * Math.pow(1 + rendPct, duree));
 
   renderResults({
-    yearsData, final, diff, avantageux, breakeven,
-    mensualite, loyerM, duree, prix, apport, capital, tauxAn, valoPct,
-    chargesPct, haussePct, rendPct
+    yearsData, last, diff, verdict, breakeven,
+    mensualite, loyerM0, duree, prix, apport, capital, tauxAn,
+    totalMensualites, totalCharges, valeurFinaleBien, totalLoyers,
+    placementFinal, chargesPct, haussePct, rendPct,
   });
 }
 
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
 function renderResults(d) {
-  const col = document.getElementById('resultsCol');
-  const { yearsData, final, diff, avantageux, breakeven, mensualite, loyerM, duree, prix, apport, capital, tauxAn, valoPct, chargesPct, haussePct, rendPct } = d;
+  const {
+    yearsData, last, diff, verdict, breakeven,
+    mensualite, loyerM0, duree, prix, apport,
+    totalMensualites, totalCharges, valeurFinaleBien,
+    totalLoyers, placementFinal, haussePct, rendPct,
+  } = d;
 
-  const totalMensualites = mensualite * 12 * duree;
-  const totalCharges = prix * chargesPct * duree;
-  const valeurFinaleBien = prix * Math.pow(1 + valoPct, duree);
-  const totalLoyers = yearsData.reduce((s, y) => s + y.loyerY * 12, 0);
-  const placementFinal = apport * Math.pow(1 + rendPct, duree);
+  // ── Verdict texts ──
+  const VERDICTS = {
+    buy: {
+      label: 'Conclusion de votre simulation',
+      title: `Acheter est plus avantageux sur ${duree} ans`,
+      body:  `En devenant propriétaire, vous économisez <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à la location sur la même période, en tenant compte de la valorisation du bien et du rendement alternatif de l'apport.`,
+      icon:  '🏠',
+    },
+    rent: {
+      label: 'Conclusion de votre simulation',
+      title: `Louer est plus avantageux sur ${duree} ans`,
+      body:  `En louant et en plaçant votre apport, vous optimisez de <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à l'achat sur la même période. La flexibilité de la location et le rendement de l'investissement l'emportent.`,
+      icon:  '🔑',
+    },
+    draw: {
+      label: 'Résultat équilibré',
+      title: 'Les deux options sont très proches',
+      body:  `L'écart est inférieur à 1 million FCFA sur ${duree} ans. La décision dépend avant tout de votre stabilité professionnelle, vos projets de vie et votre goût pour la propriété.`,
+      icon:  '⚖️',
+    },
+  };
+  const v = VERDICTS[verdict];
 
-  let verdictTxt = '', verdictSub = '', verdictIcon = '';
-  if (avantageux === 'buy') {
-    verdictTxt = `Acheter est plus avantageux sur ${duree} ans`;
-    verdictSub = `En devenant propriétaire, vous économisez <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à la location sur la même période, en tenant compte de la valorisation du bien.`;
-    verdictIcon = '🏠';
-  } else if (avantageux === 'rent') {
-    verdictTxt = `Louer est plus avantageux sur ${duree} ans`;
-    verdictSub = `En louant et en plaçant votre apport, vous optimisez de <strong>${fmtM(Math.abs(diff))} FCFA</strong> par rapport à l'achat sur la même période.`;
-    verdictIcon = '🔑';
-  } else {
-    verdictTxt = 'Les deux options sont équivalentes';
-    verdictSub = `L'écart est inférieur à 500 000 FCFA sur ${duree} ans. La décision dépend surtout de votre stabilité professionnelle et de vos projets de vie.`;
-    verdictIcon = '⚖';
-  }
+  const breakevenHtml = breakeven !== null
+    ? `<div class="breakeven" role="note">📍 <strong>Point de bascule :</strong> l'achat devient financièrement plus rentable que la location à partir de <strong>l'année ${breakeven}</strong>. Si vous comptez rester moins longtemps, la location est préférable.</div>`
+    : `<div class="breakeven" role="note">📍 Sur les ${duree} ans analysés, l'achat ne rattrape pas le coût de la location. Augmentez la durée d'analyse ou reconsidérez les hypothèses de valorisation.</div>`;
 
-  const breakevenHtml = breakeven
-    ? `<div class="breakeven">📍 <strong>Point de bascule :</strong> l'achat devient plus rentable que la location à partir de <strong>l'année ${breakeven}</strong>. Si vous comptez rester moins longtemps, mieux vaut louer.</div>`
-    : `<div class="breakeven">📍 Sur la période analysée, l'achat ne rattrape pas la location. Envisagez une durée plus longue ou un loyer plus élevé.</div>`;
+  const colYear = new Date().getFullYear() + duree;
 
-  col.innerHTML = `
-    <div class="verdict ${avantageux} anim" data-icon="${verdictIcon}">
-      <div class="verdict-label">Conclusion de votre simulation</div>
-      <h3>${verdictTxt}</h3>
-      <p>${verdictSub}</p>
-      <button class="export-btn" onclick="window.print()">↓ Imprimer / Sauvegarder</button>
+  document.getElementById('resultsCol').innerHTML = `
+    <div class="verdict ${verdict} anim" role="status" aria-label="${v.title}">
+      <div class="verdict-bg-icon" aria-hidden="true">${v.icon}</div>
+      <div class="verdict-label">${v.label}</div>
+      <h2>${v.title}</h2>
+      <p>${v.body}</p>
+      <div class="verdict-actions">
+        <button class="export-btn" type="button" onclick="window.print()">
+          <span aria-hidden="true">🖨</span> Imprimer / Sauvegarder PDF
+        </button>
+      </div>
     </div>
 
     <div class="kpi-grid anim anim-d1">
-      <div class="kpi-card buy-card">
-        <div class="kpi-top"><div class="kpi-dot dot-green"></div><div class="kpi-title">Scénario Achat</div></div>
-        <div class="kpi-amount">${fmtM(final.achat)} FCFA</div>
-        <div class="kpi-sub">coût net sur ${duree} ans (après valorisation)</div>
+      <div class="kpi-card buy-card" role="region" aria-label="Scénario Achat">
+        <div class="kpi-top">
+          <div class="kpi-dot dot-green" aria-hidden="true"></div>
+          <div class="kpi-title">Scénario Achat</div>
+        </div>
+        <div class="kpi-amount">${fmtM(last.achat)} FCFA</div>
+        <div class="kpi-sub">coût net sur ${duree} ans (après valorisation du bien)</div>
         <div class="kpi-details">
           <div class="kpi-row"><span>Mensualité</span><strong>${fmt(Math.round(mensualite))} FCFA</strong></div>
           <div class="kpi-row"><span>Total remboursé</span><strong>${fmtM(totalMensualites)} FCFA</strong></div>
           <div class="kpi-row"><span>Charges cumulées</span><strong>${fmtM(totalCharges)} FCFA</strong></div>
-          <div class="kpi-row"><span>Valeur bien en ${new Date().getFullYear() + duree}</span><strong>${fmtM(valeurFinaleBien)} FCFA</strong></div>
+          <div class="kpi-row"><span>Valeur du bien en ${colYear}</span><strong>${fmtM(valeurFinaleBien)} FCFA</strong></div>
         </div>
       </div>
-      <div class="kpi-card rent-card">
-        <div class="kpi-top"><div class="kpi-dot dot-gold"></div><div class="kpi-title">Scénario Location</div></div>
-        <div class="kpi-amount">${fmtM(final.louer)} FCFA</div>
-        <div class="kpi-sub">coût net sur ${duree} ans (après placement apport)</div>
+
+      <div class="kpi-card rent-card" role="region" aria-label="Scénario Location">
+        <div class="kpi-top">
+          <div class="kpi-dot dot-gold" aria-hidden="true"></div>
+          <div class="kpi-title">Scénario Location</div>
+        </div>
+        <div class="kpi-amount">${fmtM(last.louer)} FCFA</div>
+        <div class="kpi-sub">coût net sur ${duree} ans (après rendement du placement)</div>
         <div class="kpi-details">
-          <div class="kpi-row"><span>Loyer mensuel aujourd'hui</span><strong>${fmt(loyerM)} FCFA</strong></div>
+          <div class="kpi-row"><span>Loyer mensuel initial</span><strong>${fmt(loyerM0)} FCFA</strong></div>
           <div class="kpi-row"><span>Total loyers cumulés</span><strong>${fmtM(totalLoyers)} FCFA</strong></div>
-          <div class="kpi-row"><span>Hausse loyer / an</span><strong>${haussePct * 100}%</strong></div>
-          <div class="kpi-row"><span>Apport placé → valeur</span><strong>${fmtM(placementFinal)} FCFA</strong></div>
+          <div class="kpi-row"><span>Hausse loyer / an</span><strong>${(haussePct * 100).toFixed(1)} %</strong></div>
+          <div class="kpi-row"><span>Apport placé → valeur ${colYear}</span><strong>${fmtM(placementFinal)} FCFA</strong></div>
         </div>
       </div>
     </div>
@@ -843,55 +1404,70 @@ function renderResults(d) {
     <div class="chart-wrap anim anim-d2">
       <div class="chart-head">
         <h3>Évolution du coût net cumulé</h3>
-        <span class="chart-sub">en millions FCFA</span>
+        <span class="chart-sub">en millions FCFA — valeur négative = gain net</span>
       </div>
-      <div class="chart-container"><canvas id="myChart"></canvas></div>
-      <div class="legend">
+      <div class="chart-container">
+        <canvas id="myChart" role="img" aria-label="Graphique d'évolution du coût net cumulé achat vs location"></canvas>
+      </div>
+      <div class="legend" aria-hidden="true">
         <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Achat (coût net)</div>
         <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div>Location (coût net)</div>
       </div>
     </div>
 
-    <div class="tips anim anim-d3">
+    <div class="tips anim anim-d3" role="complementary" aria-label="Points clés pour votre décision">
       <h3>Points clés pour votre décision</h3>
-      <div class="tip"><div class="tip-icon">🏦</div><div>Les banques ivoiriennes exigent généralement <strong>20 à 30% d'apport</strong>. Un apport plus élevé réduit les intérêts et améliore le score crédit.</div></div>
-      <div class="tip"><div class="tip-icon">📈</div><div>L'immobilier à Abidjan a connu une valorisation moyenne de <strong>4 à 7% par an</strong> dans les quartiers résidentiels entre 2015 et 2024.</div></div>
-      <div class="tip"><div class="tip-icon">⚠️</div><div>Prévoyez des frais d'acte notarié et de mutation d'environ <strong>10 à 15% du prix</strong> du bien, non inclus dans cette simulation.</div></div>
-      <div class="tip"><div class="tip-icon">💡</div><div>Si vous prévoyez de rester <strong>moins de 7 ans</strong>, la location est souvent plus flexible et moins coûteuse à court terme.</div></div>
+      <div class="tip"><div class="tip-icon" aria-hidden="true">🏦</div><div>Les banques ivoiriennes exigent généralement <b>20 à 30 % d'apport</b>. Un apport plus élevé réduit les intérêts totaux et améliore vos chances d'acceptation.</div></div>
+      <div class="tip"><div class="tip-icon" aria-hidden="true">📈</div><div>L'immobilier à Abidjan a connu une valorisation moyenne de <b>4 à 7 % par an</b> dans les quartiers résidentiels. Cocody et les 2 Plateaux sont les plus performants.</div></div>
+      <div class="tip"><div class="tip-icon" aria-hidden="true">⚠️</div><div>Prévoyez des frais d'acte notarié et de mutation d'environ <b>10 à 15 % du prix du bien</b>, non inclus dans cette simulation.</div></div>
+      <div class="tip"><div class="tip-icon" aria-hidden="true">💡</div><div>Si vous prévoyez de rester <b>moins de 7 ans</b>, la location est souvent plus flexible et moins coûteuse à court terme.</div></div>
+      <div class="tip"><div class="tip-icon" aria-hidden="true">💰</div><div>Le rendement de votre placement alternatif est clé : la BRVM affiche historiquement <b>8–12 % par an</b>, les OPCVM UMOA autour de 6–8 %.</div></div>
     </div>
   `;
 
-  // ── CHART ──
-  if (chart) chart.destroy();
-  const ctx = document.getElementById('myChart').getContext('2d');
-  chart = new Chart(ctx, {
+  // ── Chart ──
+  buildChart(yearsData);
+}
+
+function buildChart(yearsData) {
+  if (chartInstance) {
+    chartInstance.destroy();
+    chartInstance = null;
+  }
+  const canvas = document.getElementById('myChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  chartInstance = new Chart(ctx, {
     type: 'line',
     data: {
       labels: yearsData.map(y => `An ${y.year}`),
       datasets: [
         {
-          label: 'Achat',
-          data: yearsData.map(y => +(y.achat / 1e6).toFixed(1)),
+          label: 'Achat (coût net)',
+          data: yearsData.map(y => parseFloat((y.achat / 1e6).toFixed(2))),
           borderColor: '#1E3D2F',
-          backgroundColor: 'rgba(30,61,47,.07)',
+          backgroundColor: 'rgba(30,61,47,.08)',
           borderWidth: 2.5,
           tension: .4,
           fill: true,
           pointRadius: 0,
           pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#1E3D2F',
         },
         {
-          label: 'Location',
-          data: yearsData.map(y => +(y.louer / 1e6).toFixed(1)),
+          label: 'Location (coût net)',
+          data: yearsData.map(y => parseFloat((y.louer / 1e6).toFixed(2))),
           borderColor: '#C8922A',
-          backgroundColor: 'rgba(200,146,42,.07)',
+          backgroundColor: 'rgba(200,146,42,.08)',
           borderWidth: 2.5,
           tension: .4,
           fill: true,
           pointRadius: 0,
           pointHoverRadius: 5,
-        }
-      ]
+          pointHoverBackgroundColor: '#C8922A',
+        },
+      ],
     },
     options: {
       responsive: true,
@@ -900,32 +1476,46 @@ function renderResults(d) {
       plugins: {
         legend: { display: false },
         tooltip: {
+          backgroundColor: '#1C1A16',
+          titleColor: '#F0D080',
+          bodyColor: 'rgba(255,255,255,.85)',
+          padding: 12,
+          cornerRadius: 10,
           callbacks: {
-            label: ctx => `${ctx.dataset.label} : ${ctx.parsed.y.toFixed(1)} M FCFA`
-          }
-        }
+            label: ctx => ` ${ctx.dataset.label} : ${ctx.parsed.y.toFixed(1)} M FCFA`,
+          },
+        },
       },
       scales: {
         x: {
           grid: { display: false },
-          ticks: { font: { family: 'DM Sans', size: 11 }, color: '#6B6455',
-            maxTicksLimit: 8 }
+          ticks: {
+            font: { family: 'DM Sans', size: 11 },
+            color: '#6B6455',
+            maxTicksLimit: 10,
+          },
         },
         y: {
           grid: { color: 'rgba(0,0,0,.05)' },
           ticks: {
             font: { family: 'DM Sans', size: 11 },
             color: '#6B6455',
-            callback: v => v + ' M'
-          }
-        }
-      }
-    }
+            callback: v => v + ' M',
+          },
+        },
+      },
+    },
   });
 }
 
-// Lancer au load pour afficher un exemple
-window.addEventListener('load', () => setTimeout(calculer, 300));
+/* ══════════════════════════════════════════════
+   AUTO-RUN ON LOAD
+══════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  updateApportPct();
+  // Small delay so Chart.js has time to initialise after defer
+  setTimeout(calculer, 400);
+});
 </script>
 </body>
 </html>
