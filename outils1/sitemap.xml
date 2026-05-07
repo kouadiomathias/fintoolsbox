@@ -29,7 +29,12 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
+ <url>
+    <loc>https://www.fintoolsbox.com/simulateur-energie/blog/</loc>
+    <lastmod>2026-04-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- Analyseur de budget -->
   <url>
     <loc>https://www.fintoolsbox.com/analyser-budget-mensuel/</loc>
