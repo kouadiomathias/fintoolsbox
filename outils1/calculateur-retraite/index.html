@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de retraite – Projetez vos besoins, planifiez votre retraite | Gratuit</title>
+    <meta name="description" content="Planifiez votre retraite : capital cible, revenu sécurisé, âge de retraite, impact de l'inflation. Outil gratuit avec graphique accumulation/retrait, règle des 4% et exemples concrets.">
+    <meta name="keywords" content="retraite, calculateur retraite, planification retraite, règle des 4%, combien pour la retraite, simulation retraite, retraite anticipée, sécurité financière">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-retraite/">
+    <meta property="og:title" content="Calculateur de retraite – Visualisez votre chemin vers la liberté">
+    <meta property="og:description" content="Découvrez le capital nécessaire à votre retraite, le revenu que vous pourrez en tirer et l'impact de vos choix.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-retraite/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur de retraite">
+    <meta name="twitter:description" content="Simulez votre retraite : accumulation, règle des 4%, inflation. Voyez si votre épargne tiendra la route.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1a1a1a;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+        .main-container {
+            max-width: 950px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: background 0.3s, color 0.3s;
+        }
+        .calculator-header {
+            background: #0f766e;
+            color: white;
+            padding: 1.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .calculator-header h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.3px; }
+        .calculator-header p { margin-top: 0.4rem; opacity: 0.92; font-size: 0.95rem; width: 100%; }
+        .dark-toggle {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .dark-toggle:hover { background: rgba(255,255,255,0.25); }
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) { .calculator-body { grid-template-columns: 1fr; } }
+        .input-group { margin-bottom: 1.4rem; display: flex; flex-direction: column; }
+        .input-group label {
+            font-weight: 500; font-size: 0.92rem; color: #1e293b; margin-bottom: 0.3rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.7rem 0.8rem; border: 1px solid #dce1e8; border-radius: 8px;
+            font-size: 1rem; transition: 0.2s; background: #fff; color: #1e293b;
+        }
+        .input-group input:focus { outline: none; border-color: #0f766e; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
+        .range-container { display: flex; align-items: center; gap: 0.5rem; }
+        .range-container input[type="range"] { flex: 1; padding: 0; height: 6px; -webkit-appearance: none; background: #e2e8f0; border-radius: 5px; outline: none; }
+        .range-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px; background: #0f766e; border-radius: 50%; cursor: pointer; border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .results-panel {
+            background: #f0fdf9; border-radius: 10px; padding: 1.5rem; border: 1px solid #ccfbf1;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .result-item { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed #bae6d0; padding-bottom: 0.5rem; }
+        .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .result-label { font-weight: 500; color: #0f3d3b; }
+        .result-value { font-weight: 700; font-size: 1.5rem; color: #0f766e; }
+        .result-value.warning { color: #b45309; }
+        .chart-container { margin-top: 1.5rem; position: relative; height: 300px; }
+        button.calculate-btn {
+            grid-column: 1 / -1;
+            background: #0f766e; color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+            width: fit-content; justify-self: center; margin-top: 0.5rem;
+        }
+        button.calculate-btn:hover { background: #115e59; }
+        .note { grid-column: 1 / -1; font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; }
+
+        .content-section {
+            max-width: 950px; width: 100%; background: white; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04); padding: 2rem; margin-bottom: 2rem; font-size: 1rem;
+        }
+        .content-section h2 { color: #0f766e; font-size: 1.6rem; margin: 1.8rem 0 0.8rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 { font-size: 1.2rem; margin: 1.2rem 0 0.5rem; color: #1e293b; }
+        .content-section p { margin-bottom: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th { background: #f0fdf9; text-align: left; padding: 0.6rem; border-bottom: 2px solid #0f766e; color: #0f3d3b; }
+        td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background-color: #f8fafc; }
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-question { font-weight: 600; color: #0f172a; display: flex; align-items: baseline; gap: 0.5rem; }
+        .faq-answer { margin-left: 1.8rem; color: #334155; border-left: 3px solid #cbd5e1; padding-left: 1rem; }
+        .disclaimer-box { background: #fff9e5; border: 1px solid #e5c346; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; font-size: 0.9rem; color: #5a4a1a; }
+        footer { text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; }
+        .related { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+        .related a { color: #0f766e; font-weight: 600; text-decoration: none; }
+        .related a:hover { text-decoration: underline; }
+
+        /* Dark mode */
+        body.dark {
+            background: #111827; color: #d1d5db;
+        }
+        body.dark .main-container { background: #1f2937; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        body.dark .calculator-header { background: #064e3b; }
+        body.dark .dark-toggle { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); }
+        body.dark .input-group label { color: #e5e7eb; }
+        body.dark .input-group input, body.dark .input-group select {
+            background: #374151; border-color: #4b5563; color: #f9fafb;
+        }
+        body.dark .input-group input:focus { border-color: #34d399; box-shadow: 0 0 0 3px rgba(52,211,153,0.2); }
+        body.dark .range-container input[type="range"] { background: #4b5563; }
+        body.dark .range-container input[type="range"]::-webkit-slider-thumb { background: #34d399; }
+        body.dark .results-panel { background: #064e3b22; border-color: #047857; }
+        body.dark .result-label { color: #a7f3d0; }
+        body.dark .result-value { color: #6ee7b7; }
+        body.dark .result-value.warning { color: #f59e0b; }
+        body.dark button.calculate-btn { background: #047857; }
+        body.dark button.calculate-btn:hover { background: #065f46; }
+        body.dark .note { color: #9ca3af; }
+        body.dark .content-section { background: #1f2937; color: #d1d5db; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        body.dark .content-section h2 { color: #6ee7b7; border-bottom-color: #4b5563; }
+        body.dark .content-section h3 { color: #e5e7eb; }
+        body.dark th { background: #064e3b44; border-bottom-color: #34d399; color: #a7f3d0; }
+        body.dark td { border-bottom-color: #374151; }
+        body.dark tr:hover td { background-color: #2d3a4f; }
+        body.dark .faq-question { color: #f3f4f6; }
+        body.dark .faq-answer { color: #d1d5db; border-left-color: #4b5563; }
+        body.dark .disclaimer-box { background: #2d3748; color: #e2e8f0; border-color: #f59e0b; }
+        body.dark footer { color: #6b7280; }
+        body.dark .related a { color: #6ee7b7; }
+
+
+        .formula-box{
+    background:#f8fafc;
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+    padding:1.5rem;
+    margin:1.8rem 0;
+}
+
+.formula-box h3{
+    color:#0f766e;
+    margin-bottom:1.2rem;
+    font-size:1.25rem;
+}
+
+.formula-item{
+    margin-bottom:1.5rem;
+}
+
+.formula-title{
+    font-weight:600;
+    margin-bottom:0.6rem;
+    color:#1e293b;
+}
+
+.formula{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:1rem;
+    text-align:center;
+    font-size:1.15rem;
+    font-weight:700;
+    overflow-x:auto;
+    color:#0f172a;
+    line-height:1.8;
+}
+
+.formula-explanation{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:0.8rem;
+    margin-top:1rem;
+}
+
+.formula-explanation p{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    padding:0.8rem 1rem;
+    margin:0;
+    font-size:0.92rem;
+}
+
+/* Dark mode */
+
+body.dark .formula-box{
+    background:#111827;
+    border-color:#374151;
+}
+
+body.dark .formula-box h3{
+    color:#6ee7b7;
+}
+
+body.dark .formula-title{
+    color:#f3f4f6;
+}
+
+body.dark .formula{
+    background:#1f2937;
+    border-color:#374151;
+    color:#f9fafb;
+}
+
+body.dark .formula-explanation p{
+    background:#1f2937;
+    border-color:#374151;
+    color:#d1d5db;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <div>
+                <h1>Calculateur de retraite</h1>
+                <p>Visualisez votre capital futur, le revenu qu'il générera et l'impact de vos choix, avec ou sans inflation.</p>
+            </div>
+            <button class="dark-toggle" id="darkToggle">Mode sombre</button>
+        </div>
+        <div class="calculator-body">
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="ageActuel">Âge actuel</label>
+                    <input type="number" id="ageActuel" value="30" min="18" max="70">
+                </div>
+                <div class="input-group">
+                    <label for="ageRetraite">Âge de retraite souhaité</label>
+                    <input type="number" id="ageRetraite" value="65" min="19" max="90">
+                </div>
+                <div class="input-group">
+                    <label for="capitalActuel">Capital actuel (€)</label>
+                    <input type="number" id="capitalActuel" value="20000" min="0" step="1000">
+                </div>
+                <div class="input-group">
+                    <label for="epargneMensuelle">Épargne mensuelle (€)</label>
+                    <input type="number" id="epargneMensuelle" value="400" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label>Rendement nominal annuel (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="rendementSlider" min="0" max="15" step="0.1" value="7">
+                        <input type="number" id="rendement" value="7" min="0" max="15" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Inflation annuelle (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="inflationSlider" min="0" max="10" step="0.1" value="2">
+                        <input type="number" id="inflation" value="2" min="0" max="10" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="retraitMensuel">Revenu mensuel souhaité à la retraite (€)</label>
+                    <input type="number" id="retraitMensuel" value="2000" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="tauxRetrait">Taux de retrait sécurisé (%)</label>
+                    <select id="tauxRetrait">
+                        <option value="4" selected>4% (règle standard)</option>
+                        <option value="3.5">3.5% (prudent)</option>
+                        <option value="3">3% (très conservateur)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="results-column">
+                <div class="results-panel">
+                    <div class="result-item">
+                        <span class="result-label">Capital à la retraite (€ d'aujourd'hui)</span>
+                        <span class="result-value" id="capitalRetraite">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Revenu sécurisé (selon règle de retrait)</span>
+                        <span class="result-value" id="revenuSecurise">0 €/mois</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Votre revenu souhaité</span>
+                        <span class="result-value" id="revenuSouhaite">0 €/mois</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">État du projet</span>
+                        <span class="result-value warning" id="risqueMessage">—</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="retraiteChart" width="400" height="220"></canvas>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBtn">Calculer</button>
+            <div class="note">Tous les montants sont exprimés en euros d'aujourd'hui (déflatés). La règle de retrait sécurisé s'inspire de la Trinity Study.</div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>Pourquoi planifier sa retraite dès maintenant ?</h2>
+        <p>La retraite paraît loin quand on a 30 ou 40 ans, mais chaque année compte. Les intérêts composés transforment une épargne régulière en un capital conséquent, à condition de commencer tôt. Ce calculateur vous aide à répondre à la question « combien me faut-il ? » en intégrant l'inflation et une règle de retrait prudente.</p>
+
+        <h2>La règle des 4 % expliquée simplement</h2>
+        <p>La Trinity Study (1998) a montré qu'en retirant chaque année 4 % de son capital de départ ajusté de l'inflation, un portefeuille composé d'actions (60 %) et d'obligations (40 %) avait de très fortes chances de tenir 30 ans. Depuis, ce chiffre est devenu une référence. Pour des retraites plus longues (50 ans), un taux de 3,5 % voire 3 % est souvent recommandé. Notre outil vous laisse choisir ce taux.</p>
+        <div class="formula-box">
+    <h3>Formules utilisées dans le calculateur</h3>
+
+    <div class="formula-item">
+        <div class="formula-title">Capital futur avec intérêts composés</div>
+        <div class="formula">
+            FV = P × (1 + r / n)<sup>nt</sup> + PMT × [((1 + r / n)<sup>nt</sup> − 1) / (r / n)]
+        </div>
+    </div>
+
+    <div class="formula-item">
+        <div class="formula-title">Règle de retrait sécurisé</div>
+        <div class="formula">
+            Revenu annuel = Capital × Taux de retrait
+        </div>
+    </div>
+
+    <div class="formula-explanation">
+        <p><strong>FV</strong> = valeur future du portefeuille</p>
+        <p><strong>P</strong> = capital initial</p>
+        <p><strong>PMT</strong> = épargne mensuelle</p>
+        <p><strong>r</strong> = rendement annuel</p>
+        <p><strong>n</strong> = nombre de capitalisations par an</p>
+        <p><strong>t</strong> = durée en années</p>
+    </div>
+</div>
+        <h2>L'inflation, ennemie silencieuse de l'épargnant</h2>
+        <p>Un rendement de 7 % par an peut sembler alléchant, mais avec 2 % d'inflation, le gain réel n'est que de 4,9 %. Le calculateur convertit tous les flux en euros constants pour vous éviter les illusions. Ainsi, quand vous voyez « 300 000 € de capital », cela correspond à un pouvoir d'achat équivalent à 300 000 € d'aujourd'hui.</p>
+
+        <h2>Erreurs fréquentes à éviter</h2>
+        <ul>
+            <li><strong>Sous-estimer l'espérance de vie</strong> – on vit plus longtemps qu'on ne le pense ; prévoyez un capital qui dure au moins 30 ans après 65 ans.</li>
+            <li><strong>Négliger l'inflation</strong> – 2 000 € par mois dans 30 ans ne vaudront que 1 100 € avec 2 % d'inflation annuelle.</li>
+            <li><strong>Oublier la volatilité</strong> – un rendement moyen de 7 % cache des années à -20 %. La règle des 4 % a été testée pour résister à ces chocs.</li>
+            <li><strong>Compter sur les aides publiques seules</strong> – les systèmes de retraite par répartition subissent des pressions démographiques ; une épargne privée reste un complément indispensable.</li>
+        </ul>
+
+        <h2>Retraite anticipée : est-ce possible ?</h2>
+        <p>Oui, si votre taux d'épargne est suffisant. Le mouvement FIRE repousse l'âge traditionnel de la retraite. Jouez avec les curseurs : épargner 100 € de plus par mois ou décaler l'âge de deux ans peut faire une différence considérable sur le capital final.</p>
+
+        <h2>Exemples concrets</h2>
+        <h3>Camille, 30 ans, cadre</h3>
+        <p>Épargne 400 €/mois, capital actuel 20 000 €, rendement 7 %, inflation 2 %. Elle veut 3 000 €/mois à 65 ans. Le calculateur montre un capital de 485 000 €, un revenu sécurisé de 1 616 €/mois selon la règle des 4 %, insuffisant par rapport à son souhait. Elle décide d'augmenter son effort à 700 €/mois : le capital grimpe à 670 000 €, le revenu sécurisé à 2 233 €. En reculant son âge à 67 ans, elle atteint 2 600 €.</p>
+        <h3>Stéphane, 45 ans, commerçant</h3>
+        <p>100 000 € de côté, 1 000 €/mois d'épargne, rendement 6 %, inflation 1,5 %. Il vise la retraite à 62 ans avec 2 500 €/mois. Son capital projeté (458 000 €) lui offre un revenu sécurisé de 1 527 € (4 %). Il faudrait qu'il épargne davantage ou qu'il accepte un taux de retrait plus agressif (4,5 %).</p>
+
+        <div class="related">
+            <h2>Calculateurs liés</h2>
+            <ul>
+                <li><a href="/calculateur-fire">Calculateur FIRE</a> – Indépendance financière et retraite précoce</li>
+                <li><a href="/calculateur-interet-compose">Intérêts composés</a> – Visualisez l'effet boule de neige</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        Calculateur de retraite – outil éducatif. Les projections ne remplacent pas une analyse patrimoniale personnalisée. Ceci ne constitue pas un conseil financier. Investir comporte des risques de perte en capital.
+    </footer>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur de retraite",
+            "description": "Planificateur de retraite gratuit : calculez le capital nécessaire, le revenu sécurisé, l'impact de l'inflation et des versements réguliers.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-retraite/",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Qu'est-ce que la règle des 4% ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "La règle des 4% suggère que retirer 4% de son capital le premier jour de la retraite, puis ajuster cette somme de l'inflation chaque année, permet de ne pas épuiser son portefeuille sur 30 ans dans la plupart des scénarios historiques."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Comment l'influence de l'inflation est-elle prise en compte ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Tous les calculs sont effectués en euros constants (déflatés). Un rendement réel est utilisé pour la projection, de sorte que le capital affiché correspond au pouvoir d'achat d'aujourd'hui."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Puis-je partir à la retraite plus tôt ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Oui, il suffit d'ajuster l'âge de retraite dans le calculateur. Plus vous commencez tôt, plus l'épargne mensuelle nécessaire est élevée pour compenser la durée d'accumulation réduite."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            // DOM
+            const ageActuelInput = document.getElementById('ageActuel');
+            const ageRetraiteInput = document.getElementById('ageRetraite');
+            const capitalActuelInput = document.getElementById('capitalActuel');
+            const epargneMensuelleInput = document.getElementById('epargneMensuelle');
+            const rendementSlider = document.getElementById('rendementSlider');
+            const rendementInput = document.getElementById('rendement');
+            const inflationSlider = document.getElementById('inflationSlider');
+            const inflationInput = document.getElementById('inflation');
+            const retraitMensuelInput = document.getElementById('retraitMensuel');
+            const tauxRetraitSelect = document.getElementById('tauxRetrait');
+
+            const capitalRetraiteSpan = document.getElementById('capitalRetraite');
+            const revenuSecuriseSpan = document.getElementById('revenuSecurise');
+            const revenuSouhaiteSpan = document.getElementById('revenuSouhaite');
+            const risqueMessageSpan = document.getElementById('risqueMessage');
+
+            const darkToggle = document.getElementById('darkToggle');
+            const canvas = document.getElementById('retraiteChart');
+            let chart;
+
+            function formatCurrency(val) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+            }
+
+            // Synchro sliders
+            [...document.querySelectorAll('.range-container')].forEach(cont => {
+                const slider = cont.querySelector('input[type="range"]');
+                const input = cont.querySelector('input[type="number"]');
+                slider.addEventListener('input', () => {
+                    input.value = parseFloat(slider.value).toFixed(1);
+                    updateAll();
+                });
+                input.addEventListener('change', () => {
+                    let val = parseFloat(input.value);
+                    if (isNaN(val)) val = 0;
+                    val = Math.min(parseFloat(slider.max), Math.max(parseFloat(slider.min), val));
+                    slider.value = val;
+                    input.value = val.toFixed(1);
+                    updateAll();
+                });
+            });
+
+            [ageActuelInput, ageRetraiteInput, capitalActuelInput, epargneMensuelleInput, retraitMensuelInput, tauxRetraitSelect].forEach(el => el.addEventListener('input', updateAll));
+            document.getElementById('calculateBtn').addEventListener('click', updateAll);
+
+            darkToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                darkToggle.textContent = document.body.classList.contains('dark') ? 'Mode clair' : 'Mode sombre';
+            });
+
+            function getRealReturn() {
+                const nominal = parseFloat(rendementInput.value) / 100;
+                const inflation = parseFloat(inflationInput.value) / 100;
+                return (1 + nominal) / (1 + inflation) - 1;
+            }
+
+            function updateAll() {
+                const ageActuel = parseInt(ageActuelInput.value, 10) || 0;
+                const ageRetraite = parseInt(ageRetraiteInput.value, 10) || 0;
+                const capitalActuel = parseFloat(capitalActuelInput.value) || 0;
+                const epargneMensuelle = parseFloat(epargneMensuelleInput.value) || 0;
+                const retraitMensuel = parseFloat(retraitMensuelInput.value) || 0;
+                const tauxRetrait = parseFloat(tauxRetraitSelect.value) / 100;
+                const r = getRealReturn(); // real annual
+                const rm = Math.pow(1 + r, 1/12) - 1; // monthly
+
+                if (ageActuel >= ageRetraite || ageRetraite <= 0) {
+                    capitalRetraiteSpan.textContent = formatCurrency(0);
+                    revenuSecuriseSpan.textContent = '0 €/mois';
+                    revenuSouhaiteSpan.textContent = formatCurrency(retraitMensuel) + '/mois';
+                    risqueMessageSpan.textContent = 'Paramètre invalide';
+                    if (chart) chart.destroy();
+                    return;
+                }
+
+                const moisAccumulation = (ageRetraite - ageActuel) * 12;
+
+                // Accumulation
+                let capital = capitalActuel;
+                for (let m = 0; m < moisAccumulation; m++) {
+                    capital = capital * (1 + rm) + epargneMensuelle;
+                }
+                const capitalRetraite = capital;
+
+                // Revenu sécurisé
+                const revenuSecuriseAnnuel = capitalRetraite * tauxRetrait;
+                const revenuSecuriseMensuel = revenuSecuriseAnnuel / 12;
+
+                // Trajectoire post-retraite (jusqu'à 95 ans)
+                const ageMaxGraph = Math.max(ageRetraite + 10, 95);
+                const moisPostRetraite = (ageMaxGraph - ageRetraite) * 12;
+                let capitalPost = capitalRetraite;
+                const evolutionAge = [ageActuel];
+                const evolutionCapital = [capitalActuel];
+                // Points annuels pour le graphique
+                for (let a = ageActuel + 1; a <= ageRetraite; a++) {
+                    // Avancer de 12 mois
+                    for (let i=0; i<12; i++) capitalPost = capitalPost * (1 + rm) + (a <= ageRetraite ? epargneMensuelle : 0);
+                    evolutionAge.push(a);
+                    evolutionCapital.push(capitalPost);
+                }
+                // Phase retrait
+                for (let a = ageRetraite + 1; a <= ageMaxGraph; a++) {
+                    for (let i=0; i<12; i++) {
+                        capitalPost = capitalPost * (1 + rm) - retraitMensuel;
+                        if (capitalPost < 0) capitalPost = 0;
+                    }
+                    evolutionAge.push(a);
+                    evolutionCapital.push(capitalPost);
+                }
+
+                // Durée du capital avec retrait souhaité
+                let capitalTest = capitalRetraite;
+                let moisEpuisement = 0;
+                while (capitalTest > 0 && moisEpuisement < 1200) {
+                    capitalTest = capitalTest * (1 + rm) - retraitMensuel;
+                    if (capitalTest > 0) moisEpuisement++;
+                }
+                const anneesEpuisement = (moisEpuisement / 12).toFixed(1);
+
+                // Message de risque
+                let risque = '';
+                if (retraitMensuel <= revenuSecuriseMensuel * 1.05) { // tolérance
+                    risque = 'Serein – votre retrait est compatible avec la règle sécurisée.';
+                } else {
+                    risque = `Attention – le capital risque de s'épuiser en ${anneesEpuisement} ans.`;
+                }
+
+                // Mise à jour des résultats
+                capitalRetraiteSpan.textContent = formatCurrency(capitalRetraite);
+                revenuSecuriseSpan.textContent = formatCurrency(revenuSecuriseMensuel) + '/mois';
+                revenuSouhaiteSpan.textContent = formatCurrency(retraitMensuel) + '/mois';
+                risqueMessageSpan.textContent = risque;
+
+                // Graphique
+                if (chart) chart.destroy();
+                const ctx = canvas.getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: evolutionAge,
+                        datasets: [
+                            {
+                                label: 'Capital (€ constants)',
+                                data: evolutionCapital,
+                                borderColor: '#0f766e',
+                                backgroundColor: 'rgba(15,118,110,0.1)',
+                                fill: true,
+                                pointRadius: 0,
+                                tension: 0.2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.raw) } },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { callback: (val) => formatCurrency(val) },
+                                title: { display: true, text: 'Capital' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Âge' },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateAll();
+        })();
+    </script>
+</body>
+</html>

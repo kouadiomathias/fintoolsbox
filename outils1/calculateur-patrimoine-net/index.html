@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de patrimoine net – Visualisez votre santé financière | Gratuit</title>
+    <meta name="description" content="Évaluez votre patrimoine net (actifs moins passifs), obtenez un score de santé financière, visualisez la répartition de vos avoirs et projetez leur évolution.">
+    <meta name="keywords" content="patrimoine net, calculateur patrimoine, actifs passifs, santé financière, allocation actifs, score financier, richesse, budget personnel">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-patrimoine-net/">
+    <meta property="og:title" content="Calculateur de patrimoine net – Mesurez votre santé financière">
+    <meta property="og:description" content="Ajoutez vos actifs (cash, ETF, immobilier) et vos passifs (crédits, dettes) pour obtenir votre patrimoine net, un score de santé et une projection.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-patrimoine-net/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur de patrimoine net">
+    <meta name="twitter:description" content="Voyez d'un coup d'œil la composition de votre richesse, son évolution future et votre score santé financière.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1a1a1a;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+        .main-container {
+            max-width: 950px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: background 0.3s, color 0.3s;
+        }
+        .calculator-header {
+            background: #0f766e;
+            color: white;
+            padding: 1.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .calculator-header h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.3px; }
+        .calculator-header p { margin-top: 0.4rem; opacity: 0.92; font-size: 0.95rem; width: 100%; }
+        .dark-toggle {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .dark-toggle:hover { background: rgba(255,255,255,0.25); }
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) { .calculator-body { grid-template-columns: 1fr; } }
+        .inputs-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .category-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.2rem;
+            border: 1px solid #e2e8f0;
+        }
+        .category-box h3 {
+            font-size: 1.1rem;
+            margin: 0 0 0.8rem;
+            color: #0f766e;
+            border-bottom: 2px solid #ccfbf1;
+            padding-bottom: 0.3rem;
+        }
+        .input-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+            gap: 1rem;
+        }
+        .input-line label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e293b;
+            flex: 1;
+        }
+        .input-line input {
+            width: 120px;
+            padding: 0.55rem 0.7rem;
+            border: 1px solid #dce1e8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            text-align: right;
+            background: #fff;
+            color: #1e293b;
+            transition: 0.2s;
+        }
+        .input-line input:focus {
+            outline: none;
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+        }
+        .total-line {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed #bae6d0;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #0f3d3b;
+        }
+        .results-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .results-panel {
+            background: #f0fdf9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #ccfbf1;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed #bae6d0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-item:last-child { border-bottom: none; }
+        .result-label { font-weight: 500; color: #0f3d3b; }
+        .result-value { font-weight: 700; font-size: 1.5rem; color: #0f766e; }
+        .score-circle {
+            background: #e6fffa;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f766e;
+            margin: 0 auto 0.8rem;
+            border: 4px solid #0f766e;
+        }
+        .chart-container {
+            position: relative;
+            height: 220px;
+            margin-top: 1rem;
+        }
+        .projection-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+            justify-content: center;
+        }
+        .projection-box label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .projection-box input {
+            width: 100px;
+            padding: 0.45rem 0.6rem;
+            border: 1px solid #dce1e8;
+            border-radius: 6px;
+            text-align: right;
+        }
+        button.calculate-btn {
+            grid-column: 1 / -1;
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            justify-self: center;
+            margin-top: 0.5rem;
+        }
+        button.calculate-btn:hover { background: #115e59; }
+        .note {
+            grid-column: 1 / -1;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .content-section {
+            max-width: 950px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .content-section h2 {
+            color: #0f766e;
+            font-size: 1.6rem;
+            margin: 1.8rem 0 0.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 {
+            font-size: 1.2rem;
+            margin: 1.2rem 0 0.5rem;
+            color: #1e293b;
+        }
+        .content-section p { margin-bottom: 0.8rem; }
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-question { font-weight: 600; color: #0f172a; display: flex; align-items: baseline; gap: 0.5rem; }
+        .faq-answer { margin-left: 1.8rem; color: #334155; border-left: 3px solid #cbd5e1; padding-left: 1rem; }
+        footer { text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; }
+        .related { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+        .related a { color: #0f766e; font-weight: 600; text-decoration: none; }
+        .related a:hover { text-decoration: underline; }
+
+        /* Dark mode */
+        body.dark { background: #111827; color: #d1d5db; }
+        body.dark .main-container { background: #1f2937; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        body.dark .calculator-header { background: #064e3b; }
+        body.dark .dark-toggle { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); }
+        body.dark .category-box { background: #2d3748; border-color: #4b5563; }
+        body.dark .category-box h3 { color: #6ee7b7; border-bottom-color: #047857; }
+        body.dark .input-line label { color: #e5e7eb; }
+        body.dark .input-line input { background: #374151; border-color: #4b5563; color: #f9fafb; }
+        body.dark .total-line { color: #a7f3d0; border-top-color: #047857; }
+        body.dark .results-panel { background: #064e3b22; border-color: #047857; }
+        body.dark .result-label { color: #a7f3d0; }
+        body.dark .result-value { color: #6ee7b7; }
+        body.dark .score-circle { background: #047857; color: #fff; border-color: #6ee7b7; }
+        body.dark .projection-box { background: #2d3748; border-color: #4b5563; }
+        body.dark .projection-box label { color: #e5e7eb; }
+        body.dark button.calculate-btn { background: #047857; }
+        body.dark button.calculate-btn:hover { background: #065f46; }
+        body.dark .note { color: #9ca3af; }
+        body.dark .content-section { background: #1f2937; color: #d1d5db; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        body.dark .content-section h2 { color: #6ee7b7; border-bottom-color: #4b5563; }
+        body.dark .content-section h3 { color: #e5e7eb; }
+        body.dark .faq-question { color: #f3f4f6; }
+        body.dark .faq-answer { color: #d1d5db; border-left-color: #4b5563; }
+        body.dark footer { color: #6b7280; }
+        body.dark .related a { color: #6ee7b7; }
+
+        .formula-box{
+    background:#f8fafc;
+    border:1px solid #dbe4ee;
+    border-radius:12px;
+    padding:1.5rem;
+    margin:2rem 0;
+}
+
+.formula-box h3{
+    color:#0f766e;
+    font-size:1.25rem;
+    margin-bottom:1.2rem;
+}
+
+.formula-item{
+    margin-bottom:1.5rem;
+}
+
+.formula-title{
+    font-weight:600;
+    color:#1e293b;
+    margin-bottom:0.6rem;
+}
+
+.formula{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:1rem;
+    text-align:center;
+    font-size:1.15rem;
+    font-weight:700;
+    line-height:1.8;
+    overflow-x:auto;
+    color:#0f172a;
+}
+
+.formula-explanation{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:0.8rem;
+    margin-top:1rem;
+}
+
+.formula-explanation p{
+    background:white;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    padding:0.8rem 1rem;
+    margin:0;
+    font-size:0.92rem;
+}
+
+/* DARK MODE */
+
+body.dark .formula-box{
+    background:#111827;
+    border-color:#374151;
+}
+
+body.dark .formula-box h3{
+    color:#6ee7b7;
+}
+
+body.dark .formula-title{
+    color:#f3f4f6;
+}
+
+body.dark .formula{
+    background:#1f2937;
+    border-color:#374151;
+    color:#f9fafb;
+}
+
+body.dark .formula-explanation p{
+    background:#1f2937;
+    border-color:#374151;
+    color:#d1d5db;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <div>
+                <h1>Calculateur de patrimoine net</h1>
+                <p>Visualisez l'ensemble de vos actifs et dettes, obtenez un score santé financière et projetez l'évolution de votre richesse.</p>
+            </div>
+            <button class="dark-toggle" id="darkToggle">Mode sombre</button>
+        </div>
+        <div class="calculator-body">
+            <div class="inputs-column">
+                <div class="category-box">
+                    <h3>Actifs</h3>
+                    <div class="input-line"><label>Cash / liquidités (€)</label><input type="number" id="cash" value="5000" step="500"></div>
+                    <div class="input-line"><label>ETF / actions (€)</label><input type="number" id="etf" value="20000" step="1000"></div>
+                    <div class="input-line"><label>Cryptomonnaies (€)</label><input type="number" id="crypto" value="2000" step="500"></div>
+                    <div class="input-line"><label>Immobilier (€)</label><input type="number" id="immobilier" value="120000" step="5000"></div>
+                    <div class="input-line"><label>Véhicule(s) (€)</label><input type="number" id="voiture" value="8000" step="500"></div>
+                    <div class="input-line"><label>Autres actifs (€)</label><input type="number" id="autresActifs" value="0" step="500"></div>
+                    <div class="total-line"><span>Total actifs</span><span id="totalActifs">0 €</span></div>
+                </div>
+                <div class="category-box">
+                    <h3>Passifs</h3>
+                    <div class="input-line"><label>Crédit immobilier restant (€)</label><input type="number" id="creditImmo" value="80000" step="5000"></div>
+                    <div class="input-line"><label>Crédits consommation (€)</label><input type="number" id="creditConso" value="0" step="500"></div>
+                    <div class="input-line"><label>Dettes personnelles (€)</label><input type="number" id="dettes" value="0" step="500"></div>
+                    <div class="input-line"><label>Soldes cartes crédit (€)</label><input type="number" id="cartesCredit" value="500" step="100"></div>
+                    <div class="total-line"><span>Total passifs</span><span id="totalPassifs">0 €</span></div>
+                </div>
+            </div>
+            <div class="results-column">
+                <div class="results-panel">
+                    <div class="result-item">
+                        <span class="result-label">Patrimoine net</span>
+                        <span class="result-value" id="patrimoineNet">0 €</span>
+                    </div>
+                    <div class="score-section" style="text-align:center;">
+                        <div class="score-circle" id="scoreValue">--</div>
+                        <span style="font-weight:600; color:#0f766e;">Score de santé financière</span>
+                        <div style="font-size:0.8rem; color:#64748b;" id="scoreComment">sur 100</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="pieChart" width="200" height="200"></canvas>
+                </div>
+                <div class="projection-box">
+                    <label>Épargne mens. supplémentaire (€) :</label>
+                    <input type="number" id="epargneProjetee" value="200" step="50" style="width:100px;">
+                    <label>Rendement annuel (%) :</label>
+                    <input type="number" id="rendementProjete" value="5" step="0.5" style="width:80px;">
+                    <button class="calculate-btn" id="projectBtn" style="padding:0.5rem 1rem; font-size:0.9rem;">Projeter</button>
+                </div>
+                <div class="chart-container" style="height:200px;">
+                    <canvas id="evolutionChart" width="400" height="180"></canvas>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBtn">Actualiser</button>
+            <div class="note">Tous les montants sont en euros. La projection suppose un rendement constant et une épargne additionnelle régulière.</div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>Qu'est-ce que le patrimoine net et pourquoi le suivre ?</h2>
+        <p>Le patrimoine net, c'est la différence entre ce que vous possédez (vos actifs) et ce que vous devez (vos passifs). C'est le thermomètre de votre santé financière. Au début de ma vie active, je me suis rendu compte que je gérais mes comptes sans jamais faire le total. Un jour, j'ai listé mes livrets, mon PEA et mes dettes étudiantes. Le résultat m'a surpris : j'étais en positif, mais mon allocation était déséquilibrée. Depuis, je tiens un tableau simple chaque trimestre. Cet outil vous donne exactement cette vue consolidée.</p>
+        <h2>Comment augmenter son patrimoine net</h2>
+        <p>Trois leviers principaux :</p>
+        <ul>
+            <li><strong>Augmenter vos actifs productifs</strong> – investir régulièrement dans des actifs qui génèrent des rendements (actions, immobilier locatif, ETF). Le cash rassure mais l'érosion monétaire le grignote.</li>
+            <li><strong>Réduire les passifs coûteux</strong> – un crédit à la consommation à 6% doit être remboursé avant d'investir en bourse. Les dettes de carte de crédit sont les plus toxiques.</li>
+            <li><strong>Contrôler ses dépenses</strong> – chaque euro économisé augmente directement le patrimoine net. La maîtrise des charges courantes libère de la capacité d'épargne.</li>
+        </ul>
+        <h2>Erreurs financières classiques</h2>
+        <ul>
+            <li><strong>La voiture sur-financée</strong> – un véhicule perd de la valeur vite, le financer à crédit alourdit le passif sans créer d'actif rentable.</li>
+            <li><strong>L'investissement unique</strong> – tout miser sur un seul ETF sectoriel ou une cryptomonnaie peut faire bondir le patrimoine, mais aussi le réduire brutalement.</li>
+            <li><strong>Oublier l'inflation</strong> – laisser trop de cash dormir revient à voir son pouvoir d'achat fondre. Un livret A à 3% avec une inflation à 2% ne protège que très peu.</li>
+            <li><strong>Négliger le désendettement</strong> – l'effet de levier peut amplifier les gains, mais aussi les pertes. Un endettement immobilier maîtrisé est sain, pas les dettes revolving.</li>
+        </ul>
+        <h2>Allocation patrimoine : quelques repères</h2>
+        <p>La fameuse règle "âge = pourcentage d'obligations" a vécu. Aujourd'hui, on raisonne plutôt en termes de tolérance au risque et d'horizon. Une allocation typique pour une personne de 40 ans pourrait être : 50% actions diversifiées, 20% immobilier, 20% obligations ou fonds euros, 10% liquidités. L'idée est de ne pas avoir tous ses œufs dans le même panier, même si le panier s'appelle ETF World.</p>
+        <p>Le calculateur vous permet de voir instantanément la part de chaque classe d'actifs. Si votre voiture représente 60% de vos actifs, c'est un signal : les actifs de jouissance ne génèrent pas de revenu.</p>
+        <div class="formula-box">
+    <h3>Formules utilisées dans le calculateur</h3>
+
+    <div class="formula-item">
+        <div class="formula-title">Calcul du patrimoine net</div>
+
+        <div class="formula">
+            Patrimoine net = Total des actifs − Total des passifs
+        </div>
+    </div>
+
+    <div class="formula-item">
+        <div class="formula-title">Projection du patrimoine futur</div>
+
+        <div class="formula">
+            W = W₀ × (1 + r)<sup>t</sup> + PMT × [((1 + r)<sup>t</sup> − 1) / r]
+        </div>
+    </div>
+
+    <div class="formula-explanation">
+        <p><strong>W</strong> = patrimoine futur</p>
+        <p><strong>W₀</strong> = patrimoine actuel</p>
+        <p><strong>PMT</strong> = épargne mensuelle ajoutée</p>
+        <p><strong>r</strong> = rendement annuel moyen</p>
+        <p><strong>t</strong> = durée de projection en années</p>
+    </div>
+</div>
+        <div class="related">
+            <h2>Calculateurs liés</h2>
+            <ul>
+                <li><a href="/calculateur-retraite">Calculateur de retraite</a> – Projetez votre capital jusqu'à la retraite</li>
+                <li><a href="/calculateur-fire">Calculateur FIRE</a> – Indépendance financière et retraite précoce</li>
+                <li><a href="/calculateur-dividendes">Calculateur de dividendes</a> – Estimez vos revenus passifs</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        Calculateur de patrimoine net – outil éducatif. Les données fournies restent confidentielles et ne sont pas transmises.
+    </footer>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur de patrimoine net",
+            "description": "Calculez votre patrimoine net en saisissant vos actifs (cash, ETF, immobilier) et vos passifs (crédits, dettes). Obtenez un score de santé financière et une projection.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-patrimoine-net/",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        }
+    </script>
+
+    <script>
+        (function() {
+            // Inputs
+            const cash = document.getElementById('cash');
+            const etf = document.getElementById('etf');
+            const crypto = document.getElementById('crypto');
+            const immobilier = document.getElementById('immobilier');
+            const voiture = document.getElementById('voiture');
+            const autresActifs = document.getElementById('autresActifs');
+            const creditImmo = document.getElementById('creditImmo');
+            const creditConso = document.getElementById('creditConso');
+            const dettes = document.getElementById('dettes');
+            const cartesCredit = document.getElementById('cartesCredit');
+
+            // Display totals
+            const totalActifsSpan = document.getElementById('totalActifs');
+            const totalPassifsSpan = document.getElementById('totalPassifs');
+            const patrimoineNetSpan = document.getElementById('patrimoineNet');
+            const scoreValue = document.getElementById('scoreValue');
+            const scoreComment = document.getElementById('scoreComment');
+
+            // Projection
+            const epargneProjetee = document.getElementById('epargneProjetee');
+            const rendementProjete = document.getElementById('rendementProjete');
+            const projectBtn = document.getElementById('projectBtn');
+
+            const darkToggle = document.getElementById('darkToggle');
+            const calculateBtn = document.getElementById('calculateBtn');
+
+            const pieCanvas = document.getElementById('pieChart');
+            const evolutionCanvas = document.getElementById('evolutionChart');
+            let pieChart, evolutionChart;
+
+            function formatCurrency(val) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+            }
+
+            function getActifs() {
+                return {
+                    cash: parseFloat(cash.value) || 0,
+                    etf: parseFloat(etf.value) || 0,
+                    crypto: parseFloat(crypto.value) || 0,
+                    immobilier: parseFloat(immobilier.value) || 0,
+                    voiture: parseFloat(voiture.value) || 0,
+                    autres: parseFloat(autresActifs.value) || 0,
+                    get total() {
+                        return this.cash + this.etf + this.crypto + this.immobilier + this.voiture + this.autres;
+                    }
+                };
+            }
+
+            function getPassifs() {
+                return {
+                    creditImmo: parseFloat(creditImmo.value) || 0,
+                    creditConso: parseFloat(creditConso.value) || 0,
+                    dettes: parseFloat(dettes.value) || 0,
+                    cartes: parseFloat(cartesCredit.value) || 0,
+                    get total() {
+                        return this.creditImmo + this.creditConso + this.dettes + this.cartes;
+                    }
+                };
+            }
+
+            function computeScore(actifsTot, passifsTot, actifsDetails) {
+                if (actifsTot === 0 && passifsTot === 0) return { score: 50, comment: "Aucune donnée – commencez à saisir vos montants." };
+                const net = actifsTot - passifsTot;
+                let score = 50;
+                if (net > 10000) score += 20;
+                else if (net > 0) score += 10;
+                else if (net < -5000) score -= 20;
+
+                const ratio = passifsTot / (actifsTot + 0.01);
+                if (ratio < 0.2) score += 15;
+                else if (ratio < 0.5) score += 5;
+                else if (ratio > 0.8) score -= 15;
+
+                // diversification (nombre de classes >10% du total)
+                let classes = 0;
+                const tot = actifsTot;
+                if (actifsDetails.cash / tot > 0.1) classes++;
+                if (actifsDetails.etf / tot > 0.1) classes++;
+                if (actifsDetails.crypto / tot > 0.1) classes++;
+                if (actifsDetails.immobilier / tot > 0.1) classes++;
+                if (actifsDetails.voiture / tot > 0.1) classes++;
+                if (actifsDetails.autres / tot > 0.1) classes++;
+                if (classes >= 3) score += 15;
+                else if (classes >= 2) score += 5;
+
+                score = Math.min(100, Math.max(0, score));
+                let comment = "";
+                if (score >= 80) comment = "Excellente santé financière, continuez !";
+                else if (score >= 60) comment = "Bonne situation, quelques améliorations possibles.";
+                else if (score >= 40) comment = "Moyen – essayez de réduire vos dettes ou d'épargner davantage.";
+                else comment = "À surveiller : votre passif est trop lourd par rapport à vos actifs.";
+                return { score: Math.round(score), comment };
+            }
+
+            function updateAll() {
+                const actifs = getActifs();
+                const passifs = getPassifs();
+                const totalA = actifs.total;
+                const totalP = passifs.total;
+                const net = totalA - totalP;
+
+                totalActifsSpan.textContent = formatCurrency(totalA);
+                totalPassifsSpan.textContent = formatCurrency(totalP);
+                patrimoineNetSpan.textContent = formatCurrency(net);
+
+                const { score, comment } = computeScore(totalA, totalP, actifs);
+                scoreValue.textContent = score;
+                scoreComment.textContent = comment;
+
+                // Pie chart (actifs)
+                const pieData = {
+                    labels: ['Cash', 'ETF/Actions', 'Crypto', 'Immobilier', 'Véhicule', 'Autres'],
+                    datasets: [{
+                        data: [actifs.cash, actifs.etf, actifs.crypto, actifs.immobilier, actifs.voiture, actifs.autres],
+                        backgroundColor: ['#a7f3d0', '#6ee7b7', '#0d9488', '#0f766e', '#115e59', '#064e3b'],
+                        borderWidth: 0
+                    }]
+                };
+                if (pieChart) pieChart.destroy();
+                pieChart = new Chart(pieCanvas, {
+                    type: 'pie',
+                    data: pieData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${formatCurrency(ctx.raw)} (${((ctx.raw/totalA)*100).toFixed(0)}%)` } },
+                            legend: { position: 'bottom', labels: { font: { size: 10 } } }
+                        }
+                    }
+                });
+
+                // Projection
+                projectEvolution();
+            }
+
+            function projectEvolution() {
+                const net = parseFloat(patrimoineNetSpan.textContent.replace(/[^\d.-]/g, '')) || 0;
+                const epargne = parseFloat(epargneProjetee.value) || 0;
+                const rendement = parseFloat(rendementProjete.value) / 100 || 0;
+                const annees = 20;
+                const labels = [];
+                const data = [];
+                let capital = net;
+                for (let i = 0; i <= annees; i++) {
+                    labels.push(i);
+                    data.push(capital);
+                    capital = capital * (1 + rendement) + epargne * 12;
+                }
+                if (evolutionChart) evolutionChart.destroy();
+                evolutionChart = new Chart(evolutionCanvas, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Patrimoine net projeté (€)',
+                            data: data,
+                            borderColor: '#0f766e',
+                            backgroundColor: 'rgba(15,118,110,0.1)',
+                            fill: true,
+                            pointRadius: 0,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.raw) } },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { ticks: { callback: (val) => formatCurrency(val) } },
+                            x: { title: { display: true, text: 'Années' } }
+                        }
+                    }
+                });
+            }
+
+            // Event listeners
+            [cash, etf, crypto, immobilier, voiture, autresActifs, creditImmo, creditConso, dettes, cartesCredit].forEach(el => el.addEventListener('input', updateAll));
+            calculateBtn.addEventListener('click', updateAll);
+            projectBtn.addEventListener('click', projectEvolution);
+
+            darkToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                darkToggle.textContent = document.body.classList.contains('dark') ? 'Mode clair' : 'Mode sombre';
+            });
+
+            updateAll();
+        })();
+    </script>
+</body>
+</html>

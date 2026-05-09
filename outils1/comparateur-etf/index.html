@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparateur d'ETF – Frais, performance et impact à long terme</title>
+    <meta name="description" content="Comparez deux ETF en tenant compte du rendement brut, du TER (frais) et de la durée. Visualisez l'impact des frais sur votre capital final. Outil gratuit et pédagogique.">
+    <meta name="keywords" content="comparateur ETF, comparer ETF, frais ETF, TER, impact frais long terme, simulateur ETF, tracker, performance ETF, calculateur frais">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/comparateur-etf/">
+    <meta property="og:title" content="Comparateur d'ETF – Voyez l'effet des frais sur 10, 20 ou 30 ans">
+    <meta property="og:description" content="Deux ETF, un capital de départ, et une projection claire. Découvrez comment un faible écart de TER change tout.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/comparateur-etf/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Comparateur d'ETF">
+    <meta name="twitter:description" content="Comparez deux trackers en un coup d'œil : valeur finale, frais cumulés, différence nette.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+        .calculator-header {
+            background: #1e3a5f;
+            color: white;
+            padding: 1.8rem 2rem;
+        }
+        .calculator-header h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+        .calculator-header p {
+            margin-top: 0.4rem;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        .calculator-body {
+            padding: 2rem;
+        }
+        .common-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            background: #f8fafc;
+            padding: 1.4rem;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1e293b;
+            margin-bottom: 0.3rem;
+        }
+        .input-group input, .input-group select {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #dce1e8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: #1e293b;
+            transition: 0.2s;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.12);
+        }
+        .etf-comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 650px) {
+            .etf-comparison-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .etf-card {
+            background: #f0f4fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #cdd9e9;
+        }
+        .etf-card h3 {
+            margin-top: 0;
+            color: #1e3a5f;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #b6c8dc;
+            padding-bottom: 0.4rem;
+            margin-bottom: 1rem;
+        }
+        .results-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 650px) {
+            .results-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+        .result-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed #dce3e9;
+            padding-bottom: 0.4rem;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-label {
+            font-weight: 500;
+            color: #334155;
+        }
+        .result-value {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #1e3a5f;
+        }
+        .diff-highlight {
+            color: #b45309;
+        }
+        .chart-container {
+            height: 300px;
+            margin: 1.5rem 0 0;
+        }
+        button.compare-btn {
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 0.8rem 2.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 0 auto;
+            display: block;
+            width: fit-content;
+        }
+        button.compare-btn:hover {
+            background: #15304a;
+        }
+        .note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 1rem;
+        }
+
+        .content-section {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .content-section h2 {
+            color: #1e3a5f;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 0.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 {
+            font-size: 1.15rem;
+            margin: 1.2rem 0 0.5rem;
+            color: #0f172a;
+        }
+        .content-section p {
+            margin-bottom: 0.8rem;
+        }
+        .faq-item {
+            margin-bottom: 1.3rem;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .faq-question::before {
+            content: "Q.";
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .faq-answer {
+            margin-left: 1.8rem;
+            color: #334155;
+            border-left: 3px solid #cbd5e1;
+            padding-left: 1rem;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+        .related-tools{
+    max-width:1000px;
+    width:100%;
+    background:white;
+    border-radius:12px;
+    padding:2rem;
+    margin:0 auto 2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.related-tools h2{
+    color:#1e3a5f;
+    font-size:1.5rem;
+    margin-bottom:0.5rem;
+}
+
+.related-subtitle{
+    color:#64748b;
+    margin-bottom:1.8rem;
+    font-size:0.95rem;
+}
+
+.related-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+}
+
+.tool-card{
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:1rem;
+    text-decoration:none;
+    transition:all 0.2s ease;
+}
+
+.tool-card:hover{
+    transform:translateY(-3px);
+    border-color:#1e3a5f;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.tool-icon{
+    font-size:1.8rem;
+    flex-shrink:0;
+}
+
+.tool-content h3{
+    font-size:1rem;
+    color:#0f172a;
+    margin-bottom:0.35rem;
+}
+
+.tool-content p{
+    font-size:0.88rem;
+    color:#475569;
+    line-height:1.5;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <h1>Comparateur d'ETF</h1>
+            <p>Visualisez l'impact des frais (TER) et du rendement brut sur votre capital à long terme. Placez deux ETF côte à côte.</p>
+        </div>
+        <div class="calculator-body">
+            <div class="common-inputs">
+                <div class="input-group">
+                    <label for="capitalInitial">Capital initial (€)</label>
+                    <input type="number" id="capitalInitial" value="20000" min="0" step="500">
+                </div>
+                <div class="input-group">
+                    <label for="apportMensuel">Apport mensuel (€)</label>
+                    <input type="number" id="apportMensuel" value="300" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="duree">Durée (années)</label>
+                    <input type="number" id="duree" value="20" min="1" max="50" step="1">
+                </div>
+            </div>
+
+            <div class="etf-comparison-row">
+                <div class="etf-card">
+                    <h3>ETF A</h3>
+                    <div class="input-group" style="margin-bottom:1rem;">
+                        <label for="rendementA">Rendement brut annuel (%)</label>
+                        <input type="number" id="rendementA" value="7.0" min="0" max="20" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="terA">TER (%)</label>
+                        <input type="number" id="terA" value="0.45" min="0" max="3" step="0.01">
+                    </div>
+                </div>
+                <div class="etf-card">
+                    <h3>ETF B</h3>
+                    <div class="input-group" style="margin-bottom:1rem;">
+                        <label for="rendementB">Rendement brut annuel (%)</label>
+                        <input type="number" id="rendementB" value="7.0" min="0" max="20" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label for="terB">TER (%)</label>
+                        <input type="number" id="terB" value="0.12" min="0" max="3" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <button class="compare-btn" id="compareBtn">Comparer les deux ETF</button>
+
+            <div class="results-panel" id="resultsPanel" style="display:none;">
+                <div class="result-col" id="colA">
+                    <div style="font-weight:600; color:#1e3a5f; margin-bottom:0.4rem;">Résultat ETF A</div>
+                    <div class="result-item"><span class="result-label">Valeur finale</span><span class="result-value" id="valA">-</span></div>
+                    <div class="result-item"><span class="result-label">Total des versements</span><span class="result-value" id="versements">-</span></div>
+                    <div class="result-item"><span class="result-label">Gain net</span><span class="result-value" id="gainA">-</span></div>
+                    <div class="result-item"><span class="result-label">Frais totaux (estimation)</span><span class="result-value" id="fraisA">-</span></div>
+                </div>
+                <div class="result-col" id="colB">
+                    <div style="font-weight:600; color:#1e3a5f; margin-bottom:0.4rem;">Résultat ETF B</div>
+                    <div class="result-item"><span class="result-label">Valeur finale</span><span class="result-value" id="valB">-</span></div>
+                    <div class="result-item"><span class="result-label">Total des versements</span><span class="result-value" id="versementsB">-</span></div>
+                    <div class="result-item"><span class="result-label">Gain net</span><span class="result-value" id="gainB">-</span></div>
+                    <div class="result-item"><span class="result-label">Frais totaux (estimation)</span><span class="result-value" id="fraisB">-</span></div>
+                </div>
+                <div style="grid-column: 1 / -1; background:#fef9e7; border-radius:8px; padding:0.8rem; text-align:center; font-weight:500;">
+                    <span>Écart en faveur de <span id="meilleurETF">-</span> : <span id="difference" style="font-weight:700; color:#b45309;">-</span></span>
+                </div>
+            </div>
+            <div class="chart-container" id="chartContainer" style="display:none;">
+                <canvas id="comparaisonChart" width="500" height="250"></canvas>
+            </div>
+            <div class="note">Projection brute d'impôts, avec réinvestissement des dividendes. Le TER est déduit chaque année du rendement brut.</div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>Pourquoi comparer des ETF au centime près ?</h2>
+        <p>J’ai longtemps pensé qu’un écart de 0,3% de frais entre deux trackers était négligeable. Jusqu’au jour où j’ai sorti ma calculatrice : sur 25 ans, avec un capital de départ modeste, la différence s’élevait à plusieurs milliers d’euros. Depuis, je scrute le TER (Total Expense Ratio) comme le lait sur le feu. Ce comparateur est né de cette prise de conscience.</p>
+        <p>Un ETF n'est pas un produit mystique : c'est un panier d'actions ou d'obligations qui réplique un indice. Deux ETF suivant le même indice (par exemple le S&P 500) peuvent afficher un rendement brut quasi identique. Mais leurs frais internes (TER) diffèrent. Or les intérêts composés jouent aussi dans le mauvais sens : chaque euro prélevé en frais ne fructifie plus. Sur la durée, le rabot est sévère.</p>
+
+        <h2>Comment lire les résultats de l'outil ?</h2>
+        <p>Le principe est simple : vous renseignez un capital de départ, un versement mensuel et une durée commune. Pour chaque ETF, vous indiquez un rendement brut annuel attendu (appréciation du cours + dividendes réinvestis, avant prélèvement des frais) et son TER. L'outil simule la croissance de votre portefeuille année après année en appliquant un rendement net = rendement brut – TER. Il affiche ensuite la valeur finale atteinte, les frais cumulés prélevés, et bien sûr l'écart final entre les deux ETF.</p>
+        <p>Le graphique trace les deux courbes : vous voyez immédiatement si l’écart se creuse avec le temps. Le tableau récapitule en chiffres ce que votre intuition devine.</p>
+
+        <h2>Le TER, ce petit pourcentage qui change tout</h2>
+        <p>Le TER inclut les frais de gestion, de dépositaire, d'audit, etc. Il n'inclut pas les frais de courtage que vous payez pour acheter ou vendre l'ETF, ni la fiscalité. Pourtant, une différence apparemment infime – par exemple 0,45% contre 0,12% – peut représenter l'équivalent de plusieurs mois de dépenses supplémentaires à la retraite. C'est le grand enseignement de l'investissement passif : minimiser les frais récurrents est la seule variable que vous maîtrisez vraiment.</p>
+        <p>Imaginez deux ETF identiques sur le MSCI World, rapportant 7% bruts par an. Celui à 0,45% de TER laisse un rendement net de 6,55%, l'autre à 0,12% offre 6,88%. Sur 30 ans, un capital initial de 50 000 € avec 500 € mensuels aboutit à une différence de plus de 40 000 €. C'est le prix de la négligence.</p>
+
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+            <div class="faq-question">Le TER est-il le seul critère à regarder ?</div>
+            <div class="faq-answer">Non. La liquidité, l'écart de suivi (tracking difference), la méthode de réplication (physique ou synthétique), et l'encours sous gestion sont aussi importants. Mais le TER demeure un indicateur simple et puissant pour comparer deux ETF similaires.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Pourquoi le rendement brut peut-il différer entre deux ETF indiciels ?</div>
+            <div class="faq-answer">Même s'ils suivent le même indice, de petites différences existent : mode de réplication, optimisation fiscale, prêt de titres, etc. Mais en général, sur les grands indices, ces écarts sont minimes par rapport à l'impact du TER.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Ce calculateur tient-il compte des frais de courtage ?</div>
+            <div class="faq-answer">Non, il ne retranche que le TER annuel. Les frais de transaction (ordre d'achat, droits de garde) sont à considérer à part, surtout si vous investissez de petites sommes chaque mois.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Les dividendes sont-ils réinvestis automatiquement ?</div>
+            <div class="faq-answer">Oui, l'outil suppose que tous les dividendes sont réinvestis, ce qui correspond à l'option "capitalisation" de la plupart des ETF. C'est le scénario le plus favorable pour comparer la performance long terme.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Puis-je comparer un ETF en euros et un en dollars ?</div>
+            <div class="faq-answer">L'outil affiche toutes les valeurs dans la devise non spécifiée (supposée euros). Si l'un des ETF est libellé en dollars, il faut intégrer le risque de change dans le rendement brut que vous anticipez. Ce comparateur ne gère pas automatiquement cet aspect.</div>
+        </div>
+    </section>
+    <section class="related-tools">
+    <h2>Outils financiers associés</h2>
+    <p class="related-subtitle">
+        Explorez d'autres simulateurs pour planifier votre épargne, votre retraite et vos investissements à long terme.
+    </p>
+
+    <div class="related-grid">
+
+        <a href="/calculateur-interet-compose/" class="tool-card">
+            <div class="tool-icon">📈</div>
+            <div class="tool-content">
+                <h3>Calculateur d'intérêts composés</h3>
+                <p>Visualisez la croissance de votre capital avec les intérêts composés et les versements réguliers.</p>
+            </div>
+        </a>
+
+        <a href="/calculateur-fire/" class="tool-card">
+            <div class="tool-icon">🔥</div>
+            <div class="tool-content">
+                <h3>Calculateur FIRE</h3>
+                <p>Estimez l'âge auquel vous pourriez atteindre l'indépendance financière.</p>
+            </div>
+        </a>
+
+        <a href="/calculateur-dividendes/" class="tool-card">
+            <div class="tool-icon">💸</div>
+            <div class="tool-content">
+                <h3>Calculateur de dividendes</h3>
+                <p>Projetez vos revenus passifs futurs avec ou sans réinvestissement des dividendes.</p>
+            </div>
+        </a>
+
+        <a href="/calculateur-pret-immobilier/" class="tool-card">
+            <div class="tool-icon">📊</div>
+            <div class="tool-content">
+                <h3>Comparateur d'ETF</h3>
+                <p>Comparez les frais, performances et impacts long terme de plusieurs ETF.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+    <footer>
+        Comparateur d'ETF – outil éducatif. Les performances passées ne préjugent pas des résultats futurs. Ceci ne constitue pas un conseil en investissement.
+    </footer>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Comparateur d'ETF",
+            "description": "Comparez deux ETF en simulant l'impact du TER et du rendement brut sur votre capital à long terme.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/comparateur-etf",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Le TER est-il le seul critère à regarder ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Non. La liquidité, le tracking difference et la méthode de réplication comptent aussi, mais le TER reste un indicateur clé."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Pourquoi le rendement brut peut-il différer entre deux ETF indiciels ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Des nuances de réplication ou d'optimisation peuvent exister, mais généralement l'écart est faible comparé à l'impact du TER."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Ce calculateur tient-il compte des frais de courtage ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Non, les frais de transaction et de garde ne sont pas déduits. Seul le TER annuel est appliqué."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Les dividendes sont-ils réinvestis automatiquement ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Oui, la simulation suppose un réinvestissement total des dividendes, comme dans un ETF capitalisant."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Puis-je comparer un ETF en euros et un en dollars ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Le comparateur ne gère pas le risque de change. Vous devez intégrer l'effet devise dans le rendement brut estimé."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            const capitalInput = document.getElementById('capitalInitial');
+            const apportInput = document.getElementById('apportMensuel');
+            const dureeInput = document.getElementById('duree');
+            const rendementAInput = document.getElementById('rendementA');
+            const terAInput = document.getElementById('terA');
+            const rendementBInput = document.getElementById('rendementB');
+            const terBInput = document.getElementById('terB');
+            const resultsPanel = document.getElementById('resultsPanel');
+            const chartContainer = document.getElementById('chartContainer');
+            const canvas = document.getElementById('comparaisonChart');
+            const valA = document.getElementById('valA');
+            const valB = document.getElementById('valB');
+            const versementsSpan = document.getElementById('versements');
+            const versementsBSpan = document.getElementById('versementsB');
+            const gainA = document.getElementById('gainA');
+            const gainB = document.getElementById('gainB');
+            const fraisA = document.getElementById('fraisA');
+            const fraisB = document.getElementById('fraisB');
+            const meilleurETF = document.getElementById('meilleurETF');
+            const differenceSpan = document.getElementById('difference');
+
+            let chart;
+
+            function formatCurrency(val) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+            }
+
+            function simuler(capital, apportMensuel, annees, rendementBrut, ter) {
+                const tauxNetMensuel = (1 + (rendementBrut - ter) / 100) ** (1/12) - 1;
+                const nbMois = annees * 12;
+                let valeur = capital;
+                let cumulFrais = 0;
+                const evolution = [valeur];
+                for (let m = 0; m < nbMois; m++) {
+                    const fraisMensuel = valeur * (ter / 100) / 12;
+                    cumulFrais += fraisMensuel;
+                    const rendementBrutMensuel = valeur * (rendementBrut / 100) / 12;
+                    // On applique le rendement net directement par composition mensuelle :
+                    valeur = valeur * (1 + tauxNetMensuel) + apportMensuel;
+                    if (m % 12 === 0) evolution.push(valeur);
+                }
+                // Dernier point de fin d'année
+                evolution[evolution.length - 1] = valeur;
+                return { valeurFinale: valeur, fraisTotaux: cumulFrais, evolution };
+            }
+
+            function mettreAJourResultats() {
+                const capital = parseFloat(capitalInput.value) || 0;
+                const apport = parseFloat(apportInput.value) || 0;
+                const annees = parseInt(dureeInput.value, 10) || 1;
+                const rA = parseFloat(rendementAInput.value) || 0;
+                const tA = parseFloat(terAInput.value) || 0;
+                const rB = parseFloat(rendementBInput.value) || 0;
+                const tB = parseFloat(terBInput.value) || 0;
+
+                if (annees <= 0) return;
+
+                const simA = simuler(capital, apport, annees, rA, tA);
+                const simB = simuler(capital, apport, annees, rB, tB);
+
+                const totalVersements = capital + apport * annees * 12;
+                const gainNetA = simA.valeurFinale - totalVersements;
+                const gainNetB = simB.valeurFinale - totalVersements;
+                const diff = simB.valeurFinale - simA.valeurFinale;
+                const meilleur = diff > 0 ? 'ETF B' : diff < 0 ? 'ETF A' : 'égalité';
+
+                valA.textContent = formatCurrency(simA.valeurFinale);
+                valB.textContent = formatCurrency(simB.valeurFinale);
+                versementsSpan.textContent = formatCurrency(totalVersements);
+                versementsBSpan.textContent = formatCurrency(totalVersements);
+                gainA.textContent = formatCurrency(gainNetA);
+                gainB.textContent = formatCurrency(gainNetB);
+                fraisA.textContent = formatCurrency(simA.fraisTotaux);
+                fraisB.textContent = formatCurrency(simB.fraisTotaux);
+                meilleurETF.textContent = meilleur;
+                differenceSpan.textContent = formatCurrency(Math.abs(diff));
+
+                resultsPanel.style.display = 'grid';
+                chartContainer.style.display = 'block';
+
+                // Graphique
+                const labels = Array.from({length: simA.evolution.length}, (_, i) => i);
+                if (chart) chart.destroy();
+                const ctx = canvas.getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'ETF A',
+                                data: simA.evolution,
+                                borderColor: '#1e3a5f',
+                                backgroundColor: 'rgba(30,58,95,0.05)',
+                                tension: 0.2,
+                                pointRadius: 0,
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'ETF B',
+                                data: simB.evolution,
+                                borderColor: '#b45309',
+                                backgroundColor: 'rgba(180,83,9,0.05)',
+                                tension: 0.2,
+                                pointRadius: 0,
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => ctx.dataset.label + ': ' + formatCurrency(ctx.raw)
+                                }
+                            },
+                            legend: { position: 'bottom' }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { callback: (val) => formatCurrency(val) },
+                                title: { display: true, text: 'Valeur du portefeuille' }
+                            },
+                            x: {
+                                title: { display: true, text: 'Années' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            document.getElementById('compareBtn').addEventListener('click', mettreAJourResultats);
+            [capitalInput, apportInput, dureeInput, rendementAInput, terAInput, rendementBInput, terBInput].forEach(
+                el => el.addEventListener('input', mettreAJourResultats)
+            );
+
+            // Initial call
+            mettreAJourResultats();
+        })();
+    </script>
+</body>
+</html>

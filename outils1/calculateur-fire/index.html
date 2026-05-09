@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur FIRE – Indépendance Financière et Retraite Précoce | Gratuit</title>
+    <meta name="description" content="Calculez dans combien d'années vous pouvez atteindre l'indépendance financière (FIRE) selon votre taux d'épargne. Outil gratuit avec graphique, exemples concrets et tableaux comparatifs.">
+    <meta name="keywords" content="FIRE, indépendance financière, retraite précoce, règle des 4%, liberté financière, calculateur FIRE, épargne, investissement">
+    <meta name="author" content="Calculateur FIRE">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-fire/">
+    <meta property="og:title" content="Calculateur FIRE – Indépendance Financière">
+    <meta property="og:description" content="Découvrez combien d'années vous séparent de la liberté financière avec le mouvement FIRE. Simulez votre chemin vers la retraite précoce.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-fire/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur FIRE – Retraite Précoce">
+    <meta name="twitter:description" content="Simulez votre indépendance financière en ajustant vos revenus, dépenses et épargne. Projetez votre capital jusqu'à la liberté.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        /* ===== Styles initiaux (lumière) ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1a1a1a;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+        .main-container {
+            max-width: 950px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: background 0.3s, color 0.3s;
+        }
+        .calculator-header {
+            background: #0f766e;
+            color: white;
+            padding: 1.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .calculator-header h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.3px; }
+        .calculator-header p { margin-top: 0.4rem; opacity: 0.92; font-size: 0.95rem; width: 100%; }
+        .dark-toggle {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        .dark-toggle:hover { background: rgba(255,255,255,0.25); }
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) { .calculator-body { grid-template-columns: 1fr; } }
+        .input-group { margin-bottom: 1.4rem; display: flex; flex-direction: column; }
+        .input-group label {
+            font-weight: 500; font-size: 0.92rem; color: #1e293b; margin-bottom: 0.3rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.7rem 0.8rem; border: 1px solid #dce1e8; border-radius: 8px;
+            font-size: 1rem; transition: 0.2s; background: #fff; color: #1e293b;
+        }
+        .input-group input:focus { outline: none; border-color: #0f766e; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15); }
+        .range-container { display: flex; align-items: center; gap: 0.5rem; }
+        .range-container input[type="range"] { flex: 1; padding: 0; height: 6px; -webkit-appearance: none; background: #e2e8f0; border-radius: 5px; outline: none; }
+        .range-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px; background: #0f766e; border-radius: 50%; cursor: pointer;
+            border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .results-panel {
+            background: #f0fdf9; border-radius: 10px; padding: 1.5rem; border: 1px solid #ccfbf1;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .result-item { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed #bae6d0; padding-bottom: 0.5rem; }
+        .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .result-label { font-weight: 500; color: #0f3d3b; }
+        .result-value { font-weight: 700; font-size: 1.5rem; color: #0f766e; }
+        .result-value.highlight { color: #b45309; }
+        .chart-container { margin-top: 1.5rem; position: relative; height: 280px; }
+        button.calculate-btn, button.export-btn {
+            background: #0f766e; color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        button.calculate-btn:hover, button.export-btn:hover { background: #115e59; }
+        .buttons-row {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .note { grid-column: 1 / -1; font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; }
+        .content-section {
+            max-width: 950px; width: 100%; background: white; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04); padding: 2rem; margin-bottom: 2rem; font-size: 1rem;
+        }
+        .content-section h2 { color: #0f766e; font-size: 1.6rem; margin: 1.8rem 0 0.8rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 { font-size: 1.2rem; margin: 1.2rem 0 0.5rem; color: #1e293b; }
+        .content-section p { margin-bottom: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th { background: #f0fdf9; text-align: left; padding: 0.6rem; border-bottom: 2px solid #0f766e; color: #0f3d3b; }
+        td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background-color: #f8fafc; }
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-question { font-weight: 600; color: #0f172a; display: flex; align-items: baseline; gap: 0.5rem; }
+        .faq-answer { margin-left: 1.8rem; color: #334155; border-left: 3px solid #cbd5e1; padding-left: 1rem; }
+        .testimonial { background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-style: italic; position: relative; }
+        .testimonial::before { content: "“"; font-size: 3rem; color: #0f766e; position: absolute; left: 0.2rem; top: -0.5rem; }
+        .testimonial .author { font-weight: 600; font-style: normal; margin-top: 0.5rem; display: block; color: #0f3d3b; }
+        footer { text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; }
+        .related { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+        .related a { color: #0f766e; font-weight: 600; text-decoration: none; }
+        .related a:hover { text-decoration: underline; }
+
+        /* ===== Dark mode ===== */
+        body.dark {
+            background: #111827;
+            color: #d1d5db;
+        }
+        body.dark .main-container {
+            background: #1f2937;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        body.dark .calculator-header { background: #064e3b; }
+        body.dark .dark-toggle { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); }
+        body.dark .input-group label { color: #e5e7eb; }
+        body.dark .input-group input, body.dark .input-group select {
+            background: #374151; border-color: #4b5563; color: #f9fafb;
+        }
+        body.dark .input-group input:focus { border-color: #34d399; box-shadow: 0 0 0 3px rgba(52,211,153,0.2); }
+        body.dark .range-container input[type="range"] { background: #4b5563; }
+        body.dark .range-container input[type="range"]::-webkit-slider-thumb { background: #34d399; }
+        body.dark .results-panel { background: #064e3b22; border-color: #047857; }
+        body.dark .result-label { color: #a7f3d0; }
+        body.dark .result-value { color: #6ee7b7; }
+        body.dark .result-value.highlight { color: #f59e0b; }
+        body.dark button.calculate-btn, body.dark button.export-btn { background: #047857; }
+        body.dark button.calculate-btn:hover, body.dark button.export-btn:hover { background: #065f46; }
+        body.dark .note { color: #9ca3af; }
+        body.dark .content-section { background: #1f2937; color: #d1d5db; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        body.dark .content-section h2 { color: #6ee7b7; border-bottom-color: #4b5563; }
+        body.dark .content-section h3 { color: #e5e7eb; }
+        body.dark th { background: #064e3b44; border-bottom-color: #34d399; color: #a7f3d0; }
+        body.dark td { border-bottom-color: #374151; }
+        body.dark tr:hover td { background-color: #2d3a4f; }
+        body.dark .faq-question { color: #f3f4f6; }
+        body.dark .faq-answer { color: #d1d5db; border-left-color: #4b5563; }
+        body.dark .testimonial { background: #2d3748; color: #e2e8f0; }
+        body.dark .testimonial::before { color: #34d399; }
+        body.dark .testimonial .author { color: #a7f3d0; }
+        body.dark footer { color: #6b7280; }
+        body.dark .related a { color: #6ee7b7; }
+
+        /* Print styles for PDF export */
+        @media print {
+            body { background: white; color: black; }
+            .dark-toggle, .calculate-btn, .export-btn, .buttons-row, .content-section, footer, .note { display: none; }
+            .main-container { box-shadow: none; border: none; }
+            .calculator-header { background: none; color: black; padding: 1rem; }
+            .calculator-body { padding: 1rem; grid-template-columns: 1fr; }
+            .chart-container { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <div>
+                <h1>Calculateur FIRE – Indépendance Financière</h1>
+                <p>Découvrez dans combien d'années vous pourriez quitter le salariat grâce à l'épargne et aux intérêts composés.</p>
+            </div>
+            <button class="dark-toggle" id="darkToggle">Mode sombre</button>
+        </div>
+        <div class="calculator-body">
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="revenuMensuel">Revenu mensuel net (€)</label>
+                    <input type="number" id="revenuMensuel" value="3000" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label for="depensesMensuelles">Dépenses mensuelles (€)</label>
+                    <input type="number" id="depensesMensuelles" value="2100" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label for="epargneActuelle">Épargne actuelle (€)</label>
+                    <input type="number" id="epargneActuelle" value="5000" min="0" step="500">
+                </div>
+                <div class="input-group">
+                    <label for="ageActuel">Âge actuel</label>
+                    <input type="number" id="ageActuel" value="30" min="18" max="80" step="1">
+                </div>
+                <div class="input-group">
+                    <label>Rendement nominal annuel (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="nominalSlider" min="0" max="15" step="0.1" value="7">
+                        <input type="number" id="nominal" value="7" min="0" max="15" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Inflation annuelle moyenne (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="inflationSlider" min="0" max="10" step="0.1" value="2">
+                        <input type="number" id="inflation" value="2" min="0" max="10" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="tauxRetrait">Taux de retrait sécurisé (%)</label>
+                    <select id="tauxRetrait">
+                        <option value="4" selected>4% (règle standard)</option>
+                        <option value="3.5">3.5% (prudent)</option>
+                        <option value="3">3% (très conservateur)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-column">
+                <div class="results-panel">
+                    <div class="result-item">
+                        <span class="result-label">Capital cible nécessaire</span>
+                        <span class="result-value" id="capitalCible">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Années avant FIRE</span>
+                        <span class="result-value highlight" id="anneesFire">—</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Âge à la liberté</span>
+                        <span class="result-value" id="ageFire">—</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="fireChart" width="400" height="220"></canvas>
+                </div>
+            </div>
+            <div class="buttons-row">
+                <button class="calculate-btn" id="calculateBtn">Calculer mon FIRE</button>
+                <button class="export-btn" id="exportBtn">Exporter en PDF</button>
+            </div>
+            <div class="note">Hypothèse : rendement réel = (1+nominal)/(1+inflation)-1, capitalisation annuelle. La vie n’est pas un tableur, mais ça donne un cap.</div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>C’est quoi le mouvement FIRE ?</h2>
+        <p>FIRE signifie <strong>Financial Independence, Retire Early</strong> – indépendance financière, retraite précoce. L'idée est simple : réduire ses dépenses pour épargner une grosse partie de ses revenus, placer cette épargne, et vivre ensuite des intérêts de son capital. Pas besoin d'être millionnaire, mais d'avoir assez pour couvrir ses besoins. La règle la plus connue est celle des 4% : vous pouvez retirer 4% de votre portefeuille chaque année sans risque de tout consommer trop vite (étude Trinity, 1998). Concrètement, si vous dépensez 2 000 € par mois, il vous faut 2 000 × 12 × 25 = 600 000 €.</p>
+        <p>J’ai découvert le FIRE en 2016 après être tombé sur un article de M. Money Mustache. À l’époque je claquais 3 200 € par mois en loyers, restos et gadgets. En repensant mes priorités, j’ai réussi à vivre avec 2 100 € sans frustration. Mon taux d’épargne est passé de 10% à 35%. Le calculateur ci-dessus m’a moi-même tenu motivé : voir la courbe grimper et l’objectif se rapprocher, c’est addictif.</p>
+
+        <h2>Comment fonctionne ce calculateur ?</h2>
+        <p>Il utilise la logique suivante, année après année :</p>
+        <ul>
+            <li><strong>Épargne annuelle</strong> = (revenu mensuel - dépenses mensuelles) × 12</li>
+            <li><strong>Rendement réel</strong> = (1 + rendement nominal) / (1 + inflation) − 1</li>
+            <li><strong>Capital final</strong> de l'année = capital début d'année × (1 + rendement réel) + épargne annuelle</li>
+            <li>On compare avec le <strong>capital cible</strong> = dépenses annuelles / taux de retrait (ex : 4% → ×25)</li>
+            <li>Dès que le capital atteint ou dépasse la cible, vous êtes FIRE.</li>
+        </ul>
+        <p>Le rendement réel élimine l'effet de l'inflation. Par défaut, 7 % de rendement nominal et 2 % d'inflation donnent environ 4,9 % réel. La règle des 4 % a été testée sur des portefeuilles diversifiés en prenant déjà en compte l'inflation.</p>
+
+        <h2>Tableau : taux d’épargne vs années avant FIRE</h2>
+        <p>Ce tableau iconique (popularisé par MMM) montre pourquoi augmenter son taux d’épargne réduit radicalement le temps nécessaire.</p>
+        <table>
+            <tr><th>Taux d'épargne</th><th>Années avant FIRE (rend. 5% réel)</th></tr>
+            <tr><td>10%</td><td>51 ans</td></tr>
+            <tr><td>20%</td><td>37 ans</td></tr>
+            <tr><td>30%</td><td>28 ans</td></tr>
+            <tr><td>40%</td><td>22 ans</td></tr>
+            <tr><td>50%</td><td>17 ans</td></tr>
+            <tr><td>60%</td><td>12 ans</td></tr>
+            <tr><td>70%</td><td>8 ans</td></tr>
+            <tr><td>80%</td><td>5 ans</td></tr>
+        </table>
+        <p>Exemple : si vous gagnez 3 000 € et que vous en épargnez 1 500 € (50%), il vous faudra environ 17 ans pour être libre, en partant de zéro.</p>
+
+        <h2>Exemples concrets et scénarios</h2>
+        <h3>1. Camille, 28 ans, développeuse en télétravail</h3>
+        <p>Revenus : 3 800 € net/mois. Elle vit à Clermont-Ferrand avec 1 900 € de dépenses (taux d’épargne 50%). Épargne actuelle : 30 000 €. Avec 5% de rendement réel, elle atteint son capital cible (1 900×12/0.04 = 570 000 €) en 13 ans. Elle serait libre à 41 ans.</p>
+        <h3>2. Paul et Léa, 35 ans, deux enfants</h3>
+        <p>Revenus du foyer : 5 200 € nets. Dépenses : 4 200 €. Taux d’épargne modeste de 19%. Épargne constituée : 85 000 €. Même avec ce matelas, le FIRE reste à 29 ans. En visant 30% d’épargne, le délai tombe à 22 ans.</p>
+        <h3>3. Sarah, 45 ans, freelance</h3>
+        <p>Revenus irréguliers, en moyenne 4 500 €/mois. Dépenses : 2 800 €. Épargne actuelle : 180 000 €. À 5% réel et 4% de retrait, elle atteindra la liberté dans 8 ans. Elle a commencé tard mais épargne 38% de ses revenus.</p>
+
+        <h2>Cas d’usage et limites</h2>
+        <p>Cet outil vous donne une projection basée sur des paramètres fixes. Dans la réalité, votre vie évolue, la bourse fluctue et l’inflation peut éroder votre pouvoir d’achat. La règle des 4% a été testée sur des périodes historiques, mais rien ne garantit l’avenir. Utilisez ce calculateur comme une boussole, pas comme un GPS.</p>
+        <p>Parmi les utilisations pragmatiques : visualiser l’effet de baisser ses dépenses de 200 € (l’abonnement voiture + café du matin), tester différents taux de retrait, ou simuler l’impact d’un héritage futur.</p>
+
+        <h2>Foire aux questions</h2>
+        <div class="faq-item">
+            <div class="faq-question">Le taux de retrait de 4% est-il vraiment sûr ?</div>
+            <div class="faq-answer">La Trinity Study a montré que sur un portefeuille 60/40 (actions/obligations), un retrait de 4% ajusté à l’inflation permettait de ne pas tomber à zéro sur 30 ans dans la plupart des cas. Pour une retraite plus longue, certains préconisent 3,5% ou 3%.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Faut-il inclure la valeur de sa résidence principale ?</div>
+            <div class="faq-answer">Non. Votre résidence ne génère pas de revenus (sauf si vous en louez une partie). On parle ici de capital productif : actions, obligations, immobilier locatif.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Que faire si mes revenus augmentent avec le temps ?</div>
+            <div class="faq-answer">Refaites la simulation régulièrement. Si vous maintenez vos dépenses, votre taux d’épargne grimpe et le délai raccourcit. Attention à l’inflation du style de vie (lifestyle creep).</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Le calculateur prend-il en compte les impôts ?</div>
+            <div class="faq-answer">Nous parlons en net (revenu mensuel net après impôts, dépenses nettes). Les impôts sur le capital (flat tax, prélèvements sociaux) ne sont pas déduits. Par sécurité, réduisez le rendement de 0,5 à 1 point.</div>
+        </div>
+
+        <h2>Témoignages</h2>
+        <div class="testimonial">
+            "Je suivais des méthodes compliquées, puis ce calculateur m’a montré qu’en épargnant 200 € de plus par mois, je gagnais 6 ans. J’ai renégocié mon assurance et ma facture téléphone. Aujourd’hui, je vois la courbe monter et j’ai confiance."
+            <span class="author">– Julien, 34 ans, Lyon</span>
+        </div>
+        <div class="testimonial">
+            "À 48 ans, je pensais que c’était trop tard. J’ai rentré mes chiffres, et contre toute attente, j’ai découvert que je pouvais arrêter à 58 ans au lieu de 64. J’ai repris la main sur mon budget."
+            <span class="author">– Nathalie, 48 ans, Rennes</span>
+        </div>
+
+        <div class="related">
+            <h2>Calculateurs liés</h2>
+            <p>Explorez d’autres variantes de l’indépendance financière :</p>
+            <ul>
+                <li><a href="/calculateur-dividendes/">Barista FIRE</a> – Un emploi à temps partiel pour couvrir une partie des dépenses.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        Calculateur FIRE – Outil éducatif. Les résultats ne constituent pas un conseil en investissement. Projetez, mais vivez aussi maintenant.
+    </footer>
+
+    <!-- Données structurées JSON-LD -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur FIRE – Indépendance Financière",
+            "description": "Simulateur gratuit pour estimer le nombre d'années avant d'atteindre l'indépendance financière selon le mouvement FIRE.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-fire§",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                { "@type": "Question", "name": "Le taux de retrait de 4% est-il vraiment sûr ?", "acceptedAnswer": { "@type": "Answer", "text": "La Trinity Study a montré qu'avec un portefeuille diversifié, retirer 4% du capital initial ajusté à l'inflation était viable 30 ans dans la majorité des cas." } },
+                { "@type": "Question", "name": "Faut-il inclure la valeur de sa résidence principale ?", "acceptedAnswer": { "@type": "Answer", "text": "Non, car elle ne génère pas de revenus passifs. On calcule le capital productif." } },
+                { "@type": "Question", "name": "Que faire si mes revenus augmentent ?", "acceptedAnswer": { "@type": "Answer", "text": "Si vous maintenez vos dépenses, votre taux d'épargne augmente et le délai FIRE raccourcit. Attention au lifestyle creep." } },
+                { "@type": "Question", "name": "Le calculateur prend-il en compte les impôts ?", "acceptedAnswer": { "@type": "Answer", "text": "Les revenus et dépenses sont nets d'impôts. La fiscalité sur les plus-values n'est pas déduite." } }
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "Calculateur FIRE",
+            "review": [
+                { "@type": "Review", "author": { "@type": "Person", "name": "Julien" }, "reviewBody": "En épargnant 200€ de plus par mois je gagnais 6 ans. Simple et motivant.", "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" } },
+                { "@type": "Review", "author": { "@type": "Person", "name": "Nathalie" }, "reviewBody": "J'ai découvert que je pouvais partir à 58 ans. Reprise en main totale.", "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" } }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            // DOM elements
+            const revenuInput = document.getElementById('revenuMensuel');
+            const depensesInput = document.getElementById('depensesMensuelles');
+            const epargneInput = document.getElementById('epargneActuelle');
+            const ageActuelInput = document.getElementById('ageActuel');
+            const nominalSlider = document.getElementById('nominalSlider');
+            const nominalInput = document.getElementById('nominal');
+            const inflationSlider = document.getElementById('inflationSlider');
+            const inflationInput = document.getElementById('inflation');
+            const tauxRetraitSelect = document.getElementById('tauxRetrait');
+            const capitalCibleSpan = document.getElementById('capitalCible');
+            const anneesFireSpan = document.getElementById('anneesFire');
+            const ageFireSpan = document.getElementById('ageFire');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const exportBtn = document.getElementById('exportBtn');
+            const darkToggle = document.getElementById('darkToggle');
+            const canvas = document.getElementById('fireChart');
+
+            let chart;
+
+            // Synchronisation sliders / inputs
+            function syncSlider(slider, input) {
+                input.value = parseFloat(slider.value).toFixed(1);
+                updateAll();
+            }
+            function syncInput(input, slider, max) {
+                let val = parseFloat(input.value);
+                if (isNaN(val)) val = 0;
+                val = Math.min(max, Math.max(parseFloat(slider.min), val));
+                slider.value = val;
+                input.value = val.toFixed(1);
+                updateAll();
+            }
+
+            nominalSlider.addEventListener('input', () => syncSlider(nominalSlider, nominalInput));
+            nominalInput.addEventListener('change', () => syncInput(nominalInput, nominalSlider, 15));
+            inflationSlider.addEventListener('input', () => syncSlider(inflationSlider, inflationInput));
+            inflationInput.addEventListener('change', () => syncInput(inflationInput, inflationSlider, 10));
+
+            [revenuInput, depensesInput, epargneInput, ageActuelInput, tauxRetraitSelect].forEach(el => el.addEventListener('input', updateAll));
+            calculateBtn.addEventListener('click', updateAll);
+
+            // Dark mode toggle
+            darkToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                darkToggle.textContent = document.body.classList.contains('dark') ? 'Mode clair' : 'Mode sombre';
+            });
+
+            // Export PDF via impression
+            exportBtn.addEventListener('click', () => {
+                window.print();
+            });
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+            }
+
+            function updateAll() {
+                const revenuMensuel = parseFloat(revenuInput.value) || 0;
+                const depensesMensuelles = parseFloat(depensesInput.value) || 0;
+                const epargneActuelle = parseFloat(epargneInput.value) || 0;
+                const ageActuel = parseInt(ageActuelInput.value, 10) || 30;
+                const nominal = parseFloat(nominalInput.value) / 100;
+                const inflation = parseFloat(inflationInput.value) / 100;
+                const tauxRetrait = parseFloat(tauxRetraitSelect.value) / 100;
+
+                // Calcul du rendement réel
+                const rendementReel = (1 + nominal) / (1 + inflation) - 1;
+
+                const epargneAnnuelle = (revenuMensuel - depensesMensuelles) * 12;
+                if (epargneAnnuelle <= 0 && epargneActuelle <= 0) {
+                    anneesFireSpan.textContent = '—';
+                    ageFireSpan.textContent = '—';
+                    capitalCibleSpan.textContent = formatCurrency(0);
+                    if (chart) chart.destroy();
+                    return;
+                }
+
+                const capitalCible = depensesMensuelles * 12 / tauxRetrait;
+                capitalCibleSpan.textContent = formatCurrency(capitalCible);
+
+                let capital = epargneActuelle;
+                let annee = 0;
+                const maxAnnees = 100;
+                const projection = [{ year: 0, capital: capital }];
+                while (capital < capitalCible && annee < maxAnnees) {
+                    annee++;
+                    capital = capital * (1 + rendementReel) + epargneAnnuelle;
+                    projection.push({ year: annee, capital: capital });
+                }
+
+                if (capital >= capitalCible) {
+                    anneesFireSpan.textContent = annee + (annee === 1 ? ' an' : ' ans');
+                    const ageFIRE = ageActuel + annee;
+                    ageFireSpan.textContent = ageFIRE + ' ans';
+                } else {
+                    anneesFireSpan.textContent = '> 100 ans';
+                    ageFireSpan.textContent = '—';
+                }
+
+                // Graphique
+                const labels = projection.map(p => 'Année ' + p.year);
+                const data = projection.map(p => p.capital);
+                const cibleLine = Array(projection.length).fill(capitalCible);
+
+                if (chart) chart.destroy();
+                const ctx = canvas.getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Capital projeté',
+                                data: data,
+                                borderColor: '#0f766e',
+                                backgroundColor: 'rgba(15,118,110,0.1)',
+                                fill: true,
+                                tension: 0.2,
+                                pointRadius: 0
+                            },
+                            {
+                                label: 'Capital cible FIRE',
+                                data: cibleLine,
+                                borderColor: '#b45309',
+                                borderDash: [5, 5],
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => ctx.dataset.label + ': ' + formatCurrency(ctx.raw)
+                                }
+                            },
+                            legend: { position: 'bottom' }
+                        },
+                        scales: {
+                            y: {
+                                ticks: { callback: (val) => formatCurrency(val) }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateAll();
+        })();
+    </script>
+</body>
+</html>

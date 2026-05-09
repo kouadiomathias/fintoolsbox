@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur d'intérêts composés - Gratuit & Précis</title>
+    <meta name="description" content="Calculez facilement la croissance de votre épargne grâce aux intérêts composés. Outil gratuit avec graphique, apports périodiques et fréquence réglable. Comprenez l'effet boule de neige des intérêts.">
+    <meta name="keywords" content="intérêts composés, calculateur intérêts, épargne, placement, simulation intérêts, calcul intérêt composé, effet boule de neige, investissement, capitalisation">
+    <meta name="author" content="Calculateur d'Intérêts Composés">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-interet-compose/">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Calculateur d'intérêts composés - Simulation gratuite">
+    <meta property="og:description" content="Découvrez combien votre argent peut fructifier grâce aux intérêts composés. Ajustez le montant initial, les apports, le taux et la durée.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-interet-compose">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur d'intérêts composés">
+    <meta name="twitter:description" content="Simulation d'épargne avec graphique. Voyez l'effet des intérêts composés en un clin d'œil.">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        /* styles existants + ajouts pour le contenu supplémentaire */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f5f7fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+        }
+
+        .main-container {
+            max-width: 900px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-header {
+            background: #1a73e8;
+            color: white;
+            padding: 1.5rem 2rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .calculator-header p {
+            margin: 0.5rem 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 650px) {
+            .calculator-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border: 1px solid #dce1e8;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: #fff;
+            color: #1e293b;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+        }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .range-container input[type="range"] {
+            flex: 1;
+            padding: 0;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .range-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #1a73e8;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .range-container .range-value {
+            min-width: 55px;
+            text-align: right;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .results-panel {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #e9eef2;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed #dce3e9;
+            padding-bottom: 0.5rem;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .result-value {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #1a73e8;
+        }
+
+        .result-value.interest {
+            color: #059669;
+        }
+
+        .chart-container {
+            margin-top: 1.5rem;
+            position: relative;
+            height: 300px;
+        }
+
+        button.calculate-btn {
+            grid-column: 1 / -1;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: fit-content;
+            justify-self: center;
+        }
+
+        button.calculate-btn:hover {
+            background: #1557b0;
+        }
+
+        .note {
+            grid-column: 1 / -1;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        /* Section pédagogique et FAQ */
+        .educational-section {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            padding: 2rem;
+            color: #1e293b;
+            line-height: 1.7;
+            margin-top: 0;
+            font-size: 1rem;
+        }
+
+        .educational-section h2 {
+            color: #1a73e8;
+            font-size: 1.6rem;
+            margin: 1.8rem 0 0.8rem;
+            border-bottom: 2px solid #e9eef2;
+            padding-bottom: 0.3rem;
+        }
+        .educational-section h2:first-child {
+            margin-top: 0;
+        }
+
+        .educational-section h3 {
+            font-size: 1.2rem;
+            margin: 1.2rem 0 0.5rem;
+            color: #2c3e50;
+        }
+
+        .educational-section p, .educational-section li {
+            margin-bottom: 0.8rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #0f172a;
+            cursor: pointer;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        .faq-question::before {
+            content: "❓";
+            font-size: 1.1rem;
+        }
+        .faq-answer {
+            margin-left: 1.8rem;
+            color: #334155;
+            border-left: 3px solid #cbd5e1;
+            padding-left: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .educational-section {
+                padding: 1.5rem;
+            }
+        }
+        .formula-box{
+    background:#f8fbff;
+    border:1px solid #dbeafe;
+    border-radius:12px;
+    padding:1.5rem;
+    margin:1.5rem 0;
+}
+
+.formula-box h3{
+    color:#1a73e8;
+    margin-bottom:1rem;
+    font-size:1.2rem;
+}
+
+.formula{
+    background:white;
+    border-radius:10px;
+    padding:1rem;
+    text-align:center;
+    font-size:1.8rem;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:1.2rem;
+    overflow-x:auto;
+}
+
+.formula-explanation{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:0.8rem;
+}
+
+.formula-explanation p{
+    background:white;
+    padding:0.8rem 1rem;
+    border-radius:8px;
+    border:1px solid #e2e8f0;
+    margin:0;
+    font-size:0.95rem;
+}
+.related-tools{
+    max-width:1000px;
+    width:100%;
+    background:white;
+    border-radius:12px;
+    padding:2rem;
+    margin:0 auto 2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.related-tools h2{
+    color:#1e3a5f;
+    font-size:1.5rem;
+    margin-bottom:0.5rem;
+}
+
+.related-subtitle{
+    color:#64748b;
+    margin-bottom:1.8rem;
+    font-size:0.95rem;
+}
+
+.related-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+}
+
+.tool-card{
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:1rem;
+    text-decoration:none;
+    transition:all 0.2s ease;
+}
+
+.tool-card:hover{
+    transform:translateY(-3px);
+    border-color:#1e3a5f;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.tool-icon{
+    font-size:1.8rem;
+    flex-shrink:0;
+}
+
+.tool-content h3{
+    font-size:1rem;
+    color:#0f172a;
+    margin-bottom:0.35rem;
+}
+
+.tool-content p{
+    font-size:0.88rem;
+    color:#475569;
+    line-height:1.5;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <h1>Calculateur d'intérêts composés</h1>
+            <p>Visualisez la croissance de votre épargne grâce à la magie des intérêts composés.</p>
+        </div>
+        <div class="calculator-body">
+            <!-- Colonne de gauche : paramètres -->
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="initial">Montant initial (€)</label>
+                    <input type="number" id="initial" value="1000" min="0" step="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="contribution" id="contribLabel">Apport mensuel (€)</label>
+                    <input type="number" id="contribution" value="200" min="0" step="10">
+                </div>
+
+                <div class="input-group">
+                    <label>Taux d'intérêt annuel (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="rateSlider" min="0" max="20" step="0.1" value="5">
+                        <input type="number" id="rate" value="5" min="0" max="20" step="0.1" class="range-value" style="width:70px;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Nombre d'années</label>
+                    <div class="range-container">
+                        <input type="range" id="yearsSlider" min="1" max="50" step="1" value="20">
+                        <input type="number" id="years" value="20" min="1" max="50" step="1" class="range-value" style="width:70px;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="frequency">Fréquence de composition</label>
+                    <select id="frequency">
+                        <option value="12" selected>Mensuelle</option>
+                        <option value="4">Trimestrielle</option>
+                        <option value="2">Semestrielle</option>
+                        <option value="1">Annuelle</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Colonne de droite : résultats -->
+            <div class="results-column">
+                <div class="results-panel" id="resultsPanel">
+                    <div class="result-item">
+                        <span class="result-label">Montant final</span>
+                        <span class="result-value" id="finalAmount">0,00 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total des versements</span>
+                        <span class="result-value" id="totalContributions">0,00 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Intérêts gagnés</span>
+                        <span class="result-value interest" id="totalInterest">0,00 €</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="growthChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBtn">Calculer</button>
+            <div class="note">
+                 Les intérêts sont capitalisés à chaque période selon la fréquence choisie.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section contenu pédagogique + FAQ -->
+    <section class="educational-section">
+        <h2> Comprendre les intérêts composés</h2>
+        <p>
+            Les intérêts composés, c’est le principe selon lequel les intérêts que vous gagnez sont ajoutés à votre capital, et génèrent à leur tour des intérêts. C’est ce qu’on appelle parfois “l’effet boule de neige”. Plus le temps passe, plus la part des intérêts dans la croissance de votre épargne devient importante. Albert Einstein aurait dit que les intérêts composés sont la huitième merveille du monde – on comprend pourquoi en observant une courbe qui s’envole avec les années.
+        </p>
+        <p>
+            Prenons un exemple concret : vous placez 1 000 € à 5% par an, sans rien ajouter. Au bout d’un an, vous avez 1 050 €. La deuxième année, les 5% s’appliquent sur 1 050 €, soit 52,50 € d’intérêts au lieu de 50. Après 20 ans, sans aucun effort, votre capital aura plus que doublé (2 653 €). Si en plus vous faites des versements réguliers, l’effet est encore plus spectaculaire.
+        </p>
+
+        <h2> Comment utiliser ce calculateur</h2>
+        <p>
+            <strong>1. Montant initial :</strong> la somme que vous possédez déjà et que vous placez au départ. Mettez 0 si vous partez de zéro.<br>
+            <strong>2. Apport périodique :</strong> le montant que vous ajoutez régulièrement (chaque mois, chaque trimestre... selon la fréquence choisie).<br>
+            <strong>3. Taux d’intérêt annuel :</strong> le rendement annuel de votre placement (par exemple 3% pour un livret A, 5-7% pour un portefeuille diversifié en actions sur le long terme).<br>
+            <strong>4. Nombre d’années :</strong> la durée pendant laquelle vous laissez votre argent travailler.<br>
+            <strong>5. Fréquence de composition :</strong> à quelle vitesse les intérêts sont réinvestis. Plus la fréquence est élevée, plus la magie opère rapidement (mensuelle donne un léger avantage par rapport à annuelle).
+        </p>
+        <p>
+            Le graphique vous montre l’évolution de votre capital initial et des intérêts accumulés année après année. Vous verrez la partie verte (capital versé) et la partie bleue (intérêts) qui grandit, signe que l’argent travaille tout seul.
+        </p>
+        <div class="formula-box">
+    <h3>Formule des intérêts composés</h3>
+
+    <div class="formula">
+        A = P × (1 + r / n)<sup>nt</sup>
+    </div>
+
+    <div class="formula-explanation">
+        <p><strong>A</strong> = montant final</p>
+        <p><strong>P</strong> = capital initial</p>
+        <p><strong>r</strong> = taux d’intérêt annuel</p>
+        <p><strong>n</strong> = nombre de capitalisations par an</p>
+        <p><strong>t</strong> = durée de placement en années</p>
+    </div>
+</div>
+        <h2> Foire aux questions (FAQ)</h2>
+        <div class="faq-item">
+            <div class="faq-question">Pourquoi la fréquence de composition change-t-elle le résultat final ?</div>
+            <p class="faq-answer">
+                Plus les intérêts sont calculés et ajoutés souvent, plus vite ils produisent eux-mêmes des intérêts. Avec une capitalisation mensuelle, vous gagnez des intérêts sur les intérêts des mois précédents dès le mois suivant. C’est un gain modeste, mais réel sur de longues périodes. Dans le calculateur, vous pouvez passer d’annuelle à mensuelle pour voir la différence.
+            </p>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Quel est l’impact si je n’ajoute pas d’apport régulier ?</div>
+            <p class="faq-answer">
+                Même sans apport, le temps fait son œuvre grâce aux intérêts composés. Par exemple, 5 000 € à 6% pendant 30 ans deviennent environ 28 000 € sans que vous n’ajoutiez un centime. Mais si vous faites des apports réguliers, vous construisez une épargne beaucoup plus conséquente. Le calculateur vous montre clairement la part de chaque levier.
+            </p>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Ce calculateur est-il adapté pour un crédit ou un emprunt ?</div>
+            <p class="faq-answer">
+                Non, cet outil simule une épargne croissante, pas un emprunt. Pour un prêt, il faut utiliser un calculateur d’amortissement. Ici, les intérêts s’ajoutent au capital, ils ne sont pas remboursés.
+            </p>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Puis-je simuler un placement en bourse avec ce calculateur ?</div>
+            <p class="faq-answer">
+                Oui, dans une certaine mesure. Si vous connaissez le rendement annuel moyen de votre portefeuille (par exemple 7% pour un ETF monde sur 20 ans), vous pouvez l’utiliser comme taux. Mais gardez en tête que la bourse est volatile : le résultat réel variera d’une année sur l’autre. Ce calculateur donne une projection lissée sur la base d’un taux fixe.
+            </p>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Les intérêts sont-ils imposables ?</div>
+            <p class="faq-answer">
+                Le calculateur ne prend pas en compte la fiscalité. Selon votre pays et le type de placement (assurance-vie, PEA, compte-titres…), les intérêts ou plus-values peuvent être soumis à l’impôt et aux prélèvements sociaux. Pensez à retirer ces charges pour obtenir une estimation nette.
+            </p>
+        </div>
+    </section>
+    <section class="related-tools">
+    <h2>Outils financiers associés</h2>
+    <p class="related-subtitle">
+        Explorez d'autres simulateurs pour planifier votre épargne, votre retraite et vos investissements à long terme.
+    </p>
+
+    <div class="related-grid">
+
+        <a href="/calculateur-pret-immobilier/" class="tool-card">
+            <div class="tool-icon">📈</div>
+            <div class="tool-content">
+                <h3>Calculateur d'intérêts composés</h3>
+                <p>Visualisez la croissance de votre capital avec les intérêts composés et les versements réguliers.</p>
+            </div>
+        </a>
+
+        <a href="/simulateur-energie/" class="tool-card">
+            <div class="tool-icon">🔥</div>
+            <div class="tool-content">
+                <h3>Calculateur FIRE</h3>
+                <p>Estimez l'âge auquel vous pourriez atteindre l'indépendance financière.</p>
+            </div>
+        </a>
+
+        <a href="/comparateurd-assurance-emprunteur/" class="tool-card">
+            <div class="tool-icon">💸</div>
+            <div class="tool-content">
+                <h3>Calculateur de dividendes</h3>
+                <p>Projetez vos revenus passifs futurs avec ou sans réinvestissement des dividendes.</p>
+            </div>
+        </a>
+
+        <a href="/comparateur-etf/" class="tool-card">
+            <div class="tool-icon">📊</div>
+            <div class="tool-content">
+                <h3>Comparateur d'ETF</h3>
+                <p>Comparez les frais, performances et impacts long terme de plusieurs ETF.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+    <footer>
+        © Calculateur d'intérêts composés - Outil gratuit et éducatif. Les résultats sont indicatifs et ne constituent pas un conseil financier.
+    </footer>
+
+    <!-- Données structurées JSON-LD pour le SEO -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur d'intérêts composés",
+            "description": "Simulateur en ligne gratuit pour estimer la croissance d'une épargne avec intérêts composés, apports périodiques et fréquence de capitalisation réglable.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-interet-compose/",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Pourquoi la fréquence de composition change-t-elle le résultat final ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Plus les intérêts sont calculés et ajoutés souvent, plus vite ils produisent eux-mêmes des intérêts. Avec une capitalisation mensuelle, vous gagnez des intérêts sur les intérêts des mois précédents dès le mois suivant."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Quel est l'impact si je n'ajoute pas d'apport régulier ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Même sans apport, le temps fait son œuvre grâce aux intérêts composés. Par exemple, 5 000 € à 6% pendant 30 ans deviennent environ 28 000 € sans aucun versement supplémentaire."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Ce calculateur est-il adapté pour un crédit ou un emprunt ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Non, cet outil simule une épargne croissante. Pour un emprunt, un calculateur d'amortissement est plus approprié."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Puis-je simuler un placement en bourse avec ce calculateur ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Oui, en utilisant un rendement annuel moyen estimé. Mais la volatilité réelle n'est pas prise en compte, les résultats sont une projection linéaire."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Les intérêts sont-ils imposables ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Le calculateur ne tient pas compte de la fiscalité. Selon le placement, les gains peuvent être soumis à l'impôt. Il est conseillé d'ajuster manuellement le résultat net."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            // Éléments DOM
+            const initialInput = document.getElementById('initial');
+            const contributionInput = document.getElementById('contribution');
+            const contribLabel = document.getElementById('contribLabel');
+            const rateSlider = document.getElementById('rateSlider');
+            const rateInput = document.getElementById('rate');
+            const yearsSlider = document.getElementById('yearsSlider');
+            const yearsInput = document.getElementById('years');
+            const frequencySelect = document.getElementById('frequency');
+            const finalAmountSpan = document.getElementById('finalAmount');
+            const totalContributionsSpan = document.getElementById('totalContributions');
+            const totalInterestSpan = document.getElementById('totalInterest');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const canvas = document.getElementById('growthChart');
+
+            let chart;
+
+            // Synchronisation curseurs / champs numériques
+            function syncRateFromSlider() {
+                rateInput.value = parseFloat(rateSlider.value).toFixed(1);
+                updateAll();
+            }
+            function syncRateFromInput() {
+                let val = parseFloat(rateInput.value);
+                if (isNaN(val)) val = 0;
+                val = Math.min(20, Math.max(0, val));
+                rateSlider.value = val;
+                rateInput.value = val.toFixed(1);
+                updateAll();
+            }
+            function syncYearsFromSlider() {
+                yearsInput.value = yearsSlider.value;
+                updateAll();
+            }
+            function syncYearsFromInput() {
+                let val = parseInt(yearsInput.value, 10);
+                if (isNaN(val)) val = 1;
+                val = Math.min(50, Math.max(1, val));
+                yearsSlider.value = val;
+                yearsInput.value = val;
+                updateAll();
+            }
+
+            rateSlider.addEventListener('input', syncRateFromSlider);
+            rateInput.addEventListener('change', syncRateFromInput);
+            rateInput.addEventListener('blur', syncRateFromInput);
+            yearsSlider.addEventListener('input', syncYearsFromSlider);
+            yearsInput.addEventListener('change', syncYearsFromInput);
+            yearsInput.addEventListener('blur', syncYearsFromInput);
+
+            initialInput.addEventListener('input', updateAll);
+            contributionInput.addEventListener('input', updateAll);
+            frequencySelect.addEventListener('change', function() {
+                updateContributionLabel();
+                updateAll();
+            });
+            calculateBtn.addEventListener('click', updateAll);
+
+            function updateContributionLabel() {
+                const freq = frequencySelect.value;
+                const labels = {
+                    '12': 'Apport mensuel (€)',
+                    '4': 'Apport trimestriel (€)',
+                    '2': 'Apport semestriel (€)',
+                    '1': 'Apport annuel (€)'
+                };
+                contribLabel.textContent = labels[freq] || 'Apport périodique (€)';
+            }
+
+            // Format monétaire
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(value);
+            }
+
+            // Calcul des intérêts composés avec apports périodiques
+            function computeProjection(P, PMT, r, n, years) {
+                if (n === 0) return [];
+                const totalPeriods = n * years;
+                const ratePerPeriod = r / n;
+                let balance = [];
+                for (let t = 0; t <= years; t++) {
+                    const periods = t * n;
+                    let futureValue;
+                    if (ratePerPeriod === 0) {
+                        futureValue = P + PMT * periods;
+                    } else {
+                        const fvInitial = P * Math.pow(1 + ratePerPeriod, periods);
+                        const fvAnnuity = PMT * ((Math.pow(1 + ratePerPeriod, periods) - 1) / ratePerPeriod);
+                        futureValue = fvInitial + fvAnnuity;
+                    }
+                    const totalContributions = P + PMT * periods;
+                    const interest = futureValue - totalContributions;
+                    balance.push({
+                        year: t,
+                        total: futureValue,
+                        capital: totalContributions,
+                        interest: interest
+                    });
+                }
+                return balance;
+            }
+
+            function updateAll() {
+                const P = parseFloat(initialInput.value) || 0;
+                const PMT = parseFloat(contributionInput.value) || 0;
+                const r = parseFloat(rateInput.value) / 100 || 0;
+                const years = parseInt(yearsInput.value, 10) || 1;
+                const n = parseInt(frequencySelect.value, 10) || 12;
+
+                const projection = computeProjection(P, PMT, r, n, years);
+                if (projection.length === 0) return;
+
+                const finalData = projection[projection.length - 1];
+                const finalAmount = finalData.total;
+                const totalCapital = finalData.capital;
+                const totalInterest = finalData.interest;
+
+                finalAmountSpan.textContent = formatCurrency(finalAmount);
+                totalContributionsSpan.textContent = formatCurrency(totalCapital);
+                totalInterestSpan.textContent = formatCurrency(totalInterest);
+
+                const labels = projection.map(p => p.year);
+                const capitalData = projection.map(p => p.capital);
+                const interestData = projection.map(p => p.interest);
+
+                if (chart) {
+                    chart.data.labels = labels;
+                    chart.data.datasets[0].data = capitalData;
+                    chart.data.datasets[1].data = interestData;
+                    chart.update();
+                } else {
+                    const ctx = canvas.getContext('2d');
+                    chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Capital versé',
+                                    data: capitalData,
+                                    backgroundColor: '#a5d6a7',
+                                    borderColor: '#66bb6a',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    stack: 'stack1'
+                                },
+                                {
+                                    label: 'Intérêts accumulés',
+                                    data: interestData,
+                                    backgroundColor: '#90caf9',
+                                    borderColor: '#42a5f5',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    stack: 'stack1'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(ctx) {
+                                            return ctx.dataset.label + ': ' + formatCurrency(ctx.raw);
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    title: { display: true, text: 'Année' },
+                                    stacked: true
+                                },
+                                y: {
+                                    title: { display: true, text: 'Valeur (€)' },
+                                    stacked: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Initialisation
+            updateContributionLabel();
+            updateAll();
+        })();
+    </script>
+</body>
+</html>

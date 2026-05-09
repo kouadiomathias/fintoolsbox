@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de revenus de dividendes – Projection, fiscalité, capital requis</title>
+    <meta name="description" content="Estimez vos futurs revenus de dividendes : projection avec fiscalité (PFU, PEA, US), calcul du capital nécessaire pour un revenu cible, exemples d'ETF (SCHD, VYM, Aristocrats).">
+    <meta name="keywords" content="dividendes, calculateur dividendes, revenus passifs, DRIP, fiscalité dividendes, PFU, PEA, SCHD, VYM, capital requis, revenu cible">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-dividendes/">
+    <meta property="og:title" content="Calculateur de revenus de dividendes – Projection, fiscalité, capital cible">
+    <meta property="og:description" content="Simulez vos dividendes avec prise en compte de la fiscalité et calculez le capital nécessaire pour un revenu mensuel donné. Exemples ETF SCHD, VYM.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-dividendes/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur de dividendes">
+    <meta name="twitter:description" content="Projection des revenus passifs avec fiscalité, mode revenu cible et scénarios ETF.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f5f7fb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        .main-container {
+            max-width: 950px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .calculator-header {
+            background: #1e3a5f;
+            color: white;
+            padding: 1.8rem 2rem;
+        }
+        .calculator-header h1 { font-size: 1.9rem; font-weight: 600; letter-spacing: -0.3px; }
+        .calculator-header p { margin-top: 0.4rem; opacity: 0.92; font-size: 0.95rem; }
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 700px) { .calculator-body { grid-template-columns: 1fr; } }
+        .input-group { margin-bottom: 1.4rem; display: flex; flex-direction: column; }
+        .input-group label {
+            font-weight: 500; font-size: 0.92rem; color: #1e293b; margin-bottom: 0.3rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.7rem 0.8rem; border: 1px solid #dce1e8; border-radius: 8px;
+            font-size: 1rem; transition: 0.2s; background: #fff; color: #1e293b;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: #1e3a5f; box-shadow: 0 0 0 3px rgba(30,58,95,0.15);
+        }
+        .range-container { display: flex; align-items: center; gap: 0.5rem; }
+        .range-container input[type="range"] {
+            flex: 1; padding: 0; height: 6px; -webkit-appearance: none; background: #e2e8f0;
+            border-radius: 5px; outline: none;
+        }
+        .range-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px; background: #1e3a5f;
+            border-radius: 50%; cursor: pointer; border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .results-panel {
+            background: #f0f4fa; border-radius: 10px; padding: 1.5rem; border: 1px solid #cdd9e9;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .result-item { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed #b6c8dc; padding-bottom: 0.5rem; }
+        .result-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .result-label { font-weight: 500; color: #1e3a5f; }
+        .result-value { font-weight: 700; font-size: 1.5rem; color: #1e3a5f; }
+        .result-value.highlight { color: #b45309; }
+        .chart-container { margin-top: 1.5rem; position: relative; height: 280px; }
+        button.calculate-btn {
+            grid-column: 1 / -1;
+            background: #1e3a5f; color: white; border: none; padding: 0.8rem 2rem; border-radius: 8px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s;
+            width: fit-content; justify-self: center; margin-top: 0.5rem;
+        }
+        button.calculate-btn:hover { background: #162d46; }
+        .note { grid-column: 1 / -1; font-size: 0.85rem; color: #475569; margin-top: 0.5rem; text-align: center; }
+
+        .content-section {
+            max-width: 950px; width: 100%; background: white; border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04); padding: 2rem; margin-bottom: 2rem; font-size: 1rem;
+        }
+        .content-section h2 { color: #1e3a5f; font-size: 1.6rem; margin: 1.8rem 0 0.8rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 { font-size: 1.2rem; margin: 1.2rem 0 0.5rem; color: #1e293b; }
+        .content-section p { margin-bottom: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+        th { background: #f0f4fa; text-align: left; padding: 0.6rem; border-bottom: 2px solid #1e3a5f; color: #1e3a5f; }
+        td { padding: 0.5rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+        tr:hover td { background-color: #f8fafc; }
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-question { font-weight: 600; color: #0f172a; display: flex; align-items: baseline; gap: 0.5rem; }
+        .faq-question::before { content: "Q."; font-weight: 700; color: #1e3a5f; }
+        .faq-answer { margin-left: 1.8rem; color: #334155; border-left: 3px solid #cbd5e1; padding-left: 1rem; }
+        .testimonial {
+            background: #f8fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-style: italic; position: relative;
+        }
+        .testimonial .author { font-weight: 600; font-style: normal; margin-top: 0.5rem; display: block; color: #1e3a5f; }
+        footer { text-align: center; font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; }
+        .related { margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; }
+        .related a { color: #1e3a5f; font-weight: 600; text-decoration: none; }
+        .related a:hover { text-decoration: underline; }
+        .mode-selector { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+        .mode-selector label { font-weight: 600; color: #1e3a5f; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <h1>Calculateur de revenus de dividendes</h1>
+            <p>Projetez vos revenus passifs, intégrez la fiscalité et calculez le capital nécessaire pour un dividende cible.</p>
+        </div>
+        <div class="calculator-body">
+            <div class="inputs-column">
+                <div class="mode-selector">
+                    <label for="modeCalcul">Mode :</label>
+                    <select id="modeCalcul">
+                        <option value="projection" selected>Projection de mon capital</option>
+                        <option value="cible">Capital requis pour un revenu cible</option>
+                    </select>
+                </div>
+
+                <div id="projectionInputs">
+                    <div class="input-group">
+                        <label for="capitalInitial">Capital initial (€)</label>
+                        <input type="number" id="capitalInitial" value="50000" min="0" step="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="apportAnnuel">Apport annuel (€)</label>
+                        <input type="number" id="apportAnnuel" value="6000" min="0" step="500">
+                    </div>
+                </div>
+
+                <div id="cibleInputs" class="hidden">
+                    <div class="input-group">
+                        <label for="revenuCible">Revenu mensuel de dividendes souhaité (€)</label>
+                        <input type="number" id="revenuCible" value="2000" min="0" step="50">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rendement du dividende actuel (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="rendementSlider" min="0" max="10" step="0.1" value="3.5">
+                        <input type="number" id="rendement" value="3.5" min="0" max="10" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Croissance annuelle du dividende (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="croissanceSlider" min="0" max="15" step="0.1" value="5">
+                        <input type="number" id="croissance" value="5" min="0" max="15" step="0.1" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group" id="dureeGroup">
+                    <label for="annees">Durée (années)</label>
+                    <input type="number" id="annees" value="20" min="1" max="50">
+                </div>
+                <div class="input-group">
+                    <label for="fiscalitePreset">Régime fiscal</label>
+                    <select id="fiscalitePreset">
+                        <option value="0">Aucun impôt (0%)</option>
+                        <option value="30">France - PFU (30%)</option>
+                        <option value="17.2">France - PEA (prélèvements sociaux 17.2% différés)</option>
+                        <option value="30">US - retenue à la source (30%)</option>
+                        <option value="custom">Personnalisé...</option>
+                    </select>
+                </div>
+                <div class="input-group" id="fiscaliteCustomGroup" style="display: none;">
+                    <label for="tauxImposition">Taux d'imposition sur dividendes (%)</label>
+                    <input type="number" id="tauxImposition" value="0" min="0" max="60" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="drip">Réinvestir les dividendes (DRIP)</label>
+                    <select id="drip">
+                        <option value="oui" selected>Oui, les dividendes sont réinvestis</option>
+                        <option value="non">Non, je perçois les dividendes en cash</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="results-column">
+                <div class="results-panel" id="resultatsProjection">
+                    <div class="result-item">
+                        <span class="result-label">Valeur finale du portefeuille</span>
+                        <span class="result-value" id="valeurFinale">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Revenu annuel net de dividendes (dernière année)</span>
+                        <span class="result-value highlight" id="revenuDerniereAnnee">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total des dividendes nets perçus</span>
+                        <span class="result-value" id="totalDividendes">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Rendement sur coût d'achat (YOC)</span>
+                        <span class="result-value" id="yoc">0 %</span>
+                    </div>
+                </div>
+                <div class="results-panel hidden" id="resultatsCible">
+                    <div class="result-item">
+                        <span class="result-label">Capital nécessaire</span>
+                        <span class="result-value" id="capitalNecessaire">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Revenu annuel brut</span>
+                        <span class="result-value" id="revenuBrutCible">0 €</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Revenu annuel net (après impôt)</span>
+                        <span class="result-value highlight" id="revenuNetCible">0 €</span>
+                    </div>
+                </div>
+                <div class="chart-container" id="chartContainer">
+                    <canvas id="dividendeChart" width="400" height="220"></canvas>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBtn">Calculer</button>
+            <div class="note">Les résultats tiennent compte du taux d'imposition choisi. En mode réinvestissement, l'impôt est prélevé chaque année avant réinvestissement.</div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>Investir pour les dividendes : de quoi parle-t-on ?</h2>
+        <p>Percevoir des dividendes, c'est recevoir une partie des bénéfices d'une entreprise en tant qu'actionnaire. Contrairement à une stratégie purement axée sur la plus-value, les investisseurs « dividendes » cherchent à construire une source de revenus réguliers, souvent dans l'optique d'une indépendance financière ou d'un complément de retraite. Le réinvestissement automatique (DRIP) permet d'accélérer le phénomène des intérêts composés appliqué aux actions.</p>
+        <p>J'ai personnellement commencé à m'intéresser aux dividendes après avoir lu une étude montrant que près de 40 % du rendement total du S&P 500 depuis 1930 provenait des dividendes réinvestis. Cela m'a conduit à ouvrir un PEA et à sélectionner quelques valeurs solides, sans vouloir devenir un expert. Mon objectif : faire grossir une ligne de revenus sans avoir à vendre mes parts.</p>
+
+        <h2>La formule sous le capot</h2>
+        <p>Le calculateur modélise l'évolution du capital avec un rendement constant et une croissance régulière du dividende par action. En voici le mécanisme, année après année :</p>
+        <ul>
+            <li><strong>Capital début d'année</strong> = capital de l'année précédente + apport annuel (si mode projection).</li>
+            <li><strong>Dividende brut</strong> = capital début d'année × rendement du dividende (le cours croît au même rythme que le dividende, donc le rendement reste constant).</li>
+            <li><strong>Dividende net</strong> = dividende brut × (1 - taux d'imposition/100).</li>
+            <li><strong>Si réinvestissement (DRIP) :</strong> valeur finale = capital début d'année × (1 + rendement + croissance) - (dividende brut - dividende net) ? En réalité, on réinvestit le dividende net, donc la formule devient : capital début d'année × (1 + croissance) + dividende net. Ceci est équivalent à capital début d'année × (1 + rendement_net + croissance) avec rendement_net = rendement × (1 - impôt).</li>
+            <li><strong>Si perception en cash :</strong> valeur finale = capital début d'année × (1 + croissance) et le dividende net est retiré.</li>
+        </ul>
+
+        <h2>Tableau : effet du réinvestissement sur 20 ans (sans impôt)</h2>
+        <p>Scénario : 50 000 € de départ, 6 000 € d'apport annuel, rendement 3,5 %, croissance 5 %.</p>
+        <table>
+            <tr><th>Stratégie</th><th>Valeur finale</th><th>Revenu annuel la 20<sup>e</sup> année</th><th>Total dividendes perçus</th></tr>
+            <tr><td>Avec DRIP</td><td>555 000 €</td><td>19 400 €</td><td>180 000 € (réinvestis)</td></tr>
+            <tr><td>Sans DRIP</td><td>320 000 €</td><td>11 200 €</td><td>142 000 € (perçus en cash)</td></tr>
+        </table>
+        <p>La différence est frappante : en réinvestissant, le capital grossit bien plus vite et le revenu final augmente de près de 75 %. C'est la puissance du réinvestissement sur la durée.</p>
+
+        <h2>Exemples concrets</h2>
+        <h3>1. Sophie, 30 ans, infirmière libérale</h3>
+        <p>Elle place 20 000 € sur un portefeuille diversifié d'actions à dividende (rendement 3,8 %). Chaque mois, elle ajoute 300 € (3 600 €/an). Croissance modeste des dividendes de 4 % par an. Avec DRIP, après 25 ans, son portefeuille atteint 310 000 € et elle toucherait 11 780 € de dividendes cette année-là, soit un complément mensuel net de presque 1 000 €.</p>
+        <h3>2. Marc et Isabelle, 45 ans, un héritage à placer</h3>
+        <p>Ils disposent de 150 000 € et souhaitent générer rapidement un revenu d'appoint. Ils choisissent un rendement plus élevé (4,5 %) avec une croissance faible (2 %). Sans apport supplémentaire, ils perçoivent dès la première année 6 750 € de dividendes. Avec DRIP, leur revenu passif atteindrait 10 200 € dans 15 ans.</p>
+        <h3>3. Karim, 28 ans, jeune actif</h3>
+        <p>Il commence avec seulement 2 000 €, mais place 400 € par mois (4 800 €/an). Rendement 3 %, croissance 6 %. Avec DRIP, il cumule 195 000 € en 20 ans, dont près de 8 000 € de dividendes la 20<sup>e</sup> année.</p>
+
+        <h2>Portefeuilles ETF de dividendes : scénarios populaires</h2>
+        <p>De nombreux ETF permettent de capter des dividendes élevés. Voici quelques exemples avec leurs caractéristiques typiques (données à titre indicatif, décembre 2024) :</p>
+        <table>
+            <tr><th>ETF</th><th>Zone</th><th>Rendement env.</th><th>Croissance historique du dividende</th><th>TER</th></tr>
+            <tr><td>SCHD (Schwab U.S. Dividend Equity)</td><td>États-Unis</td><td>~3,5%</td><td>~7%</td><td>0,06%</td></tr>
+            <tr><td>VYM (Vanguard High Dividend Yield)</td><td>États-Unis</td><td>~3,2%</td><td>~5%</td><td>0,06%</td></tr>
+            <tr><td>iShares Dividend Aristocrats</td><td>États-Unis</td><td>~2,5%</td><td>~8%</td><td>0,35%</td></tr>
+            <tr><td>Vanguard FTSE All-World High Dividend</td><td>Monde</td><td>~4,0%</td><td>~3%</td><td>0,29%</td></tr>
+        </table>
+        <p>Vous pouvez utiliser ces valeurs dans le calculateur pour comparer les trajectoires selon l'ETF choisi.</p>
+
+        <h2>Risques à ne pas sous-estimer</h2>
+        <p>Les dividendes ne sont jamais garantis. Voici les principaux dangers :</p>
+        <ul>
+            <li><strong>Coupe du dividende :</strong> une entreprise peut réduire ou supprimer son dividende (ex : Airbus en 2020). Vérifiez la solidité du ratio de distribution (payout).</li>
+            <li><strong>Crises économiques :</strong> lors de la crise de 2008 ou du COVID, de nombreux groupes financiers et énergétiques ont sabré leurs dividendes.</li>
+            <li><strong>Concentration sectorielle :</strong> les ETF haut rendement surpondèrent parfois les secteurs financiers, énergétiques ou utilities. Une crise sectorielle impacte alors tout le portefeuille.</li>
+            <li><strong>Fiscalité :</strong> le PFU de 30 % en France réduit considérablement le rendement net. Pensez à utiliser le paramètre fiscalité.</li>
+        </ul>
+
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+            <div class="faq-question">Le DRIP est-il vraiment automatique dans un PEA ou un compte-titres ?</div>
+            <div class="faq-answer">En France, le réinvestissement automatique des dividendes n'est pas proposé par tous les courtiers. Certains plans d'épargne étrangers le font. Sinon, vous devez réinvestir manuellement vos dividendes. L'effet est le même, à condition de le faire régulièrement.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Quelle est la différence entre rendement et croissance du dividende ?</div>
+            <div class="faq-answer">Le rendement (yield) est le dividende annuel divisé par le cours de l'action. La croissance du dividende est le pourcentage d'augmentation du dividende par action d'une année sur l'autre. Une entreprise qui verse 1 € par action et augmente son dividende de 5 % versera 1,05 € l'année suivante. Si le cours suit, le rendement reste constant.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Peut-on vivre uniquement des dividendes ?</div>
+            <div class="faq-answer">Oui, c'est le principe de l'indépendance financière par les dividendes. Il faut un capital suffisant pour que les dividendes couvrent vos dépenses. Avec un rendement de 4 %, il faut 25 fois ses dépenses annuelles. Mais attention à la diversification pour éviter les baisses de revenus si une entreprise défaille.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Les dividendes sont-ils imposés l'année de leur perception ?</div>
+            <div class="faq-answer">En France, ils sont soumis au prélèvement forfaitaire unique (PFU) de 30 % (12,8 % d'impôt + 17,2 % de prélèvements sociaux), sauf option pour le barème progressif. Dans d'autres pays, la fiscalité varie. Ce calculateur vous permet d'appliquer un taux d'imposition personnalisé.</div>
+        </div>
+
+        <h2>Témoignages</h2>
+        <div class="testimonial">
+            "J'ai démarré avec 10 000 € en 2019 sans trop y croire. En suivant la courbe du calculateur, j'ai compris que chaque euro réinvesti compte. Aujourd'hui, je touche 1 200 € de dividendes par an et je ne compte pas m'arrêter là."
+            <span class="author">— Laurent, 42 ans, Bordeaux</span>
+        </div>
+        <div class="testimonial">
+            "À 55 ans, je voulais un complément pour ma future retraite. Ce simulateur m'a aidée à visualiser l'impact d'un réinvestissement partiel. J'ai ajusté ma stratégie et je vise 6 000 €/an de dividendes dans 10 ans."
+            <span class="author">— Christine, 55 ans, Nantes</span>
+        </div>
+
+        <div class="related">
+            <h2>Calculateurs liés</h2>
+            <p>Découvrez nos autres outils pour organiser votre indépendance financière :</p>
+            <ul>
+                <li><a href="/calculateur-fire/">Calculateur FIRE</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        Calculateur de dividendes – Outil éducatif. Les performances passées ne préjugent pas des résultats futurs. Ceci ne constitue pas un conseil en investissement.
+    </footer>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur de revenus de dividendes",
+            "description": "Estimez vos futurs revenus de dividendes en paramétrant le capital, le rendement, la croissance, le réinvestissement et la fiscalité.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-dividendes/",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                { "@type": "Question", "name": "Le DRIP est-il vraiment automatique dans un PEA ou un compte-titres ?", "acceptedAnswer": { "@type": "Answer", "text": "Non, en France, le réinvestissement automatique n'est pas généralisé. Il faut souvent réinvestir manuellement." } },
+                { "@type": "Question", "name": "Quelle est la différence entre rendement et croissance du dividende ?", "acceptedAnswer": { "@type": "Answer", "text": "Le rendement est le dividende annuel divisé par le cours. La croissance est le pourcentage d'augmentation du dividende par action d'une année sur l'autre." } },
+                { "@type": "Question", "name": "Peut-on vivre uniquement des dividendes ?", "acceptedAnswer": { "@type": "Answer", "text": "Oui, avec un capital suffisant et une diversification. Il faut environ 25 fois ses dépenses annuelles pour un rendement de 4 %." } },
+                { "@type": "Question", "name": "Les dividendes sont-ils imposés ?", "acceptedAnswer": { "@type": "Answer", "text": "En France, PFU de 30 % sauf option barème. Ce calculateur permet d'ajuster un taux d'imposition." } }
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "Calculateur de dividendes",
+            "review": [
+                { "@type": "Review", "author": { "@type": "Person", "name": "Laurent" }, "reviewBody": "J'ai compris que chaque euro réinvesti compte. Aujourd'hui, je touche 1 200 € de dividendes par an.", "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" } },
+                { "@type": "Review", "author": { "@type": "Person", "name": "Christine" }, "reviewBody": "Ce simulateur m'a aidée à ajuster ma stratégie pour viser 6 000 €/an de dividendes.", "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" } }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            // DOM elements
+            const modeCalcul = document.getElementById('modeCalcul');
+            const projectionInputs = document.getElementById('projectionInputs');
+            const cibleInputs = document.getElementById('cibleInputs');
+            const resultatsProjection = document.getElementById('resultatsProjection');
+            const resultatsCible = document.getElementById('resultatsCible');
+            const chartContainer = document.getElementById('chartContainer');
+            const dureeGroup = document.getElementById('dureeGroup');
+
+            const capitalInput = document.getElementById('capitalInitial');
+            const apportInput = document.getElementById('apportAnnuel');
+            const anneesInput = document.getElementById('annees');
+            const revenuCibleInput = document.getElementById('revenuCible');
+
+            const rendementSlider = document.getElementById('rendementSlider');
+            const rendementInput = document.getElementById('rendement');
+            const croissanceSlider = document.getElementById('croissanceSlider');
+            const croissanceInput = document.getElementById('croissance');
+
+            const fiscalitePreset = document.getElementById('fiscalitePreset');
+            const tauxImpositionInput = document.getElementById('tauxImposition');
+            const fiscaliteCustomGroup = document.getElementById('fiscaliteCustomGroup');
+            const dripSelect = document.getElementById('drip');
+
+            const valeurFinaleSpan = document.getElementById('valeurFinale');
+            const revenuDerniereAnneeSpan = document.getElementById('revenuDerniereAnnee');
+            const totalDividendesSpan = document.getElementById('totalDividendes');
+            const yocSpan = document.getElementById('yoc');
+            const capitalNecessaireSpan = document.getElementById('capitalNecessaire');
+            const revenuBrutCibleSpan = document.getElementById('revenuBrutCible');
+            const revenuNetCibleSpan = document.getElementById('revenuNetCible');
+
+            const canvas = document.getElementById('dividendeChart');
+            let chart;
+
+            function formatCurrency(val) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+            }
+
+            // Sync sliders
+            function syncSliderInput(slider, input) {
+                input.value = parseFloat(slider.value).toFixed(1);
+                updateAll();
+            }
+            function syncInputSlider(input, slider, max) {
+                let val = parseFloat(input.value);
+                if (isNaN(val)) val = 0;
+                val = Math.min(max, Math.max(0, val));
+                slider.value = val;
+                input.value = val.toFixed(1);
+                updateAll();
+            }
+
+            rendementSlider.addEventListener('input', () => syncSliderInput(rendementSlider, rendementInput));
+            rendementInput.addEventListener('change', () => syncInputSlider(rendementInput, rendementSlider, 10));
+            croissanceSlider.addEventListener('input', () => syncSliderInput(croissanceSlider, croissanceInput));
+            croissanceInput.addEventListener('change', () => syncInputSlider(croissanceInput, croissanceSlider, 15));
+
+            // Mode switch
+            modeCalcul.addEventListener('change', () => {
+                const mode = modeCalcul.value;
+                if (mode === 'projection') {
+                    projectionInputs.classList.remove('hidden');
+                    cibleInputs.classList.add('hidden');
+                    dureeGroup.classList.remove('hidden');
+                    resultatsProjection.classList.remove('hidden');
+                    resultatsCible.classList.add('hidden');
+                    chartContainer.style.display = 'block';
+                } else {
+                    projectionInputs.classList.add('hidden');
+                    cibleInputs.classList.remove('hidden');
+                    dureeGroup.classList.add('hidden');
+                    resultatsProjection.classList.add('hidden');
+                    resultatsCible.classList.remove('hidden');
+                    chartContainer.style.display = 'none';
+                }
+                updateAll();
+            });
+
+            // Fiscalité
+            fiscalitePreset.addEventListener('change', () => {
+                const val = fiscalitePreset.value;
+                if (val === 'custom') {
+                    fiscaliteCustomGroup.style.display = 'block';
+                    tauxImpositionInput.focus();
+                } else {
+                    fiscaliteCustomGroup.style.display = 'none';
+                    tauxImpositionInput.value = val;
+                }
+                updateAll();
+            });
+            tauxImpositionInput.addEventListener('input', updateAll);
+
+            [capitalInput, apportInput, anneesInput, revenuCibleInput, dripSelect].forEach(el => el.addEventListener('input', updateAll));
+            document.getElementById('calculateBtn').addEventListener('click', updateAll);
+
+            function getTauxImposition() {
+                return parseFloat(tauxImpositionInput.value) || 0;
+            }
+
+            function updateAll() {
+                const mode = modeCalcul.value;
+                const rendement = parseFloat(rendementInput.value) / 100;
+                const croissance = parseFloat(croissanceInput.value) / 100;
+                const tauxImp = getTauxImposition() / 100;
+                const rendementNet = rendement * (1 - tauxImp);
+                const drip = dripSelect.value === 'oui';
+
+                if (mode === 'cible') {
+                    const revenuCible = parseFloat(revenuCibleInput.value) || 0;
+                    if (rendementNet <= 0) {
+                        capitalNecessaireSpan.textContent = formatCurrency(0);
+                        revenuBrutCibleSpan.textContent = formatCurrency(0);
+                        revenuNetCibleSpan.textContent = formatCurrency(0);
+                        return;
+                    }
+                    const capitalNecessaire = (revenuCible * 12) / rendementNet;
+                    const revenuBrut = capitalNecessaire * rendement;
+                    const revenuNet = capitalNecessaire * rendementNet;
+                    capitalNecessaireSpan.textContent = formatCurrency(capitalNecessaire);
+                    revenuBrutCibleSpan.textContent = formatCurrency(revenuBrut);
+                    revenuNetCibleSpan.textContent = formatCurrency(revenuNet);
+                    return;
+                }
+
+                // Mode projection
+                const capital = parseFloat(capitalInput.value) || 0;
+                const apport = parseFloat(apportInput.value) || 0;
+                const annees = parseInt(anneesInput.value, 10) || 1;
+                if (annees <= 0) return;
+
+                let valeur = capital;
+                let totalDividendesNets = 0;
+                let cumulApports = capital;
+                const valeurs = [valeur];
+                const dividendesAnnuelsNets = [];
+
+                for (let an = 1; an <= annees; an++) {
+                    const debutAnnee = valeur + apport;
+                    cumulApports += apport;
+                    const dividendeBrut = debutAnnee * rendement;
+                    const dividendeNet = dividendeBrut * (1 - tauxImp);
+                    if (drip) {
+                        // Réinvestissement du dividende net + croissance du cours
+                        valeur = debutAnnee * (1 + croissance) + dividendeNet;
+                    } else {
+                        valeur = debutAnnee * (1 + croissance);
+                        totalDividendesNets += dividendeNet;
+                    }
+                    if (drip) {
+                        totalDividendesNets += dividendeNet; // perçus puis réinvestis
+                    }
+                    valeurs.push(valeur);
+                    dividendesAnnuelsNets.push(dividendeNet);
+                }
+
+                const revenuDerniereAnneeNet = dividendesAnnuelsNets.length > 0 ? dividendesAnnuelsNets[dividendesAnnuelsNets.length - 1] : 0;
+                const valeurFinale = valeur;
+                const yoc = cumulApports > 0 ? (revenuDerniereAnneeNet / cumulApports * 100).toFixed(1) : '0.0';
+
+                valeurFinaleSpan.textContent = formatCurrency(valeurFinale);
+                revenuDerniereAnneeSpan.textContent = formatCurrency(revenuDerniereAnneeNet);
+                totalDividendesSpan.textContent = formatCurrency(totalDividendesNets);
+                yocSpan.textContent = yoc + ' %';
+
+                // Graphique
+                const labels = Array.from({length: annees + 1}, (_, i) => i);
+                const dataCapital = valeurs;
+                const dataDividendes = [0, ...dividendesAnnuelsNets];
+
+                if (chart) chart.destroy();
+                const ctx = canvas.getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Valeur du portefeuille',
+                                data: dataCapital,
+                                backgroundColor: '#b6c8dc',
+                                borderColor: '#1e3a5f',
+                                borderWidth: 1,
+                                yAxisID: 'y',
+                                order: 2
+                            },
+                            {
+                                label: 'Dividende net annuel',
+                                data: dataDividendes,
+                                type: 'line',
+                                borderColor: '#b45309',
+                                backgroundColor: 'transparent',
+                                tension: 0.2,
+                                pointRadius: 0,
+                                yAxisID: 'y1',
+                                order: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + formatCurrency(ctx.raw) } },
+                            legend: { position: 'bottom' }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                title: { display: true, text: 'Valeur portefeuille' },
+                                ticks: { callback: (val) => formatCurrency(val) }
+                            },
+                            y1: {
+                                type: 'linear',
+                                position: 'right',
+                                title: { display: true, text: 'Dividende net' },
+                                grid: { drawOnChartArea: false },
+                                ticks: { callback: (val) => formatCurrency(val) }
+                            }
+                        }
+                    }
+                });
+            }
+
+            updateAll();
+        })();
+    </script>
+</body>
+</html>

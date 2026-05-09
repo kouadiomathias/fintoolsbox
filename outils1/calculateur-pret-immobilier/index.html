@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de prêt immobilier – Tableau d'amortissement et mensualités</title>
+    <meta name="description" content="Simulez votre crédit immobilier : mensualités, tableau d'amortissement, coût total des intérêts. Outil gratuit avec graphique d'évolution du capital restant dû.">
+    <meta name="keywords" content="prêt immobilier, simulation crédit, tableau amortissement, mensualités, taux intérêt, emprunt, amortissement, calculateur prêt">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/calculateur-pret-immobilier/">
+    <meta property="og:title" content="Calculateur de prêt immobilier – Tableau d'amortissement">
+    <meta property="og:description" content="Obtenez le détail de votre emprunt mois par mois : mensualité fixe, répartition capital/intérêts, durée et coût total.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/calculateur-pret-immobilier/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Calculateur prêt immobilier">
+    <meta name="twitter:description" content="Simulez un crédit immobilier en quelques clics. Visualisez l'amortissement et le poids des intérêts.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f2f4f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1rem 3rem;
+            color: #1e293b;
+            line-height: 1.6;
+
+        }
+        .main-container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+        .calculator-header {
+            background: #0f4c5c;
+            color: white;
+            padding: 1.8rem 2rem;
+        }
+        .calculator-header h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+        .calculator-header p {
+            margin-top: 0.4rem;
+            opacity: 0.92;
+            font-size: 0.95rem;
+        }
+        .calculator-body {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 750px) {
+            .calculator-body { grid-template-columns: 1fr; }
+        }
+        .input-group {
+            margin-bottom: 1.3rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        .input-group input, .input-group select {
+            padding: 0.65rem 0.8rem;
+            border: 1px solid #dce1e8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: #fff;
+            color: #1e293b;
+            transition: 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #0f4c5c;
+            box-shadow: 0 0 0 3px rgba(15,76,92,0.12);
+        }
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .range-container input[type="range"] {
+            flex:1; height:6px; -webkit-appearance:none; background:#e2e8f0; border-radius:5px; outline:none;
+        }
+        .range-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance:none; width:20px; height:20px; background:#0f4c5c; border-radius:50%; cursor:pointer; border:none; box-shadow:0 1px 4px rgba(0,0,0,0.2);
+        }
+        .range-value {
+            width:70px; text-align:right; font-weight:500; font-size:0.95rem; color:#1e293b;
+        }
+        .results-panel {
+            background: #f0f7f9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #c2dce3;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed #b4ced8;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-item:last-child { border-bottom: none; }
+        .result-label { font-weight: 500; color: #0f3d3b; }
+        .result-value { font-weight: 700; font-size: 1.4rem; color: #0f4c5c; }
+        .chart-container { margin-top: 1.5rem; height: 260px; }
+        button.calculate-btn {
+            grid-column: 1 / -1;
+            background: #0f4c5c;
+            color: white;
+            border: none;
+            padding: 0.8rem 2.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 1rem auto 0;
+            display: block;
+            width: fit-content;
+        }
+        button.calculate-btn:hover { background: #0b3b48; }
+        .note {
+            grid-column: 1 / -1;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .amortization-table-container {
+            grid-column: 1 / -1;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+        }
+        table.amortization {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 0.5rem;
+        }
+        table.amortization th {
+            background: #f0f4f8;
+            color: #0f4c5c;
+            text-align: right;
+            padding: 0.6rem;
+            border-bottom: 2px solid #0f4c5c;
+        }
+        table.amortization th:first-child { text-align: left; }
+        table.amortization td {
+            text-align: right;
+            padding: 0.4rem 0.6rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        table.amortization td:first-child { text-align: left; }
+        tr:hover td { background-color: #f8fafc; }
+        .content-section {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .content-section h2 {
+            color: #0f4c5c;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 0.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section h3 {
+            font-size: 1.15rem;
+            margin: 1.2rem 0 0.5rem;
+            color: #0f172a;
+        }
+        .content-section p, .content-section li { margin-bottom: 0.8rem; }
+        .faq-item { margin-bottom: 1.3rem; }
+        .faq-question {
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+        .faq-question::before { content: "Q."; font-weight:700; color:#0f4c5c; }
+        .faq-answer {
+            margin-left: 1.8rem;
+            color: #334155;
+            border-left: 3px solid #cbd5e1;
+            padding-left: 1rem;
+        }
+        .disclaimer-box {
+            background: #fff9e5;
+            border: 1px solid #e5c346;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #5a4a1a;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 0.5rem;
+        }
+        .related-tools{
+    max-width:1000px;
+    width:100%;
+    background:white;
+    border-radius:12px;
+    padding:2rem;
+    margin:0 auto 2rem;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+
+.related-tools h2{
+    color:#1e3a5f;
+    font-size:1.5rem;
+    margin-bottom:0.5rem;
+}
+
+.related-subtitle{
+    color:#64748b;
+    margin-bottom:1.8rem;
+    font-size:0.95rem;
+}
+
+.related-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1rem;
+}
+
+.tool-card{
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:1rem;
+    text-decoration:none;
+    transition:all 0.2s ease;
+}
+
+.tool-card:hover{
+    transform:translateY(-3px);
+    border-color:#1e3a5f;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.tool-icon{
+    font-size:1.8rem;
+    flex-shrink:0;
+}
+
+.tool-content h3{
+    font-size:1rem;
+    color:#0f172a;
+    margin-bottom:0.35rem;
+}
+
+.tool-content p{
+    font-size:0.88rem;
+    color:#475569;
+    line-height:1.5;
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-header">
+            <h1>Calculateur de prêt immobilier</h1>
+            <p>Simulez votre emprunt : mensualités, tableau d'amortissement, répartition intérêts/capital, et coût total du crédit.</p>
+        </div>
+        <div class="calculator-body">
+            <div class="inputs-column">
+                <div class="input-group">
+                    <label for="montant">Montant emprunté (€)</label>
+                    <input type="number" id="montant" value="200000" min="0" step="5000">
+                </div>
+                <div class="input-group">
+                    <label for="apport">Apport personnel (€)</label>
+                    <input type="number" id="apport" value="30000" min="0" step="5000">
+                </div>
+                <div class="input-group">
+                    <label>Taux d'intérêt annuel (%)</label>
+                    <div class="range-container">
+                        <input type="range" id="tauxSlider" min="0.1" max="7" step="0.05" value="3.40">
+                        <input type="number" id="taux" value="3.40" min="0.1" max="7" step="0.01" class="range-value" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Durée (années)</label>
+                    <div class="range-container">
+                        <input type="range" id="dureeSlider" min="5" max="35" step="1" value="20">
+                        <input type="number" id="duree" value="20" min="5" max="35" step="1" class="range-value" style="width:70px;">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="assurance">Assurance mensuelle (% du capital)</label>
+                    <input type="number" id="assurance" value="0.36" min="0" max="2" step="0.01">
+                    <span style="font-size:0.8rem; color:#64748b;">Ex: 0.36% correspond à ~0.36% du capital initial par an, divisé par 12.</span>
+                </div>
+            </div>
+            <div class="results-column">
+                <div class="results-panel" id="resultsPanel">
+                    <div class="result-item"><span class="result-label">Mensualité hors assurance</span><span class="result-value" id="mensualite">-</span></div>
+                    <div class="result-item"><span class="result-label">Mensualité avec assurance</span><span class="result-value" id="mensualiteAss">-</span></div>
+                    <div class="result-item"><span class="result-label">Coût total du crédit</span><span class="result-value" id="coutTotal">-</span></div>
+                    <div class="result-item"><span class="result-label">Dont intérêts</span><span class="result-value" id="interets">-</span></div>
+                    <div class="result-item"><span class="result-label">Capital restant dû en fin de prêt</span><span class="result-value">0 €</span></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="amortChart" width="400" height="220"></canvas>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBtn">Calculer l'amortissement</button>
+            <div class="note">Simulation pour un prêt à taux fixe et mensualités constantes (hors assurance). Le TAEG peut intégrer d'autres frais (dossier, garantie).</div>
+            <div class="amortization-table-container" id="tableContainer" style="display:none;">
+                <h3 style="margin-bottom:0.8rem;">Tableau d'amortissement (5 premières années)</h3>
+                <table class="amortization" id="amortTable">
+                    <thead><tr><th>Mois</th><th>Capital amorti</th><th>Intérêts</th><th>Capital restant dû</th><th>Assurance</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <p style="font-size:0.8rem; color:#64748b; margin-top:0.4rem;">Affichage limité aux 60 premiers mois pour lisibilité. Le calcul complet est disponible en mémoire.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="content-section">
+        <h2>Comment fonctionne un prêt amortissable ?</h2>
+        <p>Un prêt immobilier classique dit « amortissable » consiste à rembourser chaque mois une partie du capital emprunté et des intérêts calculés sur le capital restant dû. La mensualité totale (hors assurance) reste constante si le taux est fixe. Au fil du temps, la part d'intérêts diminue et celle de capital augmente : c'est le principe de l'amortissement.</p>
+        <p>La formule utilisée est celle de l'annuité constante :</p>
+        <p style="text-align:center; background:#f0f4f8; padding:1rem; border-radius:6px;"><strong>M = C × [i(1 + i)<sup>n</sup>] / [(1 + i)<sup>n</sup> – 1]</strong></p>
+        <p>où <em>C</em> est le capital emprunté, <em>i</em> le taux mensuel (taux annuel / 12), et <em>n</em> le nombre total de mensualités (durée en années × 12).</p>
+        <p>L'assurance emprunteur, souvent exigée par la banque, vient s'ajouter. Elle est ici calculée comme un pourcentage annuel du capital initial, réparti chaque mois de façon égale. Dans la réalité, elle peut être basée sur le capital restant dû ou être fixe.</p>
+
+        <h2>Éléments affichés par le simulateur</h2>
+        <ul>
+            <li><strong>Mensualité hors assurance</strong> : montant constant dû chaque mois pour couvrir le capital et les intérêts.</li>
+            <li><strong>Mensualité avec assurance</strong> : inclut l'estimation de la prime d'assurance (constante sur la durée).</li>
+            <li><strong>Coût total du crédit</strong> : somme de tous les intérêts et de l'assurance sur la durée totale.</li>
+            <li><strong>Tableau d'amortissement</strong> : détail mensuel (limité aux 60 premiers mois) indiquant le capital amorti, les intérêts payés, le capital restant dû et l'assurance.</li>
+            <li><strong>Graphique</strong> : évolution du capital restant dû au fil des années.</li>
+        </ul>
+
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+            <div class="faq-question">Quelle est la différence entre le taux nominal et le TAEG ?</div>
+            <div class="faq-answer">Le taux nominal (ou débiteur) sert au calcul des intérêts du prêt. Le TAEG (taux annuel effectif global) englobe en plus les frais obligatoires (assurance, garantie, frais de dossier). Il permet de comparer des offres entre elles. Notre outil utilise uniquement le taux nominal et une assurance séparée.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Que devient le calcul si le taux est variable ?</div>
+            <div class="faq-answer">Ce calculateur est conçu pour des prêts à taux fixe. Pour un taux variable, la mensualité changerait en fonction des indices de référence. Il faudrait alors utiliser un simulateur dédié.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">L'assurance est-elle vraiment calculée sur le capital initial ?</div>
+            <div class="faq-answer">Dans la pratique, le coût de l'assurance peut être calculé sur le capital initial ou sur le capital restant dû. Nous avons retenu la méthode d'un pourcentage annuel du capital emprunté initial, lissée mensuellement, car elle est courante. Pour une simulation plus précise, référez‑vous au contrat d'assurance.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Puis-je modifier la durée en cours de prêt ?</div>
+            <div class="faq-answer">Un avenant peut être signé avec la banque pour allonger ou réduire la durée. Des frais de dossier peuvent s'appliquer. L'impact sur le coût total est important : une durée plus longue augmente les intérêts, une durée plus courte augmente la mensualité.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Les résultats incluent-ils les frais de garantie (hypothèque, caution) ?</div>
+            <div class="faq-answer">Non. Ces frais sont à ajouter au coût global et ne sont pas intégrés dans les mensualités du tableau. Ils peuvent représenter quelques milliers d'euros selon le montant emprunté.</div>
+        </div>
+
+        <div class="disclaimer-box">
+            <strong>Avertissement :</strong> Cet outil fournit une simulation indicative. Il ne tient pas lieu de conseil financier, de devoir d'information ou d'offre de prêt. Les taux, les conditions d'assurance et les frais annexes peuvent varier selon les établissements bancaires et la situation personnelle de l'emprunteur. Avant toute souscription, consultez un professionnel du crédit et examinez le TAEG détaillé.
+        </div>
+    </section>
+    <section class="related-tools">
+    <h2>Outils financiers associés</h2>
+    <p class="related-subtitle">
+        Explorez d'autres simulateurs pour planifier votre épargne, votre retraite et vos investissements à long terme.
+    </p>
+
+    <div class="related-grid">
+
+        <a href="/calculateur-fire/" class="tool-card">
+            <div class="tool-icon">📈</div>
+            <div class="tool-content">
+                <h3>Calculateur d'intérêts composés</h3>
+                <p>Visualisez la croissance de votre capital avec les intérêts composés et les versements réguliers.</p>
+            </div>
+        </a>
+
+        <a href="/calculateur-interet-compose/" class="tool-card">
+            <div class="tool-icon">🔥</div>
+            <div class="tool-content">
+                <h3>Calculateur FIRE</h3>
+                <p>Estimez l'âge auquel vous pourriez atteindre l'indépendance financière.</p>
+            </div>
+        </a>
+
+        <a href="/calculateur-dividendes/" class="tool-card">
+            <div class="tool-icon">💸</div>
+            <div class="tool-content">
+                <h3>Calculateur de dividendes</h3>
+                <p>Projetez vos revenus passifs futurs avec ou sans réinvestissement des dividendes.</p>
+            </div>
+        </a>
+
+        <a href="/comparateur-etf" class="tool-card">
+            <div class="tool-icon">📊</div>
+            <div class="tool-content">
+                <h3>Comparateur d'ETF</h3>
+                <p>Comparez les frais, performances et impacts long terme de plusieurs ETF.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+    <footer>
+        Calculateur de prêt immobilier – outil éducatif. Les calculs sont fournis à titre d'information et ne sauraient engager la responsabilité de l'éditeur.
+    </footer>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Calculateur de prêt immobilier – Tableau d'amortissement",
+            "description": "Simulez un crédit immobilier amortissable à taux fixe : mensualités, tableau d'amortissement et coût total des intérêts.",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "url": "https://www.fintoolsbox.com/calculateur-pret-immobilier/",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Quelle est la différence entre le taux nominal et le TAEG ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Le taux nominal sert au calcul des intérêts, tandis que le TAEG intègre les frais obligatoires (assurance, garantie, dossier)."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Que devient le calcul si le taux est variable ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Ce simulateur s'applique aux prêts à taux fixe. Un taux variable nécessite un autre type de projection."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "L'assurance est-elle vraiment calculée sur le capital initial ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Ici, l'assurance est calculée comme un pourcentage annuel fixe du capital initial, lissée mensuellement. En pratique, le mode de calcul peut varier."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Puis-je modifier la durée en cours de prêt ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Oui, par avenant, mais cela modifie la mensualité et le coût total. Une réduction de durée augmente la mensualité, un allongement l'inverse."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Les résultats incluent-ils les frais de garantie ?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Non, les frais d'hypothèque ou de caution ne sont pas comptabilisés dans cette simulation."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <script>
+        (function() {
+            const montantInput = document.getElementById('montant');
+            const apportInput = document.getElementById('apport');
+            const tauxSlider = document.getElementById('tauxSlider');
+            const tauxInput = document.getElementById('taux');
+            const dureeSlider = document.getElementById('dureeSlider');
+            const dureeInput = document.getElementById('duree');
+            const assuranceInput = document.getElementById('assurance');
+            const mensualiteSpan = document.getElementById('mensualite');
+            const mensualiteAssSpan = document.getElementById('mensualiteAss');
+            const coutTotalSpan = document.getElementById('coutTotal');
+            const interetsSpan = document.getElementById('interets');
+            const tableContainer = document.getElementById('tableContainer');
+            const amortTableBody = document.querySelector('#amortTable tbody');
+            const canvas = document.getElementById('amortChart');
+
+            let chart;
+
+            function formatCurrency(val) {
+                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
+            }
+
+            function syncSlider(slider, input, updateFn) {
+                input.value = parseFloat(slider.value).toFixed(slider.step.includes('0.01') ? 2 : 0);
+                updateFn();
+            }
+            function syncInput(input, slider, max, updateFn) {
+                let val = parseFloat(input.value);
+                if (isNaN(val)) val = 0;
+                val = Math.min(max, Math.max(parseFloat(slider.min), val));
+                slider.value = val;
+                input.value = val.toFixed(input.step.includes('0.01') ? 2 : 0);
+                updateFn();
+            }
+
+            tauxSlider.addEventListener('input', () => syncSlider(tauxSlider, tauxInput, calculate));
+            tauxInput.addEventListener('change', () => syncInput(tauxInput, tauxSlider, 7, calculate));
+            dureeSlider.addEventListener('input', () => syncSlider(dureeSlider, dureeInput, calculate));
+            dureeInput.addEventListener('change', () => syncInput(dureeInput, dureeSlider, 35, calculate));
+
+            [montantInput, apportInput, assuranceInput].forEach(el => el.addEventListener('input', calculate));
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+
+            function calculate() {
+                const capitalEmprunte = parseFloat(montantInput.value) || 0;
+                const apport = parseFloat(apportInput.value) || 0;
+                const tauxAnnuel = parseFloat(tauxInput.value) / 100;
+                const dureeAnnees = parseInt(dureeInput.value, 10) || 1;
+                const assurancePctAnnuelle = parseFloat(assuranceInput.value) / 100;
+
+                const nbMois = dureeAnnees * 12;
+                const tauxMensuel = tauxAnnuel / 12;
+                let mensualiteHorsAss = 0;
+                if (tauxMensuel === 0) {
+                    mensualiteHorsAss = capitalEmprunte / nbMois;
+                } else {
+                    mensualiteHorsAss = capitalEmprunte * tauxMensuel * Math.pow(1 + tauxMensuel, nbMois) / (Math.pow(1 + tauxMensuel, nbMois) - 1);
+                }
+
+                // Assurance mensuelle constante basée sur capital initial
+                const assuranceMensuelle = (capitalEmprunte * assurancePctAnnuelle) / 12;
+                const mensualiteTotale = mensualiteHorsAss + assuranceMensuelle;
+
+                let capitalRestant = capitalEmprunte;
+                let totalInterets = 0;
+                const evolutionCapital = [capitalEmprunte];
+                const tableRows = [];
+                const nbMoisAffichage = Math.min(nbMois, 60);
+
+                for (let mois = 1; mois <= nbMois; mois++) {
+                    const interets = capitalRestant * tauxMensuel;
+                    const amortissement = mensualiteHorsAss - interets;
+                    // Correction pour le dernier mois si nécessaire (arrondis)
+                    if (mois === nbMois) {
+                        // Ajustement pour solder exactement
+                        const dernierAmort = capitalRestant;
+                        capitalRestant = 0;
+                        if (mois <= nbMoisAffichage) {
+                            tableRows.push({
+                                mois,
+                                amort: dernierAmort,
+                                interets: interets,
+                                restant: 0,
+                                assurance: assuranceMensuelle
+                            });
+                        }
+                        totalInterets += interets;
+                    } else {
+                        capitalRestant -= amortissement;
+                        totalInterets += interets;
+                        if (mois <= nbMoisAffichage) {
+                            tableRows.push({
+                                mois,
+                                amort: amortissement,
+                                interets: interets,
+                                restant: capitalRestant,
+                                assurance: assuranceMensuelle
+                            });
+                        }
+                    }
+                    if (mois % 12 === 0 || mois === nbMois) {
+                        evolutionCapital.push(capitalRestant);
+                    }
+                }
+
+                const coutTotal = totalInterets + assuranceMensuelle * nbMois;
+
+                mensualiteSpan.textContent = formatCurrency(mensualiteHorsAss);
+                mensualiteAssSpan.textContent = formatCurrency(mensualiteTotale);
+                coutTotalSpan.textContent = formatCurrency(coutTotal);
+                interetsSpan.textContent = formatCurrency(totalInterets);
+
+                // Tableau
+                amortTableBody.innerHTML = '';
+                tableRows.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.mois}</td>
+                        <td>${formatCurrency(row.amort)}</td>
+                        <td>${formatCurrency(row.interets)}</td>
+                        <td>${formatCurrency(row.restant)}</td>
+                        <td>${formatCurrency(row.assurance)}</td>
+                    `;
+                    amortTableBody.appendChild(tr);
+                });
+                tableContainer.style.display = tableRows.length > 0 ? 'block' : 'none';
+
+                // Graphique
+                if (chart) chart.destroy();
+                const ctx = canvas.getContext('2d');
+                const labels = evolutionCapital.map((_, i) => i);
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Capital restant dû (€)',
+                            data: evolutionCapital,
+                            borderColor: '#0f4c5c',
+                            backgroundColor: 'rgba(15,76,92,0.05)',
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: { callbacks: { label: (ctx) => formatCurrency(ctx.raw) } },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { ticks: { callback: (val) => formatCurrency(val) }, title: { display: true, text: 'Montant' } },
+                            x: { title: { display: true, text: 'Années' } }
+                        }
+                    }
+                });
+            }
+
+            calculate();
+        })();
+    </script>
+</body>
+</html>
