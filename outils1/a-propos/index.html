@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>À propos de Fintoolsbox – Notre mission, nos valeurs, l'équipe</title>
+    <meta name="description" content="Découvrez l'histoire et la mission de Fintoolsbox : des simulateurs financiers gratuits, pédagogiques et 100% confidentiels. Basés à Abidjan, Côte d'Ivoire.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/a-propos/">
+    <meta property="og:title" content="À propos de Fintoolsbox – Simulateurs financiers éducatifs">
+    <meta property="og:description" content="Notre mission : rendre les finances personnelles accessibles à tous avec des outils gratuits, sans publicité et sans collecte de données.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.fintoolsbox.com/a-propos/">
+    <meta property="og:image" content="https://www.fintoolsbox.com/images/equipe-fintoolsbox.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="À propos de Fintoolsbox">
+    <meta name="twitter:description" content="Découvrez l'équipe et les valeurs derrière la plateforme de simulateurs financiers gratuits.">
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600&family=DM+Sans:wght@400;500;600&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F6F4EF;
+            --surface: #FFFFFF;
+            --surface-2: #EDEAE1;
+            --ink: #111111;
+            --ink-2: #4A4845;
+            --ink-3: #8C8984;
+            --accent: #E8471F;
+            --accent-h: #C73A18;
+            --border: rgba(17,17,17,.09);
+            --border-2: rgba(17,17,17,.05);
+            --r-sm: 6px;
+            --r-md: 10px;
+            --r-lg: 16px;
+            --sh-sm: 0 1px 3px rgba(0,0,0,.05);
+            --sh-md: 0 3px 10px rgba(0,0,0,.07);
+            --sh-lg: 0 10px 30px rgba(0,0,0,.09);
+            --f-head: 'Fraunces', Georgia, serif;
+            --f-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+            --transition: .2s cubic-bezier(.25,.46,.45,.94);
+        }
+
+        [data-theme="dark"] {
+            --bg: #1B1A17;
+            --surface: #242320;
+            --surface-2: #2D2B26;
+            --ink: #F4F2EC;
+            --ink-2: #C0BCB2;
+            --ink-3: #807C74;
+            --accent: #FF6040;
+            --accent-h: #E8471F;
+            --border: rgba(255,255,255,.09);
+            --border-2: rgba(255,255,255,.04);
+            --sh-sm: 0 1px 3px rgba(0,0,0,.35);
+            --sh-md: 0 3px 10px rgba(0,0,0,.45);
+            --sh-lg: 0 10px 30px rgba(0,0,0,.55);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; text-size-adjust: 100%; }
+        body {
+            font-family: var(--f-body);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            transition: background var(--transition), color var(--transition);
+            -webkit-font-smoothing: antialiased;
+        }
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 9999;
+            opacity: .03;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 300px;
+        }
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: var(--r-sm);
+        }
+
+        /* Header */
+        .site-header {
+            position: sticky; top: 0; z-index: 100;
+            background: color-mix(in srgb, var(--bg) 90%, transparent);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-2);
+            contain: layout style;
+        }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        .header-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px; gap: 16px;
+        }
+        .logo {
+            text-decoration: none; color: var(--ink);
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 600; font-size: .9rem; letter-spacing: -.01em;
+            transition: color var(--transition);
+        }
+        .logo:hover { color: var(--accent); }
+        .logo-mark {
+            width: 28px; height: 28px; background: var(--ink);
+            border-radius: 7px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background var(--transition);
+        }
+        .logo:hover .logo-mark { background: var(--accent); }
+        .logo-mark svg { width: 14px; height: 14px; fill: var(--bg); }
+        .logo-accent { color: var(--accent); }
+        .nav-links {
+            display: flex; gap: 4px; list-style: none;
+        }
+        .nav-links a {
+            font-size: .82rem; font-weight: 500; color: var(--ink-2);
+            text-decoration: none; padding: 5px 10px; border-radius: var(--r-sm);
+            transition: background var(--transition), color var(--transition);
+        }
+        .nav-links a:hover { background: var(--surface-2); color: var(--ink); }
+        .theme-btn {
+            width: 34px; height: 34px; border-radius: var(--r-sm);
+            border: 1px solid var(--border); background: var(--surface);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: var(--ink-2); transition: all var(--transition); flex-shrink: 0;
+        }
+        .theme-btn:hover { border-color: var(--ink); color: var(--ink); }
+        .theme-btn svg { width: 15px; height: 15px; }
+
+        /* Contenu principal */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem 3rem;
+        }
+        .content-block {
+            max-width: 800px;
+            width: 100%;
+            background: var(--surface);
+            border-radius: var(--r-lg);
+            box-shadow: var(--sh-sm);
+            padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            font-family: var(--f-head);
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--ink);
+        }
+        h2 {
+            font-family: var(--f-head);
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin: 2rem 0 1rem;
+            color: var(--accent);
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--ink-2);
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+        .value-card {
+            background: var(--surface-2);
+            border-radius: var(--r-md);
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .value-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .value-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+        }
+        .value-card p {
+            font-size: 0.85rem;
+            color: var(--ink-2);
+        }
+        .team-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .team-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            border: 3px solid var(--accent);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .team-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .team-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .team-info p {
+            font-size: 0.9rem;
+            color: var(--ink-2);
+            max-width: 500px;
+        }
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--ink-2);
+        }
+        .contact-item .icon-contact {
+            font-size: 1.2rem;
+            width: 28px;
+            text-align: center;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--r-sm);
+            background: var(--surface-2);
+            color: var(--ink-2);
+            text-decoration: none;
+            transition: background var(--transition), color var(--transition);
+        }
+        .social-links a:hover {
+            background: var(--accent);
+            color: white;
+        }
+        .cta-box {
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+            border-radius: var(--r-lg);
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .cta-box a {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: var(--r-sm);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: background var(--transition);
+        }
+        .cta-box a:hover { background: var(--accent-h); }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.85rem;
+            color: var(--ink-3);
+            border-top: 1px solid var(--border);
+        }
+        @media (max-width: 600px) {
+            .content-block { padding: 1.5rem; }
+            h1 { font-size: 2rem; }
+            .team-section { flex-direction: column; text-align: center; }
+            .contact-details { flex-direction: column; gap: 1rem; }
+        }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a href="/" class="logo" aria-label="Fintoolsbox – Accueil">
+                <div class="logo-mark" aria-hidden="true">
+                    <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1.5"/><rect x="9" y="2" width="5" height="5" rx="1.5"/><rect x="2" y="9" width="5" height="5" rx="1.5"/><path d="M9 11.5h5M11.5 9v5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+                </div>
+                Fin<span class="logo-accent">toolsbox</span>
+            </a>
+            <nav aria-label="Navigation principale">
+                <ul class="nav-links">
+                    <li><a href="/calculateur-interets-composes">Intérêts composés</a></li>
+                    <li><a href="/calculateur-fire">FIRE</a></li>
+                    <li><a href="/calculateur-dividendes">Dividendes</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/a-propos/">À propos</a></li>
+                </ul>
+            </nav>
+            <button class="theme-btn" id="themeBtn" aria-label="Basculer le thème sombre/clair" type="button">
+                <svg id="iconSun" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                </svg>
+                <svg id="iconMoon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="display:none">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="content-block">
+            <h1>Notre mission</h1>
+            <p>
+                Fintoolsbox est une plateforme indépendante de simulateurs financiers. Nous croyons que chacun, quel que soit son niveau de connaissance en finance, mérite d'avoir accès à des outils clairs, transparents et gratuits pour mieux gérer son argent.
+            </p>
+            <p>
+                Derrière Fintoolsbox, il y a une conviction simple : <strong>les mathématiques financières n'ont pas besoin d'être opaques</strong>. Nos simulateurs vous aident à visualiser l'impact de vos décisions d'épargne, d'investissement et d'endettement, sans vous noyer dans le jargon.
+            </p>
+        </section>
+
+        <section class="content-block">
+            <h2>Nos valeurs</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="icon" aria-hidden="true">🔒</div>
+                    <h3>Confidentialité totale</h3>
+                    <p>Vos données ne quittent jamais votre navigateur. Aucun compte, aucun cookie de tracking, aucune revente.</p>
+                </div>
+                <div class="value-card">
+                    <div class="icon" aria-hidden="true">🎓</div>
+                    <h3>Pédagogie avant tout</h3>
+                    <p>Chaque outil est accompagné d'explications rédigées par des humains, pas par des robots. Nous visons la compréhension, pas la performance apparente.</p>
+                </div>
+                <div class="value-card">
+                    <div class="icon" aria-hidden="true">🛠️</div>
+                    <h3>Utilité concrète</h3>
+                    <p>Des simulations immédiates, des graphiques lisibles, des tableaux d'amortissement. Nos outils servent à se projeter, pas à impressionner.</p>
+                </div>
+                <div class="value-card">
+                    <div class="icon" aria-hidden="true">💡</div>
+                    <h3>Indépendance</h3>
+                    <p>Nous ne vendons aucun produit financier. Nos simulateurs sont neutres, sans lien d'affiliation caché.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-block">
+            <h2>L'équipe</h2>
+            <div class="team-section">
+                <div class="team-photo">
+                    <!-- Image réelle du créateur (remplacer par le bon chemin) -->
+                    <img src="/images/mathias-kouadio.jpg" alt="Mathias Kouadio, fondateur de Fintoolsbox" onerror="this.style.display='none'; this.parentNode.innerHTML='👤';">
+                </div>
+                <div class="team-info">
+                    <h3>Mathias Kouadio</h3>
+                    <p>Créateur et développeur de Fintoolsbox. Passionné par la pédagogie financière et l'investissement passif, il a conçu ces outils pour répondre à ses propres interrogations – et aux vôtres. Il croit que la meilleure façon d'apprendre est d'expérimenter, sans risque, sur des simulateurs transparents.</p>
+                </div>
+            </div>
+            <p>
+                Nous collaborons également avec des contributeurs réguliers, analystes financiers indépendants et experts en fiscalité, pour rédiger les articles de blog et vérifier la justesse des informations diffusées.
+            </p>
+        </section>
+
+        <section class="content-block">
+            <h2>Nos coordonnées</h2>
+            <p>Fintoolsbox est une initiative basée à Abidjan, en Côte d'Ivoire. Voici comment nous joindre :</p>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <span class="icon-contact">📍</span>
+                    <span><strong>Siège :</strong> Cocody, Abidjan, Côte d'Ivoire</span>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-contact">📞</span>
+                    <span><strong>Téléphone :</strong> <a href="tel:+2250708817956">+225 07 99 53 66 16</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="icon-contact">✉️</span>
+                    <span><strong>Email :</strong> <a href="mailto:kouadiomathiaskouame741@gmail.com">kouadiomathiaskouame741@gmail.com</a></span>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="https://twitter.com/kouameMath59399" target="_blank" rel="noopener" aria-label="Twitter de Fintoolsbox">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://linkedin.com/company/fintoolsbox" target="_blank" rel="noopener" aria-label="LinkedIn de Fintoolsbox">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a href="https://github.com/kouadiomathias/fintoolsbox" target="_blank" rel="noopener" aria-label="GitHub de Fintoolsbox">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+            <p>Nous sommes ouverts aux collaborations, partenariats médias et demandes de fonctionnalités. N'hésitez pas à nous contacter.</p>
+        </section>
+
+        <section class="content-block">
+            <h2>Ce que vous trouverez sur Fintoolsbox</h2>
+            <p>Actuellement, 13 simulateurs sont disponibles gratuitement :</p>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--ink-2);">
+                <li>Intérêts composés</li>
+                <li>Indépendance financière (FIRE)</li>
+                <li>Projection retraite</li>
+                <li>Revenus de dividendes</li>
+                <li>Comparateur d'ETF</li>
+                <li>Stratégie DCA</li>
+                <li>Prêt immobilier</li>
+                <li>Patrimoine net</li>
+                <li>Et d'autres sur l'énergie, le budget, l'assurance emprunteur, etc.</li>
+            </ul>
+            <p>
+                Chaque simulateur est conçu pour être rapide, visuel et compréhensible. Nous ajoutons régulièrement de nouveaux outils en fonction des retours de notre communauté.
+            </p>
+        </section>
+
+        <section class="content-block">
+            <h2>Notre engagement en matière de transparence</h2>
+            <p>
+                Fintoolsbox ne collecte aucune donnée personnelle. Aucune information que vous saisissez n'est envoyée à un serveur. Nos pages sont hébergées de manière statique, sans base de données. La publicité que nous pourrions afficher à l'avenir sera clairement identifiée et ne reposera jamais sur du pistage comportemental.
+            </p>
+            <p>
+                Nos articles de blog respectent les principes <strong>EEAT</strong> (Expérience, Expertise, Autorité, Fiabilité) : chaque auteur est identifié, les sources sont citées, les informations sont vérifiées et mises à jour régulièrement.
+            </p>
+        </section>
+
+        <div class="content-block cta-box">
+            <p style="font-size: 1.1rem; font-weight: 500;">Prêt à explorer vos finances ?</p>
+            <a href="/">Accéder aux simulateurs</a>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Fintoolsbox – Outils financiers gratuits et confidentiels.
+    </footer>
+
+    <!-- Données structurées enrichies -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Fintoolsbox",
+        "url": "https://www.fintoolsbox.com",
+        "logo": "https://www.fintoolsbox.com/favicon.ico",
+        "description": "Simulateurs financiers gratuits, pédagogiques et 100% confidentiels.",
+        "foundingDate": "2024",
+        "founder": {
+            "@type": "Person",
+            "name": "Mathias Kouadio"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Cocody",
+            "addressLocality": "Abidjan",
+            "addressCountry": "CI"
+        },
+        "contactPoint": [
+            {
+                "@type": "ContactPoint",
+                "telephone": "+225 07 99 53 66 16",
+                "email": "kouadiomathiaskouame741@gmail.com",
+                "contactType": "customer support",
+                "availableLanguage": "French"
+            }
+        ],
+        "sameAs": [
+            "https://twitter.com/kouameMath59399",
+            "https://linkedin.com/company/fintoolsbox",
+            "https://github.com/kouadiomathias/fintoolsbox"
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "À propos de Fintoolsbox",
+        "description": "Découvrez la mission, les valeurs et l'équipe derrière la plateforme de simulateurs financiers gratuits.",
+        "url": "https://www.fintoolsbox.com/a-propos/"
+    }
+    </script>
+
+    <!-- Script du thème sombre -->
+    <script>
+        (function() {
+            const btn = document.getElementById('themeBtn');
+            const iconSun = document.getElementById('iconSun');
+            const iconMoon = document.getElementById('iconMoon');
+            let currentTheme = localStorage.getItem('fintools-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            function applyTheme(t) {
+                document.documentElement.setAttribute('data-theme', t);
+                iconSun.style.display = t==='dark'?'none':'';
+                iconMoon.style.display = t==='dark'?'':'none';
+                localStorage.setItem('fintools-theme', t);
+                currentTheme = t;
+            }
+            applyTheme(currentTheme);
+            btn.addEventListener('click', () => applyTheme(currentTheme==='dark'?'light':'dark'));
+        })();
+    </script>
+</body>
+</html>
