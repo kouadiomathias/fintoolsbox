@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combien épargner pour la retraite ? Notre calculateur de retraite gratuit – Fintoolsbox</title>
+    <meta name="description" content="Découvrez combien vous devez épargner pour maintenir votre niveau de vie à la retraite. Utilisez notre calculateur gratuit : taux de remplacement, capital cible, impact de l'âge.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.fintoolsbox.com/blog/combien-epargner-retraite/">
+    <meta property="og:title" content="Calculateur de retraite : combien faut-il épargner pour partir sereinement ?">
+    <meta property="og:description" content="Estimez votre futur capital retraite avec notre simulateur gratuit. Tableau des taux de remplacement, règle des 25x, impact de commencer à 30 vs 40 ans.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.fintoolsbox.com/blog/combien-epargner-retraite/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Combien épargner pour la retraite ? Calculateur gratuit">
+    <meta name="twitter:description" content="Visualisez le capital nécessaire pour maintenir votre train de vie. Commencer à 30 ans change tout.">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EVC00FSFRG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EVC00FSFRG');
+</script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --ink: #1e293b;
+            --ink-light: #475569;
+            --accent: #0f766e;
+            --border: #e2e8f0;
+            --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-heading: 'Fraunces', Georgia, serif;
+        }
+        body {
+            margin: 0;
+            padding: 2rem 1rem;
+            background: #f8fafc;
+            font-family: var(--font-body);
+            color: var(--ink);
+            line-height: 1.7;
+            display: flex;
+            justify-content: center;
+        }
+        article {
+            max-width: 720px;
+            width: 100%;
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        }
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-top: 0;
+            color: #0f3d3b;
+        }
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin: 2rem 0 0.8rem;
+            color: #0f766e;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.3rem;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin: 1.2rem 0 0.5rem;
+            color: #1e293b;
+        }
+        p {
+            margin: 1rem 0;
+            color: var(--ink-light);
+        }
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        .cta-box {
+            background: #f0fdf9;
+            border: 1px solid #a7f3d0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .cta-box .btn {
+            display: inline-block;
+            background: #0f766e;
+            color: white;
+            padding: 0.7rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 0.4rem;
+            transition: background 0.2s;
+        }
+        .cta-box .btn:hover {
+            background: #115e59;
+        }
+        .highlight {
+            background: #f8fafc;
+            border-left: 3px solid #0f766e;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        .article-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        .author-box {
+            background: #f0fdf9;
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin: 2rem 0;
+        }
+        .author-box img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .author-box .author-name {
+            font-weight: 700;
+            color: #0f3d3b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th {
+            background: #f0fdf9;
+            text-align: left;
+            padding: 0.6rem;
+            border-bottom: 2px solid #0f766e;
+            color: #0f3d3b;
+        }
+        td {
+            padding: 0.5rem 0.6rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .faq-answer {
+            margin-left: 1.2rem;
+            color: #475569;
+            border-left: 2px solid #cbd5e1;
+            padding-left: 1rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        @media (max-width: 500px) {
+            article {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Calculateur de retraite : combien faut-il épargner pour partir sereinement ?</h1>
+
+        <p class="article-meta">Publié le 31 mai 2026 • Mis à jour le 31 mai 2026</p>
+
+        <!-- CTA en haut -->
+        <div class="cta-box">
+            <strong>Visualisez votre futur capital retraite</strong><br>
+            <a href="/calculateur-retraite" class="btn">Lancer le calculateur de retraite →</a>
+        </div>
+
+        <div class="author-box">
+            <img src="/images/mathias-kouadio.jpg" alt="Mathias Kouadio, fondateur de Fintoolsbox" onerror="this.style.display='none'">
+            <div>
+                <span class="author-name">Mathias Kouadio</span>
+                <p>Fondateur de Fintoolsbox. Je conçois des simulateurs pour aider chacun à mieux piloter son avenir financier, avec des outils transparents et des explications simples.</p>
+            </div>
+        </div>
+
+        <p>J'ai essayé de calculer, à la main, combien il me faudrait pour arrêter de travailler à 62 ans. J'avais un tableur, une calculette et une boule au ventre. Très vite, j'ai compris qu'à la main, c'était mission impossible. Trop de variables, trop d'inconnues. C'est comme ça qu'est né le <a href="/calculateur-retraite">calculateur de retraite</a> de Fintoolsbox. Il ne remplace pas une projection personnalisée, mais il vous donne, en quelques clics, le capital cible à atteindre et le revenu que vous pourrez en tirer chaque mois.</p>
+
+        <h2>La retraite, un puzzle entre l'État et vous</h2>
+        <p>En France, le système de retraite repose sur la répartition : les cotisations des actifs paient les pensions des retraités. Or, le rapport démographique se tend : en 2020, on comptait 1,7 cotisant pour un retraité ; ce ratio pourrait descendre à 1,2 d'ici 2050 selon le Conseil d'orientation des retraites. Conséquence : le taux de remplacement (le pourcentage de votre dernier salaire que touchera votre pension) devrait baisser. D'après les projections officielles, il pourrait passer de 65 % aujourd'hui à moins de 50 % pour les générations les plus jeunes.</p>
+        <p>À côté de cette retraite de base et complémentaire, vous pouvez (et devez probablement) bâtir une épargne personnelle. C'est là que notre simulateur intervient : il vous aide à définir combien mettre de côté pour combler l'écart entre votre pension future et le revenu que vous souhaitez conserver.</p>
+
+        <h2>Le taux de remplacement : votre premier chiffre à connaître</h2>
+        <p>Le taux de remplacement indique le pourcentage de votre dernier salaire que vous toucherez à la retraite. Il dépend de votre carrière, de votre statut (salarié, indépendant, fonctionnaire) et de l'âge de départ. Le tableau ci-dessous donne une estimation simplifiée, basée sur les tendances actuelles :</p>
+
+        <!-- Tableau principal salaire / pension / manque / capital -->
+        <table>
+            <tr><th>Salaire actuel</th><th>Taux remplacement estimé</th><th>Pension mensuelle</th><th>Manque mensuel</th><th>Capital à constituer (règle des 25x)</th></tr>
+            <tr><td>2 500 €</td><td>65 %</td><td>1 625 €</td><td>875 €</td><td>262 500 €</td></tr>
+            <tr><td>3 500 €</td><td>55 %</td><td>1 925 €</td><td>1 575 €</td><td>472 500 €</td></tr>
+            <tr><td>5 000 €</td><td>45 %</td><td>2 250 €</td><td>2 750 €</td><td>825 000 €</td></tr>
+        </table>
+        <p>Bien sûr, ces pourcentages peuvent varier. L'idée est de retenir que plus votre salaire est élevé, plus l'écart sera important à combler par votre épargne personnelle.</p>
+
+        <h2>La règle des 25x : le pont entre FIRE et retraite classique</h2>
+        <p>La règle des 25x, héritée du mouvement FIRE, dit que pour obtenir un revenu annuel donné, vous devez disposer d'un capital égal à 25 fois ce revenu (cela correspond au fameux taux de retrait de 4 %). Par exemple, pour percevoir 1 000 € par mois (12 000 € par an), il vous faut environ 300 000 €. Notre calculateur applique cette logique, mais vous laisse ajuster le taux de retrait (prudent à 3 %, standard à 4 %).</p>
+        <p>Je me souviens avoir découvert cette règle en lisant un article sur l'indépendance financière. Elle m'a paru simpliste, puis j'ai réalisé sa force : elle traduit des décennies de données historiques (l'étude Trinity de 1998) en un seul chiffre compréhensible.</p>
+
+        <h2>Commencer à 30 ans ou à 40 ans : la différence est vertigineuse</h2>
+        <p>Voici l'impact concret de l'âge sur votre épargne retraite. Prenons un versement de 300 € par mois, avec un rendement réel (après inflation) de 5 %.</p>
+        <table>
+            <tr><th>Âge de début</th><th>Effort mensuel</th><th>Capital à 65 ans</th></tr>
+            <tr><td>30 ans</td><td>300 €</td><td>environ 430 000 €</td></tr>
+            <tr><td>40 ans</td><td>300 €</td><td>environ 215 000 €</td></tr>
+            <tr><td>50 ans</td><td>300 €</td><td>environ 95 000 €</td></tr>
+        </table>
+        <p>En décalant de seulement dix ans le début de l'effort, le capital final chute de moitié. C'est le chiffre que je ressors à chaque fois que quelqu'un me dit « j'ai le temps ». Le temps est le plus grand allié des intérêts composés, mais aussi le plus cruel quand on tarde à s'y mettre.</p>
+
+        <h2>Quelles enveloppes pour loger votre épargne retraite ?</h2>
+        <p>En France, trois véhicules principaux se complètent :</p>
+        <ul>
+            <li><strong>Le Plan Épargne Retraite (PER)</strong> : ouvert à tous, les versements sont déductibles du revenu imposable. En contrepartie, le capital est bloqué jusqu'à la retraite (sauf cas de déblocage anticipé). Fiscalement intéressant si vous êtes fortement imposé aujourd'hui.</li>
+            <li><strong>Le PEA</strong> : pas de blocage, fiscalité allégée après 5 ans (prélèvements sociaux seulement, plus aucun impôt sur le revenu). Idéal pour une retraite flexible, même avant l'âge légal.</li>
+            <li><strong>L'assurance-vie</strong> : pour compléter avec des fonds euros sécurisés ou des unités de compte. La fiscalité se lisse dans le temps. Utile pour diversifier et transmettre.</li>
+        </ul>
+        <p>Notre simulateur retraite ne tient pas compte des plafonds ni des spécificités fiscales de chaque enveloppe, mais il vous donne une cible de capital. Charge à vous ensuite de répartir vos versements entre ces différents outils.</p>
+
+        <h2>Les erreurs à éviter</h2>
+        <ol>
+            <li><strong>Compter uniquement sur la retraite d'État.</strong> Même si elle constitue le socle, l'histoire récente montre que les réformes peuvent réduire les pensions. Avoir une épargne personnelle, même modeste, vous redonne du contrôle.</li>
+            <li><strong>Sous-estimer la durée de votre retraite.</strong> L'espérance de vie à 65 ans est d'environ 20 ans pour un homme, 23 ans pour une femme (Insee, 2023). Votre capital devra durer au moins 25 ans, voire 30 si vous partez plus tôt.</li>
+            <li><strong>Oublier l'inflation sur 20-30 ans.</strong> Avec une inflation moyenne de 2 %, 1 000 € d'aujourd'hui n'en vaudront que 550 dans 30 ans. Notre calculateur utilise des rendements réels (déflatés) pour éviter cette illusion.</li>
+            <li><strong>Ne pas diversifier les enveloppes fiscales.</strong> Mettre tout son argent dans un PER, c'est bloquer son capital jusqu'à la retraite. Un panachage PEA/assurance-vie offre plus de souplesse.</li>
+        </ol>
+        <h2>Sources et références</h2>
+
+        <div class="highlight">
+            <ul>
+                <li><a href="https://www.cor-retraites.fr/" target="_blank" rel="noopener noreferrer">Conseil d'orientation des retraites (COR)</a></li>
+
+                <li><a href="https://www.insee.fr/" target="_blank" rel="noopener noreferrer">INSEE</a></li>
+
+                <li><a href="https://www.amf-france.org/" target="_blank" rel="noopener noreferrer">Autorité des marchés financiers (AMF)</a></li>
+
+                <li><a href="https://www.service-public.fr/" target="_blank" rel="noopener noreferrer">Service Public</a></li>
+            </ul>
+        </div>
+        <p style="font-size:0.9rem;color:#64748b;">
+            Les données citées étaient à jour au moment de la publication. Les règles fiscales, les marchés financiers et les dispositifs d'épargne peuvent évoluer dans le temps.
+        </p>
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+            <div class="faq-question">Combien faut-il épargner pour la retraite ?</div>
+            <div class="faq-answer">Cela dépend de votre manque mensuel estimé. En appliquant la règle des 25x, multipliez le manque annuel par 25. Par exemple, un manque de 500 €/mois nécessite 150 000 € de capital. Notre calculateur fait ce calcul automatiquement.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">À quel âge commencer à épargner pour la retraite ?</div>
+            <div class="faq-answer">Le plus tôt possible. Commencer à 30 ans plutôt qu'à 40 ans peut presque doubler votre capital final à effort égal. Même un petit montant épargné jeune est très efficace grâce aux intérêts composés.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Quel capital pour une retraite confortable ?</div>
+            <div class="faq-answer">Une estimation courante est de viser un capital égal à 25 fois le complément de revenu souhaité chaque année. Ainsi, pour 2 000 € de complément mensuel, il faut environ 600 000 €. Mais tout dépend de votre train de vie.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">PER ou PEA pour préparer sa retraite ?</div>
+            <div class="faq-answer">Le PER offre un avantage fiscal immédiat mais bloque l'épargne jusqu'à la retraite. Le PEA est plus souple et accessible avant l'âge légal. L'idéal est souvent de combiner les deux pour optimiser la fiscalité et la liquidité.</div>
+        </div>
+
+        <h2>Vos autres simulateurs pour construire votre projet</h2>
+        <p>Une fois votre capital cible défini, vous pouvez approfondir avec ces outils gratuits :</p>
+        <ul>
+            <li><a href="/calculateur-interets-composes">Calculateur d'intérêts composés</a> – Pour voir l'effet boule de neige sur votre épargne.</li>
+            <li><a href="/calculateur-fire">Calculateur FIRE</a> – Pour déterminer dans combien d'années vous pourrez être libre.</li>
+            <li><a href="/calculateur-dividendes">Calculateur de dividendes</a> – Pour intégrer un flux de revenus réguliers.</li>
+            <li><a href="/calculateur-dca">Calculateur DCA</a> – Pour simuler un investissement progressif.</li>
+            <li><a href="/calculateur-patrimoine-net">Calculateur de patrimoine net</a> – Pour faire le point sur l'ensemble de vos actifs.</li>
+        </ul>
+
+        <a href="/calculateur-retraite" class="btn" style="display:block;text-align:center;">Je calcule mon capital retraite →</a>
+
+        <footer>
+            <p>Cet article a un but éducatif. Les projections sont basées sur des hypothèses simplifiées et ne constituent pas des conseils financiers personnalisés. Les performances passées ne préjugent pas des résultats futurs. Investir comporte un risque de perte en capital.</p>
+        </footer>
+    </article>
+
+    <!-- Données structurées JSON-LD : Article avec FAQ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Calculateur de retraite : combien faut-il épargner pour partir sereinement ?",
+        "description": "Découvrez combien vous devez épargner pour maintenir votre niveau de vie à la retraite. Utilisez notre calculateur gratuit.",
+        "author": {
+            "@type": "Person",
+            "name": "Mathias Kouadio"
+        },
+        "datePublished": "2026-05-31",
+        "dateModified": "2026-05-31",
+        "url": "https://www.fintoolsbox.com/blog/combien-epargner-retraite/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Fintoolsbox"
+        },
+        "hasPart": [
+            {
+                "@type": "Question",
+                "name": "Combien faut-il épargner pour la retraite ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Cela dépend du manque mensuel. Multipliez le manque annuel par 25 pour obtenir une cible de capital. Par exemple, 500 €/mois de manque nécessitent 150 000 €."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "À quel âge commencer à épargner pour la retraite ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Le plus tôt possible. Débuter à 30 ans plutôt qu'à 40 ans peut presque doubler le capital final. Même un petit versement régulier est efficace."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Quel capital pour une retraite confortable ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Environ 25 fois le complément de revenu annuel souhaité. Pour 2 000 € de complément par mois, il faut 600 000 €."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "PER ou PEA pour préparer sa retraite ?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Le PER offre une déduction fiscale immédiate mais bloque l'argent jusqu'à la retraite. Le PEA est plus flexible. La combinaison des deux est souvent optimale."
+                }
+            }
+        ]
+    }
+    </script>
+</body>
+</html>
