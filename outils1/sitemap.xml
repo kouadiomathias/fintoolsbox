@@ -174,4 +174,24 @@
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
+
+
+  <url>
+        <loc>https://www.fintoolsbox.com/blog/interets-composes-guide/</loc>
+        <lastmod>2026-05-31</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.fintoolsbox.com/blog/combien-epargner-retraite/</loc>
+        <lastmod>2026-05-31</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.fintoolsbox.com/blog/calculateur-fire-independance-financiere/</loc>
+        <lastmod>2026-05-31</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
